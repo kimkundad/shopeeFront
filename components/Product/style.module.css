@@ -10,6 +10,14 @@
   .textBody{
     font-size: 10px !important;
   }
+  .textFooter{
+    font-size: 8px !important;
+  }
+  .setIcon{
+    height: 8px !important;
+    width: 8px !important;
+    margin: 0px !important;
+}
 }
 @media screen and (min-width: 768px){
 
@@ -24,6 +32,14 @@
   .textBody{
     font-size: 15px !important;
   }
+  .textFooter{
+    font-size: 12px !important;
+  }
+  .setIcon{
+    height: 15px !important;
+    width: 15px !important;
+    margin: 0px !important;
+}
 }
 
 .setPadding{

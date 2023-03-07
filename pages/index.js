@@ -53,7 +53,8 @@ export default function Home() {
     pricesale: "290.-",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "เสื้อผ้าแฟชั่น"
+    category: "เสื้อผ้าแฟชั่น",
+    totalsale: "100",
    },
    {
     productname: "ร้องเท้าฉลาม สุดฮิต!1",
@@ -62,7 +63,8 @@ export default function Home() {
     pricesale: "290.-",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน"
+    category: "ของใช้ภายในบ้าน",
+    totalsale: "100",
    },
    {
     productname: "ร้องเท้าฉลาม สุดฮิต!2",
@@ -71,7 +73,8 @@ export default function Home() {
     pricesale: "290.-",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก"
+    category: "สินค้าแม่และเด็ก",
+    totalsale: "100",
    },
    {
     productname: "ร้องเท้าฉลาม สุดฮิต!3",
@@ -80,7 +83,8 @@ export default function Home() {
     pricesale: "290.-",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก"
+    category: "สินค้าแม่และเด็ก",
+    totalsale: "100",
    },
    {
     productname: "ร้องเท้าฉลาม สุดฮิต!4",
@@ -89,7 +93,8 @@ export default function Home() {
     pricesale: "290.-",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน"
+    category: "ของใช้ภายในบ้าน",
+    totalsale: "100",
    },
   ]
   return (

@@ -43,11 +43,11 @@ export default function Layout({ data }) {
   const stars = [];
 
   for (let i = 0; i < fullStars; i++) {
-    stars.push(<StarIcon key={i} color="yellow.400" />);
+    stars.push(<StarIcon key={i} color="yellow.400" className={style.setIcon}/>);
   }
 
   if (hasHalfStar) {
-    stars.push(<Icon key={fullStars} as={StarIcon} color="yellow.400" />);
+    stars.push(<Icon key={fullStars} as={StarIcon} color="yellow.400" className={style.setIcon}/>);
   }
   return (
     <>
@@ -104,7 +104,7 @@ export default function Layout({ data }) {
                       top="-8px"
                       right="-4px"
                     >
-                      <Text color="white" px="10px">
+                      <Text color="white" px="10px" className={style.textHead}>
                         ลด 27%
                       </Text>
                     </Box>
@@ -117,15 +117,16 @@ export default function Layout({ data }) {
                       </Text>
                       <Text className={style.textBody}>{item.detail}</Text>
                     </CardBody>
-                    <CardFooter className={style.setPadding}>
+                    <CardFooter px="15px" py="10px">
                       <Box alignSelf="end">
                         <HStack>{stars}</HStack>
+                        <Text className={style.textFooter}>ขายไปแล้ว {item.totalsale} ชิ้น</Text>
                       </Box>
                       <Spacer />
                       <Box>
-                        <Text>{item.pricesale}</Text>
-                        <Box>
-                          <Text>{item.price}</Text>
+                        <Text className={style.textFooter}>(ราคาปกติ {item.pricesale})</Text>
+                        <Box borderRadius="md" bg="red">
+                          <Text px="5px" color="white" className={style.textHead} textAlign="center">{item.price}</Text>
                         </Box>
                       </Box>
                     </CardFooter>
@@ -145,7 +146,7 @@ export default function Layout({ data }) {
                       top="-8px"
                       right="-4px"
                     >
-                      <Text color="white" px="10px">
+                      <Text color="white" px="10px" className={style.textHead}>
                         ลด 27%
                       </Text>
                     </Box>
@@ -158,15 +159,16 @@ export default function Layout({ data }) {
                       </Text>
                       <Text className={style.textBody}>{item.detail}</Text>
                     </CardBody>
-                    <CardFooter className={style.setPadding}>
+                    <CardFooter px="15px" py="10px">
                       <Box alignSelf="end">
                         <HStack>{stars}</HStack>
+                        <Text className={style.textFooter}>ขายไปแล้ว {item.totalsale} ชิ้น</Text>
                       </Box>
                       <Spacer />
                       <Box>
-                        <Text>{item.pricesale}</Text>
-                        <Box>
-                          <Text>{item.price}</Text>
+                        <Text className={style.textFooter}>(ราคาปกติ {item.pricesale})</Text>
+                        <Box borderRadius="md" bg="red">
+                          <Text px="5px" color="white" className={style.textHead} textAlign="center">{item.price}</Text>
                         </Box>
                       </Box>
                     </CardFooter>

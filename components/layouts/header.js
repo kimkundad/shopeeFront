@@ -7,13 +7,15 @@ import {
   InputLeftElement,
   Text,
   Spacer,
-  HStack,
+  Center,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { StarIcon } from "@chakra-ui/icons";
+import style from "./style.module.css";
 export default function Header() {
   const router = useRouter();
   const { pathname } = router;
@@ -116,10 +118,8 @@ export default function Header() {
     return (
       <>
         <Box
-          pb="28px"
           className="test"
-          backgroundImage="url('/img/542730.png')"
-          backgroundAttachment="fixed"
+          h="172px"
         >
           <Box
             className="test"
@@ -128,7 +128,7 @@ export default function Header() {
             pt="15px"
             pos="fixed"
             zIndex={100}
-            bg="black"
+            bg="rgba(0,0,0,1)"
           >
             <Flex alignItems="center">
               <InputGroup
@@ -188,12 +188,11 @@ export default function Header() {
               </Flex>
             </Flex>
           </Box>
-          <Flex alignItems="center" px="2" pt="16" pos="sticky">
+          <Flex alignItems="center" px="2" pt="16" pb="28px" backgroundImage="url('/img/542730.png')" h="100%">
             <Box
               bg="white"
               borderRadius="50%"
-              w="80px !important"
-              h="80px !important"
+              className={style.wh}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -203,15 +202,23 @@ export default function Header() {
                 borderRadius="50%"
                 src="/img/หมาโง่.jpg"
                 alt=""
-                h="80px !important"
-                w="80px !important"
+                className={style.wh}
               />
             </Box>
             <Box className="set--width" textColor="white" pl="4">
               <Text className="set--font">SHOPZY สินค้าน่าใช้ ราคาถูก</Text>
-              <Flex>
-                <Text className="set--font">icon ดาว</Text>
-                <Text pl="10px" className="set--font">ร้านแนะนำ</Text>
+              <Flex alignItems="center" height="100%" mt="10px">
+                <Center bg="red" borderRadius="md" px="5px">
+                  <StarIcon color="yellow.400" className={style.setIcon}/>
+                  <Text pl="5px" className="set--font">
+                    4.8/5.0
+                  </Text>
+                </Center>
+                <Box bg="red" borderRadius="md" ml="10px">
+                  <Text px="5px" className="set--font">
+                    ร้านแนะนำ
+                  </Text>
+                </Box>
               </Flex>
             </Box>
             <Spacer />
@@ -230,7 +237,7 @@ export default function Header() {
                   borderRadius="50%"
                   src="/img/chat.png"
                   alt=""
-                  h="5"
+                  h="10px"
                 />
                 <Text className="set--font" px="1">
                   แชทร้านค้า
