@@ -82,7 +82,17 @@ export default function Layout({ data }) {
               <>
                 <Link href="/product">
                   <Card borderRadius="xl" boxShadow="xl">
-                    <Box pos="absolute" bg="red" borderRadius="xl" top="-8px" right="-4px"><Text px="10px">ลด 27%</Text></Box>
+                    <Box
+                      pos="absolute"
+                      bg="red"
+                      borderRadius="xl"
+                      top="-8px"
+                      right="-4px"
+                    >
+                      <Text color="white" px="10px">
+                        ลด 27%
+                      </Text>
+                    </Box>
                     <CardHeader className={style.setPadding}>
                       <Image src={item.image} alt="" borderRadius="xl" />
                     </CardHeader>
@@ -113,6 +123,17 @@ export default function Layout({ data }) {
               <>
                 <Link href="/product">
                   <Card borderRadius="xl" boxShadow="xl">
+                    <Box
+                      pos="absolute"
+                      bg="red"
+                      borderRadius="xl"
+                      top="-8px"
+                      right="-4px"
+                    >
+                      <Text color="white" px="10px">
+                        ลด 27%
+                      </Text>
+                    </Box>
                     <CardHeader className={style.setPadding}>
                       <Image src={item.image} alt="" borderRadius="xl" />
                     </CardHeader>
