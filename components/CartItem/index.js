@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-no-comment-textnodes */
-import { Box, Checkbox, Text, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Checkbox, Text, Flex, Spacer, Radio } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 export default function cartItem(props) {
@@ -37,15 +37,32 @@ export default function cartItem(props) {
                 checkAll !== null ? checkAll[index].every(Boolean) : false
               }
               onChange={(event) => CheckAll(event, index)}
+              colorScheme="red"
+              sx={{
+                "& .chakra-checkbox__control": {
+                  borderRadius: "50% !important",
+                },
+                "& svg": {
+                  stroke: "none !important",
+                },
+              }}
             >
-              {item.shopname}
+              <Text>{item.shopname}</Text>
             </Checkbox>
             <p>{item.product.name}</p>
             {item.product.map((subItem, subIndex) => (
               <div key={subIndex}>
                 <Box p="10px">
                   <Checkbox
-                    variant="circle"
+                  colorScheme="red"
+                    sx={{
+                      "& .chakra-checkbox__control": {
+                        borderRadius: "50% !important",
+                      },
+                      "& svg": {
+                        stroke: "none !important",
+                      },
+                    }}
                     key={subItem.shopname}
                     id={subIndex}
                     isChecked={

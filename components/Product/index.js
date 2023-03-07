@@ -10,10 +10,12 @@ import {
   CardBody,
   CardFooter,
   Spacer,
-  Button,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import style from "./style.module.css";
+import { StarIcon } from "@chakra-ui/icons";
 export default function Layout({ data }) {
   const [isBorderActive, setIsBorderActive] = useState([true]);
 
@@ -34,6 +36,19 @@ export default function Layout({ data }) {
     setIsBorderActive(newArray);
     setId(id);
   };
+
+  const fullStars = Math.floor(4.5);
+  const hasHalfStar = 4.5 % 1 !== 0;
+
+  const stars = [];
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<StarIcon key={i} color="yellow.400" />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(<Icon key={fullStars} as={StarIcon} color="yellow.400" />);
+  }
   return (
     <>
       <Flex
@@ -104,7 +119,7 @@ export default function Layout({ data }) {
                     </CardBody>
                     <CardFooter className={style.setPadding}>
                       <Box alignSelf="end">
-                        <Text>icon ดาว</Text>
+                        <HStack>{stars}</HStack>
                       </Box>
                       <Spacer />
                       <Box>
@@ -145,7 +160,7 @@ export default function Layout({ data }) {
                     </CardBody>
                     <CardFooter className={style.setPadding}>
                       <Box alignSelf="end">
-                        <Text>icon ดาว</Text>
+                        <HStack>{stars}</HStack>
                       </Box>
                       <Spacer />
                       <Box>
