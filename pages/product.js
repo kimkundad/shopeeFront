@@ -1,49 +1,10 @@
 import { useState } from "react";
 import Head from "next/head";
-import {
-  Box,
-  Card,
-  Flex,
-  Stack,
-  SimpleGrid,
-  Text,
-  Center,
-  Image,
-  CardHeader,
-  HStack,
-  Icon,
-  Button,
-  Spacer,
-} from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { Box, Flex, SimpleGrid, Text, Button, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 import Product from "@/components/Product";
 function product() {
-  const colorProduct = [
-    { label: "สีชมพู" },
-    { label: "สีฟ้า" },
-    { label: "สีเหลือง" },
-    { label: "สีส้ม" },
-  ];
-  const size = [
-    { label: "38" },
-    { label: "39" },
-    { label: "40" },
-    { label: "41" },
-    { label: "42" },
-    { label: "43" },
-    { label: "44" },
-  ];
-  const [colorId, setColorId] = useState("");
-  function selectColor(event) {
-    setColorId(event.target.id);
-  }
-
-  const [sizeId, setSizeId] = useState("");
-  function selectSize(event) {
-    setSizeId(event.target.id);
-  }
-
+  
   return (
     <>
       <Head>
@@ -52,101 +13,9 @@ function product() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-      <Box px="15px" py="10px" bg="white">
-        <Product/>
-        
-      </Box>
-      <Box px="15px" mt="10px" bg="white" pb="10px">
-        <Box>
-          <Text fontSize="xl" mt="7px">
-            สี
-          </Text>
-          <SimpleGrid
-            spacing={4}
-            templateColumns="repeat(4, minmax(0px, 1fr))"
-            my="15px"
-            fontSize="sm"
-          >
-            {colorProduct.map((item, index) => {
-              return colorId === item.label ? (
-                // eslint-disable-next-line react/jsx-key
-                <Button
-                  height="35px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  outline={`2px solid red`}
-                  bg="gray.300"
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              ) : (
-                <Button
-                  height="35px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              );
-            })}
-          </SimpleGrid>
-          <Text fontSize="xl" pt="7px">
-            ขนาด
-          </Text>
-          <SimpleGrid
-            spacing={4}
-            templateColumns="repeat(4, minmax(0px, 1fr))"
-            mt="15px"
-            pb="15px"
-            fontSize="sm"
-            borderBottom="1px"
-            borderColor="gray.300"
-          >
-            {size.map((item, index) => {
-              return sizeId === item.label ? (
-                // eslint-disable-next-line react/jsx-key
-                <Button
-                  height="30px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  bg="gray.300"
-                  outline={`2px solid red`}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              ) : (
-                <Button
-                  height="30px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectSize}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              );
-            })}
-          </SimpleGrid>
-          <Flex>
-            <Text fontSize="xl" pt="7px">
-              จำนวน
-            </Text>
-            <Spacer />
-            <Text>asdasd</Text>
-          </Flex>
-        </Box>
-      </Box>
+
+      <Product />
+
       <Box className="test" bottom={0}>
         <Box
           className="test"
