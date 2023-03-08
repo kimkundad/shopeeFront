@@ -32,18 +32,6 @@ export default function Home() {
     {
       categoryname: "สินค้าแม่และเด็ก",
     },
-    {
-      categoryname: "สินค้าทั้งหมด",
-    },
-    {
-      categoryname: "ของใช้ภายในบ้าน",
-    },
-    {
-      categoryname: "เสื้อผ้าแฟชั่น",
-    },
-    {
-      categoryname: "สินค้าแม่และเด็ก",
-    },
   ]
   const ProductAll =[
    {

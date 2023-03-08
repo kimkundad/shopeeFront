@@ -19,9 +19,11 @@ import { StarIcon } from "@chakra-ui/icons";
 export default function Layout({ data }) {
   const [isBorderActive, setIsBorderActive] = useState([true]);
 
-  useEffect(() => {
-    setIsBorderActive(Array(data.Category.length).fill(false).fill(true, 0, 1));
-  }, [data.Category.length]);
+  if(data.Category != null){
+    useEffect(() => {
+      setIsBorderActive(Array(data.Category.length).fill(false).fill(true, 0, 1));
+    }, [data.Category.length])
+  }
 
   const [id, setId] = useState("");
   const handleElementClick = (index, id) => {
@@ -43,49 +45,66 @@ export default function Layout({ data }) {
   const stars = [];
 
   for (let i = 0; i < fullStars; i++) {
-    stars.push(<StarIcon key={i} color="yellow.400" className={style.setIcon}/>);
+    stars.push(
+      <StarIcon key={i} color="yellow.400" className={style.setIcon} />
+    );
   }
 
   if (hasHalfStar) {
-    stars.push(<Icon key={fullStars} as={StarIcon} color="yellow.400" className={style.setIcon}/>);
+    stars.push(
+      <Icon
+        key={fullStars}
+        as={StarIcon}
+        color="yellow.400"
+        className={style.setIcon}
+      />
+    );
   }
+  console.log(data.Category);
   return (
     <>
-      <Flex
-        flexWrap="nowrap"
-        overflowX="auto"
-        overflowY="hidden"
-        h="12"
-        pos="sticky"
-        top="53px"
-        bg="white"
-        zIndex={1000}
-        sx={{
-          "::-webkit-scrollbar": {
-            width: "0",
-            height: "0",
-          },
-        }}
-      >
-        {data.Category.map((item, index) => {
-          return (
-            <>
-              <Box
-                alignSelf="end"
-                px="15px"
-                pb="3px"
-                whiteSpace="nowrap"
-                borderBottom={isBorderActive[index] ? "2px" : "1px"}
-                borderColor={isBorderActive[index] ? "red" : "gray.300"}
-                onClick={() => handleElementClick(index, item.categoryname)}
-                id={item.categoryname}
-              >
-                <Text fontWeight="bold">{item.categoryname}</Text>
-              </Box>
-            </>
-          );
-        })}
-      </Flex>
+      {data.Category !== null ?(
+        <Flex
+          flexWrap="nowrap"
+          overflowX="auto"
+          overflowY="hidden"
+          h="12"
+          pos="sticky"
+          top="53px"
+          bg="white"
+          zIndex={1000}
+          sx={{
+            "::-webkit-scrollbar": {
+              width: "0",
+              height: "0",
+            },
+          }}
+        >
+          {data.Category.map((item, index) => {
+            return (
+              <>
+                <Box
+                  alignSelf="end"
+                  px="15px"
+                  pb="3px"
+                  flex="1"
+                  textAlign="center"
+                  whiteSpace="nowrap"
+                  borderBottom={isBorderActive[index] ? "2px" : "1px"}
+                  borderColor={isBorderActive[index] ? "red" : "gray.300"}
+                  onClick={() => handleElementClick(index, item.categoryname)}
+                  id={item.categoryname}
+                >
+                  <Text fontWeight="bold">{item.categoryname}</Text>
+                </Box>
+              </>
+            );
+          })}
+        </Flex>
+      ) : (
+        null
+      )}
+
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(2, minmax(150px, 1fr))"
@@ -120,13 +139,24 @@ export default function Layout({ data }) {
                     <CardFooter px="15px" py="10px">
                       <Box alignSelf="end">
                         <HStack>{stars}</HStack>
-                        <Text className={style.textFooter}>ขายไปแล้ว {item.totalsale} ชิ้น</Text>
+                        <Text className={style.textFooter}>
+                          ขายไปแล้ว {item.totalsale} ชิ้น
+                        </Text>
                       </Box>
                       <Spacer />
                       <Box>
-                        <Text className={style.textFooter}>(ราคาปกติ {item.pricesale})</Text>
+                        <Text className={style.textFooter}>
+                          (ราคาปกติ {item.pricesale})
+                        </Text>
                         <Box borderRadius="md" bg="red">
-                          <Text px="5px" color="white" className={style.textHead} textAlign="center">{item.price}</Text>
+                          <Text
+                            px="5px"
+                            color="white"
+                            className={style.textHead}
+                            textAlign="center"
+                          >
+                            {item.price}
+                          </Text>
                         </Box>
                       </Box>
                     </CardFooter>
@@ -162,13 +192,24 @@ export default function Layout({ data }) {
                     <CardFooter px="15px" py="10px">
                       <Box alignSelf="end">
                         <HStack>{stars}</HStack>
-                        <Text className={style.textFooter}>ขายไปแล้ว {item.totalsale} ชิ้น</Text>
+                        <Text className={style.textFooter}>
+                          ขายไปแล้ว {item.totalsale} ชิ้น
+                        </Text>
                       </Box>
                       <Spacer />
                       <Box>
-                        <Text className={style.textFooter}>(ราคาปกติ {item.pricesale})</Text>
+                        <Text className={style.textFooter}>
+                          (ราคาปกติ {item.pricesale})
+                        </Text>
                         <Box borderRadius="md" bg="red">
-                          <Text px="5px" color="white" className={style.textHead} textAlign="center">{item.price}</Text>
+                          <Text
+                            px="5px"
+                            color="white"
+                            className={style.textHead}
+                            textAlign="center"
+                          >
+                            {item.price}
+                          </Text>
                         </Box>
                       </Box>
                     </CardFooter>
