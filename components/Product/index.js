@@ -1,7 +1,17 @@
 import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Image, Box, Text, Flex, HStack, Icon, Spacer,SimpleGrid,Button } from "@chakra-ui/react";
+import {
+  Image,
+  Box,
+  Text,
+  Flex,
+  HStack,
+  Icon,
+  Spacer,
+  SimpleGrid,
+  Button,
+} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
 // Import Swiper styles
@@ -80,16 +90,14 @@ export default function App() {
     );
   }
   const swiperRef = useRef(null);
-  const handleButtonClick = (event) => {
-    // Find the index of the slide with the key "สีเหลือง"
-    setColorId(event.target.id);// slide to the found slide index
-    const slideIndex = productDetail[0].images.findIndex(item => item.color === colorId);
-
-    // Slide to the found slide index
+  async function selectColor(event) {
+    setColorId(event.target.id);
+    const slideIndex = productDetail[0].images.findIndex(
+      (item) => item.color === event.target.id
+    );
     swiperRef.current.swiper.slideTo(slideIndex);
-  };
+  }
   
-
   return (
     <>
       <Box px="15px" py="10px" bg="white">
@@ -171,7 +179,7 @@ export default function App() {
                   key={index}
                   w="100%"
                   borderRadius="md"
-                  onClick={handleButtonClick}
+                  onClick={selectColor}
                   outline={`2px solid red`}
                   bg="gray.300"
                   id={item.label}
@@ -184,7 +192,7 @@ export default function App() {
                   key={index}
                   w="100%"
                   borderRadius="md"
-                  onClick={handleButtonClick}
+                  onClick={selectColor}
                   id={item.label}
                 >
                   {item.label}
