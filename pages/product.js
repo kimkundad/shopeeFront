@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import Swiper from "@/components/Swiper";
 function product() {
   const colorProduct = [
     { label: "สีชมพู" },
@@ -70,9 +71,10 @@ function product() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      
       <Box px="15px" py="10px" bg="white">
         <Box>
-          <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="500px" />
+        <Swiper/>
           <Text fontSize="xl" pt="7px">
             ร้องเท้าฉลาม สุดฮิต!
           </Text>
