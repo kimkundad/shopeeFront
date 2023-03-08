@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import Swiper from "@/components/Swiper";
+import Product from "@/components/Product";
 function product() {
   const colorProduct = [
     { label: "สีชมพู" },
@@ -44,25 +44,6 @@ function product() {
     setSizeId(event.target.id);
   }
 
-  const fullStars = Math.floor(4.5);
-  const hasHalfStar = 4.5 % 1 !== 0;
-
-  const stars = [];
-
-  for (let i = 0; i < fullStars; i++) {
-    stars.push(<StarIcon key={i} color="yellow.400" />);
-  }
-
-  if (hasHalfStar) {
-    stars.push(
-      <Icon
-        key={fullStars}
-        as={StarIcon}
-        color="yellow.400"
-        ml="4px !important"
-      />
-    );
-  }
   return (
     <>
       <Head>
@@ -73,47 +54,8 @@ function product() {
       </Head>
       
       <Box px="15px" py="10px" bg="white">
-        <Box>
-        <Swiper/>
-          <Text fontSize="xl" pt="7px">
-            ร้องเท้าฉลาม สุดฮิต!
-          </Text>
-          <Text fontSize="sm">น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี</Text>
-        </Box>
-        <Flex pt="15px">
-          <Box>
-            <HStack>{stars}</HStack>
-            <Text pt="4px" fontSize="xs">
-              ขายไปแล้ว 300 ชิ้น
-            </Text>
-          </Box>
-          <Spacer />
-          <Flex alignSelf="center">
-            <Text position="relative">(ราคาปกติ </Text>
-            <Box ml="7px" display="inline-block" position="relative">
-              <Text position="relative" display="inline">
-                390
-              </Text>
-              <Box
-                opacity="7"
-                content=""
-                position="absolute"
-                top="50%"
-                left="0"
-                w="100%"
-                h="1px"
-                bgColor="red"
-                transform="rotate(-15deg)"
-              />
-            </Box>
-            <Text>.-)</Text>
-          </Flex>
-          <Box ml="10px" borderRadius="md" bg="red" alignSelf="center">
-            <Text px="10px" color="white" fontSize="2xl" fontWeight="bold">
-              290.-
-            </Text>
-          </Box>
-        </Flex>
+        <Product/>
+        
       </Box>
       <Box px="15px" mt="10px" bg="white" pb="10px">
         <Box>
@@ -136,6 +78,7 @@ function product() {
                   borderRadius="md"
                   onClick={selectColor}
                   outline={`2px solid red`}
+                  bg="gray.300"
                   id={item.label}
                 >
                   {item.label}
@@ -175,6 +118,7 @@ function product() {
                   w="100%"
                   borderRadius="md"
                   onClick={selectColor}
+                  bg="gray.300"
                   outline={`2px solid red`}
                   id={item.label}
                 >
