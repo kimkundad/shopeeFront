@@ -56,24 +56,12 @@ export default function Header() {
             borderColor="gray.300"
           >
             <Flex alignItems="center">
-              <Flex
-                textColor="black"
-                h="7"
-                mr="2"
-                borderRadius="xl"
-                bg="pink"
-                alignItems="center"
-              >
-                <Image
-                  pl="3"
-                  borderRadius="50%"
-                  src="/img/chat.png"
-                  alt=""
-                  h="5"
-                />
-                <Text className="set--font" px="1">
-                  ย้อนกลับ
-                </Text>
+              <Flex textColor="white" h="7" alignItems="center">
+                <Box borderRadius="xl" bg="red">
+                  <Text className="set--font" px="1">
+                    &lt; ย้อนกลับ
+                  </Text>
+                </Box>
               </Flex>
               <Spacer />
               <Flex justifyContent="flex-end">

@@ -142,8 +142,38 @@ export default function Layout({ data }) {
                     </Box>
                     <Spacer />
                     <Box>
-                      <Text className={style.textFooter}>
-                        (ราคาปกติ {item.pricesale})
+                      <Text
+                        className={style.textFooter}
+                        style={{
+                          position: "relative",
+                        }}
+                      >
+                        (ราคาปกติ{" "}
+                        <s
+                          style={{
+                            position: "relative",
+                            textDecoration: "none",
+                          }}
+                        >
+                          {item.pricesale}
+                          <span
+                            style={{
+                              top: "50%",
+                              background: "red",
+                              opacity: "0.7",
+                              content: "",
+                              width: "110%",
+                              position: "absolute",
+                              height: "0.1em",
+                              borderRadius: "0.1em",
+                              left: "-5%",
+                              whiteSpace: "nowrap",
+                              display: "block",
+                              transform: "rotate(-15deg)",
+                            }}
+                          ></span>
+                        </s>
+                        .-)
                       </Text>
                       <Box borderRadius="md" bg="red">
                         <Text

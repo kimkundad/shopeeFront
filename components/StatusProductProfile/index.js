@@ -39,7 +39,7 @@ export default function statusProduct(props) {
   const { pathname } = router;
   return (
     <div>
-      <Box bg="white" pt="10px">
+      <Box bg="white" py="10px">
         {pathname === "/profile" ? <Text px="25px">สถานะสินค้า</Text> : false}
         <Grid templateColumns="repeat(3, 1fr)" fontSize="xs" width="100%">
           {status.map((item, index) => {
@@ -64,15 +64,15 @@ export default function statusProduct(props) {
       {props.data.map((item, index) =>
         isBorderActive[index] ? (
           <>
-            <Box bg="white">
+            <Box bg="white" key={index}>
               {item.item.map((subitem, subindex) => {
                 if (name !== subitem.shopname && subindex < 3) {
                   name = subitem.shopname;
                   return index === 0 ? (
                     <>
-                      <Box bg="white">
+                      <Box bg="white" key={subindex}>
                         <Box>
-                          <Text pt="10px" px="15px" className={style.textHead}>
+                          <Text px="15px" className={style.textHead}>
                             {subitem.shopname}
                           </Text>
                         </Box>
@@ -116,7 +116,7 @@ export default function statusProduct(props) {
 
                               <Flex alignItems="center">
                                 <Text className={style.textHead}>
-                                  {subitem.price}
+                                  {subitem.price}.-
                                 </Text>
                                 <Spacer />
                                 <Text
@@ -192,7 +192,7 @@ export default function statusProduct(props) {
 
                             <Flex alignItems="center">
                               <Text className={style.textHead}>
-                                {subitem.price}
+                                {subitem.price}.-
                               </Text>
                               <Spacer />
                               <Text
@@ -263,7 +263,7 @@ export default function statusProduct(props) {
 
                               <Flex alignItems="center">
                                 <Text className={style.textHead}>
-                                  {subitem.price}
+                                  {subitem.price}.-
                                 </Text>
                                 <Spacer />
                                 <Text
@@ -332,7 +332,7 @@ export default function statusProduct(props) {
 
                             <Flex alignItems="center">
                               <Text className={style.textHead}>
-                                {subitem.price}
+                                {subitem.price}.-
                               </Text>
                               <Spacer />
                               <Text

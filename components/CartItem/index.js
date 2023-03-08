@@ -33,6 +33,7 @@ export default function cartItem(props) {
         <>
           <Box bg="white" pt="30px">
             <Checkbox
+              px="10px"
               isChecked={
                 checkAll !== null ? checkAll[index].every(Boolean) : false
               }
@@ -47,14 +48,14 @@ export default function cartItem(props) {
                 },
               }}
             >
-              <Text>{item.shopname}</Text>
+              <Text pl="15px">{item.shopname}</Text>
             </Checkbox>
             <p>{item.product.name}</p>
             {item.product.map((subItem, subIndex) => (
               <div key={subIndex}>
-                <Box p="10px">
+                <Box pb="10px" mx="10px" pt="0px" borderBottom="1px" borderColor="gray.300">
                   <Checkbox
-                  colorScheme="red"
+                    colorScheme="red"
                     sx={{
                       "& .chakra-checkbox__control": {
                         borderRadius: "50% !important",

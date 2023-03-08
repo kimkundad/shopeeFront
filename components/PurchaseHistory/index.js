@@ -10,7 +10,7 @@ export default function purchaseHistory(props) {
       image: "/img/หมาโง่.jpg",
       select: "สีฟ้า ไซด์ 42",
       num: "1",
-      price: "290.-",
+      price: "290",
       address: "ดีคอมโด บางแสน ชลบุรี",
     },
     {
@@ -20,7 +20,7 @@ export default function purchaseHistory(props) {
       image: "/img/หมาโง่.jpg",
       select: "สีฟ้า ไซด์ 42",
       num: "1",
-      price: "290.-",
+      price: "290",
       address: "ดีคอมโด บางแสน ชลบุรี",
     },
     {
@@ -30,7 +30,7 @@ export default function purchaseHistory(props) {
       image: "/img/หมาโง่.jpg",
       select: "สีฟ้า ไซด์ 42",
       num: "1",
-      price: "290.-",
+      price: "290",
       address: "ดีคอมโด บางแสน ชลบุรี",
     },
   ];
@@ -43,8 +43,7 @@ export default function purchaseHistory(props) {
         </Text>
         <Box>
           {Prouct.map((item, index) => (
-            <>
-              <Box bg="white">
+              <Box bg="white" key={index}>
                 <Box pt="10px" px="15px">
                   <Text className={style.textHead}>{item.shopname}</Text>
                   <Box my="10px" borderBottom="1px" borderColor="gray.300">
@@ -69,7 +68,7 @@ export default function purchaseHistory(props) {
                         </Flex>
 
                         <Flex alignItems="center">
-                          <Text className={style.textHead}>{item.price}</Text>
+                          <Text className={style.textHead}>{item.price}.-</Text>
                           <Spacer />
                           <Text className={style.textBody}>
                             พัสดุจัดส่งเรียบร้อย: {item.address}
@@ -80,7 +79,6 @@ export default function purchaseHistory(props) {
                   </Box>
                 </Box>
               </Box>
-            </>
           ))}
         </Box>
       </Box>
