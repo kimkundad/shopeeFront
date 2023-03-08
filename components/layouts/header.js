@@ -8,6 +8,7 @@ import {
   Text,
   Spacer,
   Center,
+  Grid,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import cart from "@/public/img/icon/cart.png";
@@ -117,10 +118,7 @@ export default function Header() {
   } else if (pathname == "/") {
     return (
       <>
-        <Box
-          className="test"
-          h="172px"
-        >
+        <Box className="test" h="172px">
           <Box
             className="test"
             w="100%"
@@ -188,7 +186,14 @@ export default function Header() {
               </Flex>
             </Flex>
           </Box>
-          <Flex alignItems="center" px="2" pt="16" pb="28px" backgroundImage="url('/img/542730.png')" h="100%">
+          <Flex
+            alignItems="center"
+            px="2"
+            pt="16"
+            pb="28px"
+            backgroundImage="url('/img/542730.png')"
+            h="100%"
+          >
             <Box
               bg="white"
               borderRadius="50%"
@@ -209,7 +214,7 @@ export default function Header() {
               <Text className="set--font">SHOPZY สินค้าน่าใช้ ราคาถูก</Text>
               <Flex alignItems="center" height="100%" mt="10px">
                 <Center bg="red" borderRadius="md" px="5px">
-                  <StarIcon color="yellow.400" className={style.setIcon}/>
+                  <StarIcon color="yellow.400" className={style.setIcon} />
                   <Text pl="5px" className="set--font">
                     4.8/5.0
                   </Text>
@@ -263,31 +268,17 @@ export default function Header() {
             borderBottom="1px"
             borderColor="gray.300"
           >
-            <Flex alignItems="center">
-              <Flex
-                textColor="black"
-                h="7"
-                mr="2"
-                borderRadius="xl"
-                bg="pink"
-                alignItems="center"
-              >
-                <Image
-                  pl="3"
-                  borderRadius="50%"
-                  src="/img/chat.png"
-                  alt=""
-                  h="5"
-                />
-                <Text className="set--font" px="1">
-                  ย้อนกลับ
-                </Text>
+            <Grid templateColumns="repeat(3, 1fr)">
+              <Flex textColor="white" h="7" alignItems="center">
+                <Box borderRadius="xl" bg="red">
+                  <Text className="set--font" px="1">
+                    &lt; ย้อนกลับ
+                  </Text>
+                </Box>
               </Flex>
-              <Spacer />
-              <Text>{nameheader}</Text>
-              <Spacer />
-              <Text></Text>
-            </Flex>
+
+              <Text textAlign="center">{nameheader}</Text>
+            </Grid>
           </Box>
         </Box>
       </>

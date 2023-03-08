@@ -68,6 +68,7 @@ function product() {
             templateColumns="repeat(4, minmax(30px, 1fr))"
             my="15px"
             fontSize="sm"
+            
           >
             {colorProduct.map((item, index) => {
               return colorId === item.label ? (
@@ -93,8 +94,11 @@ function product() {
           <SimpleGrid
             spacing={4}
             templateColumns="repeat(4, minmax(30px, 1fr))"
-            my="15px"
+            mt="15px"
+            pb="15px"
             fontSize="sm"
+            borderBottom="1px"
+            borderColor="gray.300"
           >
             {size.map((item, index) => {
               return sizeId === item.label ? (

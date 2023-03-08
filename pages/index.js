@@ -15,7 +15,7 @@ import {
   CardFooter,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import Product from "@/components/Product"
+import Product from "@/components/ProductAll"
 
 export default function Home() {
 
@@ -35,6 +35,7 @@ export default function Home() {
   ]
   const ProductAll =[
    {
+    id: "1",
     productname: "ร้องเท้าฉลาม สุดฮิต!",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
@@ -45,6 +46,7 @@ export default function Home() {
     totalsale: "100",
    },
    {
+    id: "2",
     productname: "ร้องเท้าฉลาม สุดฮิต!1",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
@@ -55,6 +57,7 @@ export default function Home() {
     totalsale: "100",
    },
    {
+    id: "3",
     productname: "ร้องเท้าฉลาม สุดฮิต!2",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
@@ -65,6 +68,7 @@ export default function Home() {
     totalsale: "100",
    },
    {
+    id: "4",
     productname: "ร้องเท้าฉลาม สุดฮิต!3",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
@@ -75,6 +79,7 @@ export default function Home() {
     totalsale: "100",
    },
    {
+    id: "5",
     productname: "ร้องเท้าฉลาม สุดฮิต!4",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
