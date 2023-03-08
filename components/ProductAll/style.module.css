@@ -1,47 +1,56 @@
-@media screen and (max-width: 768px){
-  .wh{
-      max-width: 70px !important;
-      height: 70px !important;
-      max-width: none !important;
+@media screen and (max-width: 768px) {
+  .wh {
+    max-width: 70px !important;
+    height: 70px !important;
+    max-width: none !important;
   }
-  .textHead{
+
+  .textHead {
     font-size: 15px !important;
   }
-  .textBody{
+
+  .textBody {
     font-size: 10px !important;
   }
-  .textFooter{
+
+  .textFooter {
     font-size: 8px !important;
   }
-  .setIcon{
+
+  .setIcon {
     height: 8px !important;
     width: 8px !important;
     margin: 0px !important;
-}
-}
-@media screen and (min-width: 768px){
-
-  .wh{
-      width: 130px !important;
-      height: 130px !important;
-      max-width: none !important;
   }
-  .textHead{
+}
+
+@media screen and (min-width: 768px) {
+
+  .wh {
+    width: 130px !important;
+    height: 130px !important;
+    max-width: none !important;
+  }
+
+  .textHead {
     font-size: 20px !important;
   }
-  .textBody{
+
+  .textBody {
     font-size: 15px !important;
   }
-  .textFooter{
+
+  .textFooter {
     font-size: 12px !important;
   }
-  .setIcon{
+
+  .setIcon {
     height: 15px !important;
     width: 15px !important;
     margin: 0px !important;
-}
+  }
 }
 
-.setPadding{
+.setPadding {
   padding: 10px !important;
 }

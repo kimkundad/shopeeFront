@@ -86,35 +86,26 @@ function product() {
             </Text>
           </Box>
           <Spacer />
-          <Text
-            alignSelf="center"
-            fontSize="xs"
-            style={{
-              position: "relative",
-            }}
-          >
-            (ราคาปกติ{" "}
-            <s style={{ position: "relative", textDecoration: "none"}}>
-              390
-              <span
-                style={{
-                  top: "50%",
-                  background: "red",
-                  opacity: "0.7",
-                  content: "",
-                  width: "110%",
-                  position: "absolute",
-                  height: "0.1em",
-                  borderRadius: "0.1em",
-                  left: "-5%",
-                  whiteSpace: "nowrap",
-                  display: "block",
-                  transform: "rotate(-15deg)",
-                }}
-              ></span>
-            </s>
-            .-)
-          </Text>
+          <Flex alignSelf="center">
+            <Text position="relative">(ราคาปกติ </Text>
+            <Box ml="7px" display="inline-block" position="relative">
+              <Text position="relative" display="inline">
+                390
+              </Text>
+              <Box
+                opacity="7"
+                content=""
+                position="absolute"
+                top="50%"
+                left="0"
+                w="100%"
+                h="1px"
+                bgColor="red"
+                transform="rotate(-15deg)"
+              />
+            </Box>
+            <Text>.-)</Text>
+          </Flex>
           <Box ml="10px" borderRadius="md" bg="red" alignSelf="center">
             <Text px="10px" color="white" fontSize="2xl" fontWeight="bold">
               290.-
