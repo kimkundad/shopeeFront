@@ -23,7 +23,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY",
@@ -32,7 +32,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY4",
@@ -41,7 +41,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY3",
@@ -50,7 +50,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
       ],
     },
@@ -63,7 +63,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY",
@@ -72,7 +72,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY2",
@@ -81,7 +81,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY1",
@@ -90,7 +90,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
       ],
     },
@@ -103,7 +103,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY2",
@@ -112,7 +112,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY3",
@@ -121,7 +121,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
         {
           shopname: "SHOPZY2",
@@ -130,7 +130,7 @@ function statusProduct() {
           image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
           num: "1",
-          price: "290.-",
+          price: "290",
         },
       ],
     },

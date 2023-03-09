@@ -1,0 +1,56 @@
+@media screen and (max-width: 768px) {
+  .wh {
+    max-width: 70px !important;
+    height: 70px !important;
+    max-width: none !important;
+  }
+
+  .textHead {
+    font-size: 15px !important;
+  }
+
+  .textBody {
+    font-size: 10px !important;
+  }
+
+  .textFooter {
+    font-size: 8px !important;
+  }
+
+  .setIcon {
+    height: 8px !important;
+    width: 8px !important;
+    margin: 0px !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+
+  .wh {
+    width: 130px !important;
+    height: 130px !important;
+    max-width: none !important;
+  }
+
+  .textHead {
+    font-size: 20px !important;
+  }
+
+  .textBody {
+    font-size: 15px !important;
+  }
+
+  .textFooter {
+    font-size: 12px !important;
+  }
+
+  .setIcon {
+    height: 15px !important;
+    width: 15px !important;
+    margin: 0px !important;
+  }
+}
+
+.setPadding {
+  padding: 10px !important;
+}

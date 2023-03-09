@@ -39,7 +39,7 @@ export default function statusProduct(props) {
   const { pathname } = router;
   return (
     <div>
-      <Box bg="white" pt="10px">
+      <Box bg="white" py="10px">
         {pathname === "/profile" ? <Text px="25px">สถานะสินค้า</Text> : false}
         <Grid templateColumns="repeat(3, 1fr)" fontSize="xs" width="100%">
           {status.map((item, index) => {
@@ -61,99 +61,22 @@ export default function statusProduct(props) {
         </Grid>
       </Box>
 
-      {props.data.map((item, index) =>
-        isBorderActive[index] ? (
-          <>
-            <Box bg="white">
-              {item.item.map((subitem, subindex) => {
-                if (name !== subitem.shopname && subindex < 3) {
-                  name = subitem.shopname;
-                  return index === 0 ? (
-                    <>
-                      <Box bg="white">
-                        <Box>
-                          <Text pt="10px" px="15px" className={style.textHead}>
-                            {subitem.shopname}
-                          </Text>
-                        </Box>
+      {props.data.map((item, index) => {
+        return isBorderActive[index] ? (
+          <Box bg="white" key={index}>
+            {item.item.map((subitem, subindex) => {
+              if (name !== subitem.shopname && subindex < 3) {
+                name = subitem.shopname;
+                return index === 0 ? (
+                  <Box key={subindex}>
+                    <Box bg="white">
+                      <Box>
+                        <Text px="15px" className={style.textHead}>
+                          {subitem.shopname}
+                        </Text>
                       </Box>
-                      <Link href="/order">
-                        <Box
-                          my="10px"
-                          mx="15px"
-                          borderBottom="1px"
-                          borderColor="gray.300"
-                        >
-                          <Flex alignItems="center" pb="10px">
-                            <Box>
-                              <Image
-                                src={subitem.image}
-                                alt=""
-                                className={style.wh}
-                              />
-                            </Box>
-                            <Box pl="15px" width="-webkit-fill-available">
-                              <Text className={style.textHead}>
-                                {subitem.name}
-                              </Text>
-                              <Text className={style.textBody}>
-                                {subitem.detail}
-                              </Text>
-                              <Flex alignItems="center">
-                                <Text
-                                  className={style.textBody}
-                                  bg="gray.300"
-                                  borderRadius="md"
-                                  display="initial"
-                                  px="7px"
-                                >
-                                  ตัวเลือกสินค้า: {subitem.select}
-                                </Text>
-                                <Text pl="15px" className={style.textHead}>
-                                  x{subitem.num}
-                                </Text>
-                              </Flex>
-
-                              <Flex alignItems="center">
-                                <Text className={style.textHead}>
-                                  {subitem.price}
-                                </Text>
-                                <Spacer />
-                                <Text
-                                  bg={isBorderActive[0] ? "red" : ""}
-                                  borderRadius="xl"
-                                  className={style.textBody}
-                                  height="-webkit-fill-available"
-                                  px="10px"
-                                  color={
-                                    isBorderActive[0]
-                                      ? "white"
-                                      : isBorderActive[1]
-                                      ? "orange"
-                                      : "blue"
-                                  }
-                                >
-                                  {isBorderActive[0]
-                                    ? "ชำระเงิน"
-                                    : isBorderActive[1]
-                                    ? `จะได้รับสินค้าในวันที่ ${subitem.date}`
-                                    : "พัสดุถูกจัดส่งเรียบร้อย"}
-                                </Text>
-                              </Flex>
-                            </Box>
-                          </Flex>
-                        </Box>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Box bg="white">
-                        <Box>
-                          <Text pt="10px" px="15px" className={style.textHead}>
-                            {subitem.shopname}
-                          </Text>
-                        </Box>
-                      </Box>
+                    </Box>
+                    <Link href="/order">
                       <Box
                         my="10px"
                         mx="15px"
@@ -168,7 +91,11 @@ export default function statusProduct(props) {
                               className={style.wh}
                             />
                           </Box>
-                          <Box pl="15px" width="-webkit-fill-available">
+                          <Box
+                            pl="15px"
+                            width="-webkit-fill-available"
+                            wordBreak="break-all"
+                          >
                             <Text className={style.textHead}>
                               {subitem.name}
                             </Text>
@@ -192,7 +119,7 @@ export default function statusProduct(props) {
 
                             <Flex alignItems="center">
                               <Text className={style.textHead}>
-                                {subitem.price}
+                                {subitem.price}.-
                               </Text>
                               <Spacer />
                               <Text
@@ -219,81 +146,90 @@ export default function statusProduct(props) {
                           </Box>
                         </Flex>
                       </Box>
-                    </>
-                  );
-                } else if (subindex < 3) {
-                  return index === 0 ? (
-                    <>
-                      <Link href="/order">
+                    </Link>
+                  </Box>
+                ) : (
+                  <Box key={subindex}>
+                    <Box bg="white">
+                      <Box>
+                        <Text pt="10px" px="15px" className={style.textHead}>
+                          {subitem.shopname}
+                        </Text>
+                      </Box>
+                    </Box>
+                    <Box
+                      my="10px"
+                      mx="15px"
+                      borderBottom="1px"
+                      borderColor="gray.300"
+                    >
+                      <Flex alignItems="center" pb="10px">
+                        <Box>
+                          <Image
+                            src={subitem.image}
+                            alt=""
+                            className={style.wh}
+                          />
+                        </Box>
                         <Box
-                          my="10px"
-                          mx="15px"
-                          borderBottom="1px"
-                          borderColor="gray.300"
+                          pl="15px"
+                          width="-webkit-fill-available"
+                          wordBreak="break-all"
                         >
-                          <Flex alignItems="center" pb="10px">
-                            <Box>
-                              <Image
-                                src={subitem.image}
-                                alt=""
-                                className={style.wh}
-                              />
-                            </Box>
-                            <Box pl="15px" width="-webkit-fill-available">
-                              <Text className={style.textHead}>
-                                {subitem.name}
-                              </Text>
-                              <Text className={style.textBody}>
-                                {subitem.detail}
-                              </Text>
-                              <Flex alignItems="center">
-                                <Text
-                                  className={style.textBody}
-                                  bg="gray.300"
-                                  borderRadius="md"
-                                  display="initial"
-                                  px="7px"
-                                >
-                                  ตัวเลือกสินค้า: {subitem.select}
-                                </Text>
-                                <Text pl="15px" className={style.textHead}>
-                                  x{subitem.num}
-                                </Text>
-                              </Flex>
+                          <Text className={style.textHead}>{subitem.name}</Text>
+                          <Text className={style.textBody}>
+                            {subitem.detail}
+                          </Text>
+                          <Flex alignItems="center">
+                            <Text
+                              className={style.textBody}
+                              bg="gray.300"
+                              borderRadius="md"
+                              display="initial"
+                              px="7px"
+                            >
+                              ตัวเลือกสินค้า: {subitem.select}
+                            </Text>
+                            <Text pl="15px" className={style.textHead}>
+                              x{subitem.num}
+                            </Text>
+                          </Flex>
 
-                              <Flex alignItems="center">
-                                <Text className={style.textHead}>
-                                  {subitem.price}
-                                </Text>
-                                <Spacer />
-                                <Text
-                                  bg={isBorderActive[0] ? "red" : ""}
-                                  borderRadius="xl"
-                                  className={style.textBody}
-                                  height="-webkit-fill-available"
-                                  px="10px"
-                                  color={
-                                    isBorderActive[0]
-                                      ? "white"
-                                      : isBorderActive[1]
-                                      ? "orange"
-                                      : "blue"
-                                  }
-                                >
-                                  {isBorderActive[0]
-                                    ? "ชำระเงิน"
-                                    : isBorderActive[1]
-                                    ? `จะได้รับสินค้าในวันที่ ${subitem.date}`
-                                    : "พัสดุถูกจัดส่งเรียบร้อย"}
-                                </Text>
-                              </Flex>
-                            </Box>
+                          <Flex alignItems="center">
+                            <Text className={style.textHead}>
+                              {subitem.price}.-
+                            </Text>
+                            <Spacer />
+                            <Text
+                              bg={isBorderActive[0] ? "red" : ""}
+                              borderRadius="xl"
+                              className={style.textBody}
+                              height="-webkit-fill-available"
+                              px="10px"
+                              color={
+                                isBorderActive[0]
+                                  ? "white"
+                                  : isBorderActive[1]
+                                  ? "orange"
+                                  : "blue"
+                              }
+                            >
+                              {isBorderActive[0]
+                                ? "ชำระเงิน"
+                                : isBorderActive[1]
+                                ? `จะได้รับสินค้าในวันที่ ${subitem.date}`
+                                : "พัสดุถูกจัดส่งเรียบร้อย"}
+                            </Text>
                           </Flex>
                         </Box>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
+                      </Flex>
+                    </Box>
+                  </Box>
+                );
+              } else if (subindex < 3) {
+                return index === 0 ? (
+                  <Box key={subindex}>
+                    <Link href="/order">
                       <Box
                         my="10px"
                         mx="15px"
@@ -308,7 +244,11 @@ export default function statusProduct(props) {
                               className={style.wh}
                             />
                           </Box>
-                          <Box pl="15px" width="-webkit-fill-available">
+                          <Box
+                            pl="15px"
+                            width="-webkit-fill-available"
+                            wordBreak="break-all"
+                          >
                             <Text className={style.textHead}>
                               {subitem.name}
                             </Text>
@@ -332,7 +272,7 @@ export default function statusProduct(props) {
 
                             <Flex alignItems="center">
                               <Text className={style.textHead}>
-                                {subitem.price}
+                                {subitem.price}.-
                               </Text>
                               <Spacer />
                               <Text
@@ -359,23 +299,93 @@ export default function statusProduct(props) {
                           </Box>
                         </Flex>
                       </Box>
-                    </>
-                  );
-                }
-              })}
-              <Box textAlign="center" pb="10px">
-                <Link href="/statusProduct">
-                  <Button bg="red" borderRadius="xl" size="md" height="30px">
-                    <Text fontSize="xs">ดูเพิ่มเติม</Text>
-                  </Button>
-                </Link>
-              </Box>
+                    </Link>
+                  </Box>
+                ) : (
+                  <Box key={subindex}>
+                    <Box
+                      my="10px"
+                      mx="15px"
+                      borderBottom="1px"
+                      borderColor="gray.300"
+                    >
+                      <Flex alignItems="center" pb="10px">
+                        <Box>
+                          <Image
+                            src={subitem.image}
+                            alt=""
+                            className={style.wh}
+                          />
+                        </Box>
+                        <Box
+                          pl="15px"
+                          width="-webkit-fill-available"
+                          wordBreak="break-all"
+                        >
+                          <Text className={style.textHead}>{subitem.name}</Text>
+                          <Text className={style.textBody}>
+                            {subitem.detail}
+                          </Text>
+                          <Flex alignItems="center">
+                            <Text
+                              className={style.textBody}
+                              bg="gray.300"
+                              borderRadius="md"
+                              display="initial"
+                              px="7px"
+                            >
+                              ตัวเลือกสินค้า: {subitem.select}
+                            </Text>
+                            <Text pl="15px" className={style.textHead}>
+                              x{subitem.num}
+                            </Text>
+                          </Flex>
+
+                          <Flex alignItems="center">
+                            <Text className={style.textHead}>
+                              {subitem.price}.-
+                            </Text>
+                            <Spacer />
+                            <Text
+                              bg={isBorderActive[0] ? "red" : ""}
+                              borderRadius="xl"
+                              className={style.textBody}
+                              height="-webkit-fill-available"
+                              px="10px"
+                              color={
+                                isBorderActive[0]
+                                  ? "white"
+                                  : isBorderActive[1]
+                                  ? "orange"
+                                  : "blue"
+                              }
+                            >
+                              {isBorderActive[0]
+                                ? "ชำระเงิน"
+                                : isBorderActive[1]
+                                ? `จะได้รับสินค้าในวันที่ ${subitem.date}`
+                                : "พัสดุถูกจัดส่งเรียบร้อย"}
+                            </Text>
+                          </Flex>
+                        </Box>
+                      </Flex>
+                    </Box>
+                  </Box>
+                );
+              }
+            })}
+            <Box textAlign="center" pb="10px">
+              <Link href="/statusProduct">
+                <Button bg="red" borderRadius="xl" size="md" height="30px">
+                  <Text fontSize="xs">ดูเพิ่มเติม</Text>
+                </Button>
+              </Link>
             </Box>
-          </>
+          </Box>
         ) : (
           false
-        )
-      )}
+        );
+      })}
     </div>
   );
 }

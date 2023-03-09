@@ -15,7 +15,7 @@ import {
   CardFooter,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import Product from "@/components/Product"
+import Product from "@/components/ProductAll"
 
 export default function Home() {
 
@@ -32,64 +32,62 @@ export default function Home() {
     {
       categoryname: "สินค้าแม่และเด็ก",
     },
-    {
-      categoryname: "สินค้าทั้งหมด",
-    },
-    {
-      categoryname: "ของใช้ภายในบ้าน",
-    },
-    {
-      categoryname: "เสื้อผ้าแฟชั่น",
-    },
-    {
-      categoryname: "สินค้าแม่และเด็ก",
-    },
   ]
   const ProductAll =[
    {
+    id: "1",
     productname: "ร้องเท้าฉลาม สุดฮิต!",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
-    pricesale: "290.-",
+    pricesale: "290",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "เสื้อผ้าแฟชั่น"
+    category: "เสื้อผ้าแฟชั่น",
+    totalsale: "100",
    },
    {
+    id: "2",
     productname: "ร้องเท้าฉลาม สุดฮิต!1",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
-    pricesale: "290.-",
+    pricesale: "290",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน"
+    category: "ของใช้ภายในบ้าน",
+    totalsale: "100",
    },
    {
+    id: "3",
     productname: "ร้องเท้าฉลาม สุดฮิต!2",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
-    pricesale: "290.-",
+    pricesale: "290",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก"
+    category: "สินค้าแม่และเด็ก",
+    totalsale: "100",
    },
    {
+    id: "4",
     productname: "ร้องเท้าฉลาม สุดฮิต!3",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
-    pricesale: "290.-",
+    pricesale: "290",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก"
+    category: "สินค้าแม่และเด็ก",
+    totalsale: "100",
    },
    {
+    id: "5",
     productname: "ร้องเท้าฉลาม สุดฮิต!4",
     detail: "น่ารักไม่ไหว",
     price: "390.-",
-    pricesale: "290.-",
+    pricesale: "290",
     num: "1000",
     image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน"
+    category: "ของใช้ภายในบ้าน",
+    totalsale: "100",
    },
   ]
   return (

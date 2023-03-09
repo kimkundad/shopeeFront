@@ -24,30 +24,27 @@ function chartShop() {
       product: [
         {
           name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี33333333333333333333333333333333333333333333333",
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
       ],
     },
@@ -57,29 +54,26 @@ function chartShop() {
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: 290,
+          num: 1,
         },
       ],
     },
@@ -94,28 +88,7 @@ function chartShop() {
       </Head>
       <CartItem data={item} />
 
-      <Box className="test" bottom={0}>
-        <Box
-          className="test"
-          px="15px"
-          py="8px"
-          bg="white"
-          pos="fixed"
-          bottom={0}
-        >
-          <Flex bg="white" alignItems="center">
-            <Text>รวมทั้งหมด</Text>
-            <Spacer />
-            <Text>0.-</Text>
-            <Spacer />
-            <Link href="/order">
-              <Button bg="red" borderRadius="xl">
-                <Text>ชำระเงิน</Text>
-              </Button>
-            </Link>
-          </Flex>
-        </Box>
-      </Box>
+      
     </>
   );
 }

@@ -15,11 +15,20 @@ import { useRouter } from "next/router";
 export default function Footer() {
   const router = useRouter();
   const { pathname } = router;
+  console.log(pathname);
   if (pathname == "/product") {
     return (
       <>
         <Box className="test" bottom={0}>
-          <Box className="test" px="15px" mt="10px" py="8px" bg="white" pos="fixed" bottom={0}>
+          <Box
+            className="test"
+            px="15px"
+            mt="10px"
+            py="8px"
+            bg="white"
+            pos="fixed"
+            bottom={0}
+          >
             <SimpleGrid
               spacing={4}
               templateColumns="repeat(2, minmax(30px, 1fr))"
@@ -45,7 +54,15 @@ export default function Footer() {
     return (
       <>
         <Box className="test" bottom={0}>
-          <Box className="test" px="15px" mt="10px" py="8px" bg="white" pos="fixed" bottom={0}>
+          <Box
+            className="test"
+            px="15px"
+            mt="10px"
+            py="8px"
+            bg="white"
+            pos="fixed"
+            bottom={0}
+          >
             <Grid
               spacing={4}
               templateColumns="repeat(2, minmax(30px, 1fr))"
@@ -64,5 +81,5 @@ export default function Footer() {
         </Box>
       </>
     );
-  }
+  } 
 }
