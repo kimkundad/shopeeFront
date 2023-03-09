@@ -98,7 +98,7 @@ export default function cartItem(props) {
                 }
               >
                 <Flex px="15px" alignItems="center">
-                  <Box pt="10px">{subItem.image}</Box>
+                  <Box pt="10px"><Image src={subItem.image} alt="" className={style.wh}></Image></Box>
                   <Box pl="15px" wordBreak="break-all" width="-webkit-fill-available">
                     <Text className={style.textHead} pt="7px">
                       {subItem.name}
@@ -116,7 +116,7 @@ export default function cartItem(props) {
                       ตัวเลือกสินค้า: {subItem.select}
                     </Text>
                     <Flex className={style.textHead} pt="5px">
-                      <Text>{subItem.price}</Text>
+                      <Text>{subItem.price}.-</Text>
                       <Spacer />
                       <Box borderRadius="xl" bg="gray.100">
                         <Flex alignItems="center">

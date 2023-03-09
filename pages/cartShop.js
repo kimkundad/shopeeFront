@@ -25,29 +25,23 @@ function chartShop() {
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี33333333333333333333333333333333333333333333333",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
       ],
     },
@@ -57,29 +51,23 @@ function chartShop() {
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
         {
           name: "ร้องเท้าฉลาม",
           detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
-          ),
+          image: "/img/หมาโง่.jpg",
           select: "สีฟ้า ไซด์ 42",
-          price: "290.-",
+          price: "290",
         },
       ],
     },
