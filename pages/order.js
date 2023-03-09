@@ -37,13 +37,21 @@ function order() {
       <Box pt="25px">
         <Box py="10px" bg="white">
           <Flex px="15px">
-            <Box><Image src="/img/placeholder.png" alt="" h="25px" w="25px" maxWidth="none"/></Box>
+            <Box>
+              <Image
+                src="/img/placeholder.png"
+                alt=""
+                h="25px"
+                w="25px"
+                maxWidth="none"
+              />
+            </Box>
             <Box pl="15px">
-              <Text>ที่อยู่สำหรับจัดส่ง</Text>
+              <Text fontWeight="bold">ที่อยู่สำหรับจัดส่ง</Text>
+              <Text>นายต๊อบ เจริญมี (081-789-7784)</Text>
               <Text>
-                นายต๊อบ เจริญมี (081-789-7784) อำเภอเมืองชลบุรี 9/84
-                หมู่บ้านมหานคร ซอย 19 ตำบลแสนสุขอำเภอเมืองชลบุรี จังหวัดชลบุรี
-                22130
+                อำเภอเมืองชลบุรี 9/84 หมู่บ้านมหานคร ซอย 19
+                ตำบลแสนสุขอำเภอเมืองชลบุรี จังหวัดชลบุรี 22130
               </Text>
             </Box>
             <Box display="flex" alignSelf="center">
@@ -122,8 +130,8 @@ function order() {
                 boxShadow="outline"
                 id={item.label}
                 className="set--font"
+                leftIcon={<Image onClick={handleClick} id={item.label} src={item.img} alt="" h="20px" pr="5px" />} 
               >
-                <Image src={item.img} alt="" h="20px" pr="5px"/>
                 {item.label}
               </Button>
             ) : (
@@ -133,8 +141,8 @@ function order() {
                 w="100%"
                 onClick={handleClick}
                 id={item.label}
+                leftIcon={<Image src={item.img} onClick={handleClick} id={item.label} alt="" h="20px" pr="5px" />}
               >
-                <Image src={item.img} alt="" h="20px" pr="5px"/>
                 {item.label}
               </Button>
             );
@@ -143,7 +151,9 @@ function order() {
       </Box>
       <Box bg="white" py="10px" mt="10px">
         <Flex px="15px">
-          <Box pr="15px"><Image src="/img/approval.png" alt="" h="25px"/></Box>
+          <Box pr="15px">
+            <Image src="/img/approval.png" alt="" h="25px" />
+          </Box>
           <Box>
             <Text>ข้อมูลการชำระเงิน</Text>
           </Box>
