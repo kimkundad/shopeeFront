@@ -15,15 +15,9 @@ export default function cartItem(props) {
 
   const handleCheckAllChange = (event, index, subIndex) => {
     const newCheckAll = [...checkAll];
-    let newSum = 0;
     newCheckAll[index][subIndex] = event.target.checked;
-    for (let i = 0; i < newCheckAll.length; i++) {
-      for (let k = 0; k < newCheckAll[i].length; k++) {
-        newCheckAll[i][k] ? (newSum = newSum+props.data[i].product[k].price):false
-      }
-    }
+    sumPrice()
     setCheckAll(newCheckAll);
-    setSum(newSum);
   };
 
   useEffect(() => {
@@ -36,23 +30,57 @@ export default function cartItem(props) {
 
   const [sum, setSum] = useState(0);
 
+  const [num, setNum] = useState(null);
+  useEffect(() => {
+    const newItems = props.data.map((item) => {
+      const subItems = item.product.map((subItem) => subItem.num);
+      return subItems;
+    });
+    setNum(newItems);
+  }, [props.data]);
+
   const CheckAll = (event, index) => {
     const newCheckAll = [...checkAll];
-    let newSum = 0;
     for (let i = 0; i < newCheckAll[index].length; i++) {
       newCheckAll[index][i] = event.target.checked;
     }
-    for (let i = 0; i < newCheckAll.length; i++) {
-      for (let k = 0; k < newCheckAll[i].length; k++) {
-        newCheckAll[i][k] ? (newSum = newSum+props.data[i].product[k].price):false
-      }
-    }
+    sumPrice()
     setCheckAll(newCheckAll);
-    setSum(newSum);
+    
   };
 
-  
+  const sumPrice = () => {
+    const newCheckAll = [...checkAll];
+    let newSum = 0;
+    for (let i = 0; i < newCheckAll.length; i++) {
+      for (let k = 0; k < newCheckAll[i].length; k++) {
+        newCheckAll[i][k]
+          ? (newSum = newSum + (props.data[i].product[k].price * num[i][k]))
+          : false;
+      }
+    }
+    setSum(newSum);
+  }
+  const plusnum = (index, subIndex) => {
+    const newNum = [...num];
+    let number = 0;
+    number = newNum[index][subIndex] + 1;
+    newNum[index][subIndex] = number;
+    setNum(newNum);
+    sumPrice()
 
+  };
+
+  const minusnum = (index, subIndex) => {
+    const newNum = [...num];
+    let number = 0;
+    number = newNum[index][subIndex] - 1;
+    if (number >= 0) {
+      newNum[index][subIndex] = number;
+    }
+    setNum(newNum);
+    sumPrice()
+  };
   return (
     <div>
       {props.data.map((item, index) => (
@@ -142,12 +170,7 @@ export default function cartItem(props) {
                         <Spacer />
                         <Box borderRadius="xl" bg="gray.100">
                           <Flex alignItems="center">
-                            <Button
-                              h="15px"
-                              w="15px"
-
-                              px="0px"
-                            >
+                            <Button h="15px" w="15px" onClick={() => minusnum(index, subIndex)} px="0px">
                               <Image
                                 src="/img/minus.png"
                                 alt="My Icon"
@@ -157,9 +180,14 @@ export default function cartItem(props) {
                               ></Image>
                             </Button>
                             <Text px="5px" className={style.textHead}>
-                              {subItem.num}
+                              {num !== null ? num[index][subIndex] : false}
                             </Text>
-                            <Button h="15px" px="0px">
+                            <Button
+                              h="15px"
+                              w="15px"
+                              onClick={() => plusnum(index, subIndex)}
+                              px="0px"
+                            >
                               <Image
                                 src="/img/plus.png"
                                 alt="My Icon"
