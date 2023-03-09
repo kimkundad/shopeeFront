@@ -96,7 +96,7 @@ export default function statusProduct(props) {
                               <Text className={style.textHead}>
                                 {subitem.name}
                               </Text>
-                              <Text className={style.textBody}>
+                              <Text wordBreak="break-all" className={style.textBody}>
                                 {subitem.detail}
                               </Text>
                               <Flex alignItems="center">
