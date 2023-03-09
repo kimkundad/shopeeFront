@@ -86,6 +86,8 @@ export default function Layout({ data }) {
           );
         })}
       </Flex>
+
+      
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(2, minmax(150px, 1fr))"
