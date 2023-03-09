@@ -21,7 +21,11 @@ function order() {
   function handleClick(event) {
     setButtonId(event.target.id);
   }
-  const paymenttype = [{ label: "QR Code" }, { label: "บัญชีธนาคาร" }];
+  console.log(buttonId);
+  const paymenttype = [
+    { label: "QR Code", img: "/img/qr.png" },
+    { label: "บัญชีธนาคาร", img: "/img/user-interface.png" },
+  ];
   return (
     <>
       <Head>
@@ -33,8 +37,8 @@ function order() {
       <Box pt="25px">
         <Box py="10px" bg="white">
           <Flex px="15px">
-            <Box pr="15px">icon</Box>
-            <Box>
+            <Box><Image src="/img/placeholder.png" alt="" h="25px" w="25px" maxWidth="none"/></Box>
+            <Box pl="15px">
               <Text>ที่อยู่สำหรับจัดส่ง</Text>
               <Text>
                 นายต๊อบ เจริญมี (081-789-7784) อำเภอเมืองชลบุรี 9/84
@@ -95,31 +99,42 @@ function order() {
       </Box>
       <Box bg="white" py="10px" mt="10px">
         <Flex px="15px">
-          <Box pr="15px">icon</Box>
+          <Box pr="15px" alignSelf="center">
+            <Image src="/img/wallet.png" alt="" h="25px"></Image>
+          </Box>
           <Box>
             <Text>เลือกวิธีการชำระเงิน</Text>
           </Box>
         </Flex>
         <SimpleGrid
           spacing={4}
-          templateColumns="repeat(2, minmax(30px, 1fr))"
+          templateColumns="repeat(2, minmax(0px, 1fr))"
           mt="15px"
           px="58px"
           fontSize="sm"
         >
           {paymenttype.map((item, index) => {
             return buttonId === item.label ? (
-              // eslint-disable-next-line react/jsx-key
               <Button
+                key={index}
                 w="100%"
                 onClick={handleClick}
                 boxShadow="outline"
                 id={item.label}
+                className="set--font"
               >
+                <Image src={item.img} alt="" h="20px" pr="5px"/>
                 {item.label}
               </Button>
             ) : (
-              <Button w="100%" onClick={handleClick} id={item.label}>
+              <Button
+                key={index}
+                className="set--font"
+                w="100%"
+                onClick={handleClick}
+                id={item.label}
+              >
+                <Image src={item.img} alt="" h="20px" pr="5px"/>
                 {item.label}
               </Button>
             );
@@ -128,7 +143,7 @@ function order() {
       </Box>
       <Box bg="white" py="10px" mt="10px">
         <Flex px="15px">
-          <Box pr="15px">icon</Box>
+          <Box pr="15px"><Image src="/img/approval.png" alt="" h="25px"/></Box>
           <Box>
             <Text>ข้อมูลการชำระเงิน</Text>
           </Box>

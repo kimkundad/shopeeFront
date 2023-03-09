@@ -9,6 +9,7 @@ import {
   Spacer,
   Center,
   Grid,
+  Button,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import cart from "@/public/img/icon/cart.png";
@@ -20,6 +21,9 @@ import style from "./style.module.css";
 export default function Header() {
   const router = useRouter();
   const { pathname } = router;
+  const handleBack = () => {
+    router.back();
+  };
   let nameheader = "";
   if (pathname == "/address") {
     nameheader = "เลือกที่อยู่";
@@ -57,11 +61,11 @@ export default function Header() {
           >
             <Flex alignItems="center">
               <Flex textColor="white" h="7" alignItems="center">
-                <Box borderRadius="xl" bg="red">
+                <Button borderRadius="xl" onClick={handleBack} bg="red">
                   <Text className="set--font" px="1">
                     &lt; ย้อนกลับ
                   </Text>
-                </Box>
+                </Button>
               </Flex>
               <Spacer />
               <Flex justifyContent="flex-end">
@@ -259,11 +263,11 @@ export default function Header() {
           >
             <Grid templateColumns="repeat(3, 1fr)">
               <Flex textColor="white" h="7" alignItems="center">
-                <Box borderRadius="xl" bg="red">
+                <Button borderRadius="xl" onClick={handleBack} bg="red">
                   <Text className="set--font" px="1">
                     &lt; ย้อนกลับ
                   </Text>
-                </Box>
+                </Button>
               </Flex>
 
               <Text textAlign="center">{nameheader}</Text>
