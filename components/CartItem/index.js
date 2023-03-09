@@ -115,10 +115,10 @@ export default function cartItem(props) {
                     >
                       ตัวเลือกสินค้า: {subItem.select}
                     </Text>
-                    <Flex className={style.textHead}>
+                    <Flex className={style.textHead} pt="5px">
                       <Text>{subItem.price}</Text>
                       <Spacer />
-                      <Box borderRadius="xl" bg="gray.100" px="5px">
+                      <Box borderRadius="xl" bg="gray.100">
                         <Flex alignItems="center">
                           <Button h="15px" w="15px" onClick={minusnum} px="0px">
                             <Image
@@ -129,7 +129,7 @@ export default function cartItem(props) {
                               h="full"
                             ></Image>
                           </Button>
-                          <Text px="20px" fontSize="xl">
+                          <Text px="5px" className={style.textHead}>
                             {num}
                           </Text>
                           <Button h="15px" onClick={plusnum} px="0px">
