@@ -22,7 +22,6 @@ function order() {
     setButtonId(event.target.id);
   }
   const paymenttype = [{ label: "QR Code" }, { label: "บัญชีธนาคาร" }];
-  console.log(buttonId);
   return (
     <>
       <Head>

@@ -250,6 +250,7 @@ export default function Header() {
             w="100%"
             p="10px"
             pt="15px"
+            mb="10px"
             pos="fixed"
             zIndex={100}
             bg="white"
