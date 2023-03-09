@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import style from "./style.module.css";
 export default function cartItem(props) {
   const [checkAll, setCheckAll] = useState(null);
 
@@ -73,6 +74,7 @@ export default function cartItem(props) {
           {item.product.map((subItem, subIndex) => (
             <div key={subIndex}>
               <Checkbox
+                width="-webkit-fill-available"
                 px="15px"
                 colorScheme="red"
                 sx={{
@@ -81,6 +83,9 @@ export default function cartItem(props) {
                   },
                   "& svg": {
                     stroke: "none !important",
+                  },
+                  "& .chakra-checkbox__label": {
+                    width: "100%",
                   },
                 }}
                 key={subItem.shopname}
@@ -94,13 +99,15 @@ export default function cartItem(props) {
               >
                 <Flex px="15px" alignItems="center">
                   <Box pt="10px">{subItem.image}</Box>
-                  <Box pl="15px" flex="1">
-                    <Text fontSize="md" pt="7px">
+                  <Box pl="15px" wordBreak="break-all" width="-webkit-fill-available">
+                    <Text className={style.textHead} pt="7px">
                       {subItem.name}
                     </Text>
-                    <Text fontSize="sm" noWrap>{subItem.detail}</Text>
+                    <Text className={style.textBody}>
+                      {subItem.detail}
+                    </Text>
                     <Text
-                      fontSize="sm"
+                      className={style.textBody}
                       bg="gray.300"
                       borderRadius="md"
                       display="initial"
@@ -108,10 +115,10 @@ export default function cartItem(props) {
                     >
                       ตัวเลือกสินค้า: {subItem.select}
                     </Text>
-                    <Flex fontSize="xl">
+                    <Flex className={style.textHead}>
                       <Text>{subItem.price}</Text>
                       <Spacer />
-                      <Box borderRadius="xl" bg="gray.100" px="5px" mr="20px">
+                      <Box borderRadius="xl" bg="gray.100" px="5px">
                         <Flex alignItems="center">
                           <Button h="15px" w="15px" onClick={minusnum} px="0px">
                             <Image

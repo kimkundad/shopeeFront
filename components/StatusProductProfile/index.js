@@ -92,11 +92,11 @@ export default function statusProduct(props) {
                                 className={style.wh}
                               />
                             </Box>
-                            <Box pl="15px" width="-webkit-fill-available">
+                            <Box pl="15px" width="-webkit-fill-available" wordBreak="break-all">
                               <Text className={style.textHead}>
                                 {subitem.name}
                               </Text>
-                              <Text wordBreak="break-all" className={style.textBody}>
+                              <Text className={style.textBody}>
                                 {subitem.detail}
                               </Text>
                               <Flex alignItems="center">
@@ -168,7 +168,7 @@ export default function statusProduct(props) {
                               className={style.wh}
                             />
                           </Box>
-                          <Box pl="15px" width="-webkit-fill-available">
+                          <Box pl="15px" width="-webkit-fill-available" wordBreak="break-all">
                             <Text className={style.textHead}>
                               {subitem.name}
                             </Text>
@@ -239,7 +239,7 @@ export default function statusProduct(props) {
                                 className={style.wh}
                               />
                             </Box>
-                            <Box pl="15px" width="-webkit-fill-available">
+                            <Box pl="15px" width="-webkit-fill-available" wordBreak="break-all">
                               <Text className={style.textHead}>
                                 {subitem.name}
                               </Text>
@@ -308,7 +308,7 @@ export default function statusProduct(props) {
                               className={style.wh}
                             />
                           </Box>
-                          <Box pl="15px" width="-webkit-fill-available">
+                          <Box pl="15px" width="-webkit-fill-available" wordBreak="break-all">
                             <Text className={style.textHead}>
                               {subitem.name}
                             </Text>
