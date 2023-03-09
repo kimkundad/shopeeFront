@@ -11,6 +11,7 @@ import {
   Spacer,
   SimpleGrid,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
@@ -97,7 +98,18 @@ export default function App() {
     );
     swiperRef.current.swiper.slideTo(slideIndex);
   }
-  
+
+  const [num, setNum] = useState(0);
+  function plusnum() {
+    let a = num + 1;
+    setNum(a);
+  }
+  function minusnum() {
+    let a = num - 1;
+    if (a >= 0) {
+      setNum(a);
+    }
+  }
   return (
     <>
       <Box px="15px" py="10px" bg="white">
@@ -241,12 +253,34 @@ export default function App() {
               );
             })}
           </SimpleGrid>
-          <Flex>
-            <Text fontSize="xl" pt="7px">
-              จำนวน
-            </Text>
+          <Flex alignItems="center" pt="7px">
+            <Text fontSize="xl">จำนวน</Text>
             <Spacer />
-            <Text>asdasd</Text>
+            <Box borderRadius="xl" bg="gray.100" px="5px" mr="20px">
+              <Flex alignItems="center">
+                <Button h="15px" w="15px" onClick={minusnum} px="0px">
+                  <Image
+                    src="/img/minus.png"
+                    alt="My Icon"
+                    objectFit="contain"
+                    w="full"
+                    h="full"
+                  ></Image>
+                </Button>
+                <Text px="20px" fontSize="xl">
+                  {num}
+                </Text>
+                <Button h="15px" onClick={plusnum} px="0px">
+                  <Image
+                    src="/img/plus.png"
+                    alt="My Icon"
+                    objectFit="contain"
+                    w="full"
+                    h="full"
+                  ></Image>
+                </Button>
+              </Flex>
+            </Box>
           </Flex>
         </Box>
       </Box>

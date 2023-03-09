@@ -24,9 +24,9 @@ function chartShop() {
       product: [
         {
           name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
+          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี33333333333333333333333333333333333333333333333",
           image: (
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
+            <Image src="/img/หมาโง่.jpg" alt="" w="130px" h="130px" />
           ),
           select: "สีฟ้า ไซด์ 42",
           price: "290.-",
