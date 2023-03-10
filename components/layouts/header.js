@@ -18,12 +18,34 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { StarIcon } from "@chakra-ui/icons";
 import style from "./style.module.css";
-export default function Header() {
+import { useEffect, useState } from "react";
+export default function Header(props) {
   const router = useRouter();
   const { pathname } = router;
   const handleBack = () => {
     router.back();
   };
+  const [bgColor, setBgColor] = useState("rgba(0,0,0,0)");
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  useEffect(() => {
+    setScrollPosition(props.data);
+  }, [props.data]);
+  console.log(scrollPosition);
+
+  useEffect(() => {
+    if (scrollPosition == 0) {
+      setBgColor("rgba(0,0,0,0)");
+    } else if (scrollPosition > 0 && scrollPosition < 25) {
+      setBgColor("rgba(0,0,0,0.3)");
+    } else if (scrollPosition > 25 && scrollPosition < 40) {
+      setBgColor("rgba(0,0,0,0.5)");
+    } else if (scrollPosition > 40 && scrollPosition < 53) {
+      setBgColor("rgba(0,0,0,0.7)");
+    } else if (scrollPosition > 53) {
+      setBgColor("rgba(0,0,0,1)");
+    }
+  });
   let nameheader = "";
   if (pathname == "/address") {
     nameheader = "เลือกที่อยู่";
@@ -132,7 +154,7 @@ export default function Header() {
             pt="15px"
             pos="fixed"
             zIndex={100}
-            bg="rgba(0,0,0,1)"
+            bg={bgColor}
           >
             <Flex alignItems="center">
               <InputGroup
