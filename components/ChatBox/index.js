@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Image, Input } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Input, FormControl,InputGroup,InputRightElement } from "@chakra-ui/react";
 
 export default function Layout({ children }) {
   const message = [
@@ -39,185 +39,185 @@ export default function Layout({ children }) {
       image: "/img/หมาโง่.jpg",
     },
     {
-        sendername: "me",
-        recivename: "solu",
-        message: "สวัสดี",
-        status: "1",
-        date: "20 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "มีไรให้ช่วยไหม?",
-        status: "1",
-        date: "20 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "ไม่มี",
-        status: "1",
-        date: "20 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "โอเคครับ",
-        status: "1",
-        date: "20 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "สวัสดี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "มีไรให้ช่วยไหม?",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "ไม่มี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "โอเคครับ",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "สวัสดี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "มีไรให้ช่วยไหม?",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "ไม่มี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "โอเคครับ",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "สวัสดี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "มีไรให้ช่วยไหม?",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "ไม่มี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "โอเคครับ",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "สวัสดี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "มีไรให้ช่วยไหม?",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "me",
-        recivename: "solu",
-        message: "ไม่มี",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
-      {
-        sendername: "solu",
-        recivename: "me",
-        message: "โอเคครับ",
-        status: "1",
-        date: "21 มกราคม 2566",
-        time: "10.52",
-        image: "/img/หมาโง่.jpg",
-      },
+      sendername: "me",
+      recivename: "solu",
+      message: "สวัสดี",
+      status: "1",
+      date: "20 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "มีไรให้ช่วยไหม?",
+      status: "1",
+      date: "20 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "ไม่มี",
+      status: "1",
+      date: "20 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "โอเคครับ",
+      status: "1",
+      date: "20 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "สวัสดี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "มีไรให้ช่วยไหม?",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "ไม่มี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "โอเคครับ",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "สวัสดี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "มีไรให้ช่วยไหม?",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "ไม่มี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "โอเคครับ",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "สวัสดี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "มีไรให้ช่วยไหม?",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "ไม่มี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "โอเคครับ",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "สวัสดี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "มีไรให้ช่วยไหม?",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: "ไม่มี",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "solu",
+      recivename: "me",
+      message: "โอเคครับ",
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      image: "/img/หมาโง่.jpg",
+    },
   ];
   let date = "";
   return (
@@ -364,19 +364,33 @@ export default function Layout({ children }) {
           }
         })}
       </Box>
-      <Box className="test" bottom={0}>
-        <Box
-          className="test"
-          px="15px"
-          mt="10px"
-          py="8px"
-          bg="white"
-          pos="fixed"
-          bottom={0}
-        >
-          <Input placeholder="Enter your message here" />
+      <FormControl>
+        <Box className="test" bottom={0}>
+          <Box
+            className="test"
+            px="15px"
+            mt="10px"
+            py="8px"
+            bg="white"
+            pos="fixed"
+            bottom={0}
+          >
+            <Flex alignItems="center">
+              <Image src="/img/plus.png" h="25px" w="25px" />
+              <InputGroup mx="10px">
+                <Input
+                  type="text"
+                  placeholder="พิมข้อความ"
+                  borderRadius="3xl"
+                />
+                <InputRightElement>
+                  <Image src="/img/emoji.png" alt="" h="25px" />
+                </InputRightElement>
+              </InputGroup>
+            </Flex>
+          </Box>
         </Box>
-      </Box>
+      </FormControl>
     </>
   );
 }

@@ -25,25 +25,28 @@ export default function Header(props) {
   const handleBack = () => {
     router.back();
   };
-  const [bgColor, setBgColor] = useState("rgba(0,0,0,0)");
+  const [bgColor, setBgColor] = useState("rgba(255,255,255,0)");
 
   const [scrollPosition, setScrollPosition] = useState(0);
   useEffect(() => {
     setScrollPosition(props.data);
   }, [props.data]);
-  console.log(scrollPosition);
 
   useEffect(() => {
     if (scrollPosition == 0) {
-      setBgColor("rgba(0,0,0,0)");
-    } else if (scrollPosition > 0 && scrollPosition < 25) {
-      setBgColor("rgba(0,0,0,0.3)");
-    } else if (scrollPosition > 25 && scrollPosition < 40) {
-      setBgColor("rgba(0,0,0,0.5)");
-    } else if (scrollPosition > 40 && scrollPosition < 53) {
-      setBgColor("rgba(0,0,0,0.7)");
-    } else if (scrollPosition > 53) {
-      setBgColor("rgba(0,0,0,1)");
+      setBgColor("rgba(255,255,255,0)");
+    } else if (scrollPosition > 0 && scrollPosition < 40) {
+      setBgColor("rgba(255,255,255,0.1)");
+    } else if (scrollPosition > 40 && scrollPosition < 50) {
+      setBgColor("rgba(255,255,255,0.3)");
+    } else if (scrollPosition > 50 && scrollPosition < 60) {
+      setBgColor("rgba(255,255,255,0.5)");
+    } else if (scrollPosition > 60 && scrollPosition < 70) {
+      setBgColor("rgba(255,255,255,0.7)");
+    } else if (scrollPosition > 80 && scrollPosition < 90) {
+      setBgColor("rgba(255,255,255,0.9)");
+    } else if (scrollPosition > 90) {
+      setBgColor("rgba(255,255,255,1)");
     }
   });
   let nameheader = "";
