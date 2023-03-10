@@ -247,7 +247,7 @@ export default function Layout({ children }) {
             date = item.date;
             if (item.sendername == "me") {
               return (
-                <>
+                <Box key={index}>
                   <Flex pt="15px" justifyContent="center">
                     <Box bg="gray.200" borderRadius="xl">
                       <Text px="10px">{item.date}</Text>
@@ -283,11 +283,11 @@ export default function Layout({ children }) {
                       <Text>{item.time} น.</Text>
                     </Box>
                   </Flex>
-                </>
+                </Box>
               );
             } else {
               return (
-                <>
+                <Box key={index}>
                   <Flex pt="10px" justifyContent="center">
                     <Box bg="gray.200" borderRadius="xl">
                       <Text px="10px">{item.date}</Text>
@@ -340,98 +340,92 @@ export default function Layout({ children }) {
                       {item.time} น.
                     </Text>
                   </Flex>
-                </>
+                </Box>
               );
             }
           } else {
             if (item.sendername == "me") {
               return (
-                <>
-                  <Flex direction="row-reverse" py="10px">
-                    <Box
-                      mx="5px"
-                      px="10px"
-                      py="5px"
-                      borderRadius="xl"
-                      bg="gray.200"
-                      alignSelf="center"
-                    >
-                      {item.message !== null ? (
-                        <Text maxWidth="150px">{item.message}</Text>
-                      ) : (
-                        false
-                      )}
-                      {item.imagemessage !== undefined ? (
-                        <Image
-                          src={item.imagemessage}
-                          alt=""
-                          maxWidth="150px"
-                          py="5px"
-                        />
-                      ) : (
-                        false
-                      )}
-                    </Box>
-                    <Box fontSize="10px"  alignSelf="flex-end">
-                      {item.status == 1 ? (
-                        <Text>อ่านแล้ว</Text>
-                      ) : null}
-                      <Text>{item.time} น.</Text>
-                    </Box>
-                  </Flex>
-                </>
+                <Flex direction="row-reverse" py="10px" key={index}>
+                  <Box
+                    mx="5px"
+                    px="10px"
+                    py="5px"
+                    borderRadius="xl"
+                    bg="gray.200"
+                    alignSelf="center"
+                  >
+                    {item.message !== null ? (
+                      <Text maxWidth="150px">{item.message}</Text>
+                    ) : (
+                      false
+                    )}
+                    {item.imagemessage !== undefined ? (
+                      <Image
+                        src={item.imagemessage}
+                        alt=""
+                        maxWidth="150px"
+                        py="5px"
+                      />
+                    ) : (
+                      false
+                    )}
+                  </Box>
+                  <Box fontSize="10px" alignSelf="flex-end">
+                    {item.status == 1 ? <Text>อ่านแล้ว</Text> : null}
+                    <Text>{item.time} น.</Text>
+                  </Box>
+                </Flex>
               );
             } else {
               return (
-                <>
-                  <Flex pb="10px">
-                    <Box
-                      bg="white"
+                <Flex pb="10px" key={index}>
+                  <Box
+                    bg="white"
+                    borderRadius="50%"
+                    w="35px !important"
+                    h="35px !important"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    ml="2"
+                  >
+                    <Image
                       borderRadius="50%"
-                      w="35px !important"
+                      src={item.avatar}
+                      alt=""
                       h="35px !important"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      ml="2"
-                    >
+                      w="35px !important"
+                    />
+                  </Box>
+                  <Box
+                    mx="5px"
+                    px="10px"
+                    py="5px"
+                    borderRadius="xl"
+                    bg="gray.200"
+                    alignSelf="center"
+                  >
+                    {item.message !== null ? (
+                      <Text maxWidth="150px">{item.message}</Text>
+                    ) : (
+                      false
+                    )}
+                    {item.imagemessage !== undefined ? (
                       <Image
-                        borderRadius="50%"
-                        src={item.avatar}
+                        src={item.imagemessage}
                         alt=""
-                        h="35px !important"
-                        w="35px !important"
+                        maxWidth="150px"
+                        py="5px"
                       />
-                    </Box>
-                    <Box
-                      mx="5px"
-                      px="10px"
-                      py="5px"
-                      borderRadius="xl"
-                      bg="gray.200"
-                      alignSelf="center"
-                    >
-                      {item.message !== null ? (
-                        <Text maxWidth="150px">{item.message}</Text>
-                      ) : (
-                        false
-                      )}
-                      {item.imagemessage !== undefined ? (
-                        <Image
-                          src={item.imagemessage}
-                          alt=""
-                          maxWidth="150px"
-                          py="5px"
-                        />
-                      ) : (
-                        false
-                      )}
-                    </Box>
-                    <Text alignSelf="end" fontSize="10px">
-                      {item.time} น.
-                    </Text>
-                  </Flex>
-                </>
+                    ) : (
+                      false
+                    )}
+                  </Box>
+                  <Text alignSelf="end" fontSize="10px">
+                    {item.time} น.
+                  </Text>
+                </Flex>
               );
             }
           }
