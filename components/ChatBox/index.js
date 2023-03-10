@@ -1,4 +1,13 @@
-import { Box, Flex, Text, Image, Input, FormControl,InputGroup,InputRightElement } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Image,
+  Input,
+  FormControl,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
 
 export default function Layout({ children }) {
   const message = [
@@ -9,7 +18,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "19 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -18,7 +27,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "19 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -27,7 +36,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "19 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -36,7 +45,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "19 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -45,7 +54,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "20 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -54,7 +63,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "20 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -63,7 +72,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "20 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -72,7 +81,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "20 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -90,7 +99,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -99,7 +108,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -108,7 +117,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -117,7 +126,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -126,7 +135,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -135,7 +144,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -144,7 +153,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -153,7 +162,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -162,7 +171,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -171,7 +180,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -180,7 +189,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -189,7 +198,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -198,7 +207,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
     {
       sendername: "me",
@@ -207,7 +216,17 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
+    },
+    {
+      sendername: "me",
+      recivename: "solu",
+      message: null,
+      status: "1",
+      date: "21 มกราคม 2566",
+      time: "10.52",
+      avatar: "/img/หมาโง่.jpg",
+      imagemessage: "/img/หมาโง่.jpg",
     },
     {
       sendername: "solu",
@@ -216,7 +235,7 @@ export default function Layout({ children }) {
       status: "1",
       date: "21 มกราคม 2566",
       time: "10.52",
-      image: "/img/หมาโง่.jpg",
+      avatar: "/img/หมาโง่.jpg",
     },
   ];
   let date = "";
@@ -243,13 +262,25 @@ export default function Layout({ children }) {
                       bg="gray.200"
                       alignSelf="center"
                     >
-                      <Text maxWidth="150px">{item.message}</Text>
+                      {item.message !== null ? (
+                        <Text maxWidth="150px">{item.message}</Text>
+                      ) : (
+                        false
+                      )}
+                      {item.imagemessage !== undefined ? (
+                        <Image
+                          src={item.imagemessage}
+                          alt=""
+                          maxWidth="150px"
+                          py="5px"
+                        />
+                      ) : (
+                        false
+                      )}
                     </Box>
-                    <Box fontSize="10px">
-                      {item.status == 1 ? (
-                        <Text alignSelf="center">อ่านแล้ว</Text>
-                      ) : null}
-                      <Text alignSelf="center">{item.time} น.</Text>
+                    <Box fontSize="10px" alignSelf="flex-end">
+                      {item.status == 1 ? <Text>อ่านแล้ว</Text> : null}
+                      <Text>{item.time} น.</Text>
                     </Box>
                   </Flex>
                 </>
@@ -275,7 +306,7 @@ export default function Layout({ children }) {
                     >
                       <Image
                         borderRadius="50%"
-                        src={item.image}
+                        src={item.avatar}
                         alt=""
                         h="35px !important"
                         w="35px !important"
@@ -289,7 +320,21 @@ export default function Layout({ children }) {
                       bg="gray.200"
                       alignSelf="center"
                     >
-                      <Text maxWidth="150px">{item.message}</Text>
+                      {item.message !== null ? (
+                        <Text maxWidth="150px">{item.message}</Text>
+                      ) : (
+                        false
+                      )}
+                      {item.imagemessage !== undefined ? (
+                        <Image
+                          src={item.imagemessage}
+                          alt=""
+                          maxWidth="150px"
+                          py="5px"
+                        />
+                      ) : (
+                        false
+                      )}
                     </Box>
                     <Text alignSelf="end" fontSize="10px">
                       {item.time} น.
@@ -311,13 +356,27 @@ export default function Layout({ children }) {
                       bg="gray.200"
                       alignSelf="center"
                     >
-                      <Text maxWidth="150px">{item.message}</Text>
+                      {item.message !== null ? (
+                        <Text maxWidth="150px">{item.message}</Text>
+                      ) : (
+                        false
+                      )}
+                      {item.imagemessage !== undefined ? (
+                        <Image
+                          src={item.imagemessage}
+                          alt=""
+                          maxWidth="150px"
+                          py="5px"
+                        />
+                      ) : (
+                        false
+                      )}
                     </Box>
-                    <Box fontSize="10px">
+                    <Box fontSize="10px"  alignSelf="flex-end">
                       {item.status == 1 ? (
-                        <Text alignSelf="center">อ่านแล้ว</Text>
+                        <Text>อ่านแล้ว</Text>
                       ) : null}
-                      <Text alignSelf="center">{item.time} น.</Text>
+                      <Text>{item.time} น.</Text>
                     </Box>
                   </Flex>
                 </>
@@ -338,7 +397,7 @@ export default function Layout({ children }) {
                     >
                       <Image
                         borderRadius="50%"
-                        src={item.image}
+                        src={item.avatar}
                         alt=""
                         h="35px !important"
                         w="35px !important"
@@ -352,7 +411,21 @@ export default function Layout({ children }) {
                       bg="gray.200"
                       alignSelf="center"
                     >
-                      <Text maxWidth="150px">{item.message}</Text>
+                      {item.message !== null ? (
+                        <Text maxWidth="150px">{item.message}</Text>
+                      ) : (
+                        false
+                      )}
+                      {item.imagemessage !== undefined ? (
+                        <Image
+                          src={item.imagemessage}
+                          alt=""
+                          maxWidth="150px"
+                          py="5px"
+                        />
+                      ) : (
+                        false
+                      )}
                     </Box>
                     <Text alignSelf="end" fontSize="10px">
                       {item.time} น.
