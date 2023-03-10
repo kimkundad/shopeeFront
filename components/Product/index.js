@@ -162,105 +162,6 @@ export default function App() {
                   transform="rotate(-15deg)"
                 />
               </Box>
-<<<<<<< HEAD
-            </>
-          );
-        })}
-      </Flex>
-
-      
-      <SimpleGrid
-        spacing={4}
-        templateColumns="repeat(2, minmax(150px, 1fr))"
-        m="15px"
-      >
-        {data.ProductAll.map((item, index) => {
-          if (id == "" || isBorderActive[0] || id == "สินค้าทั้งหมด") {
-            return (
-              <>
-                <Link href="/product">
-                  <Card borderRadius="xl" boxShadow="xl">
-                    <Box
-                      pos="absolute"
-                      bg="red"
-                      borderRadius="xl"
-                      top="-8px"
-                      right="-4px"
-                    >
-                      <Text color="white" px="10px">
-                        ลด 27%
-                      </Text>
-                    </Box>
-                    <CardHeader className={style.setPadding}>
-                      <Image src={item.image} alt="" borderRadius="xl" />
-                    </CardHeader>
-                    <CardBody className={style.setPadding}>
-                      <Text textAlign="center" className={style.textHead}>
-                        {item.productname}
-                      </Text>
-                      <Text className={style.textBody}>{item.detail}</Text>
-                    </CardBody>
-                    <CardFooter className={style.setPadding}>
-                      <Box alignSelf="end">
-                        <HStack>{stars}</HStack>
-                      </Box>
-                      <Spacer />
-                      <Box>
-                        <Text>{item.pricesale}</Text>
-                        <Box>
-                          <Text>{item.price}</Text>
-                        </Box>
-                      </Box>
-                    </CardFooter>
-                  </Card>
-                </Link>
-              </>
-            );
-          } else if (id == item.category) {
-            return (
-              <>
-                <Link href="/product">
-                  <Card borderRadius="xl" boxShadow="xl">
-                    <Box
-                      pos="absolute"
-                      bg="red"
-                      borderRadius="xl"
-                      top="-8px"
-                      right="-4px"
-                    >
-                      <Text color="white" px="10px">
-                        ลด 27%
-                      </Text>
-                    </Box>
-                    <CardHeader className={style.setPadding}>
-                      <Image src={item.image} alt="" borderRadius="xl" />
-                    </CardHeader>
-                    <CardBody className={style.setPadding}>
-                      <Text textAlign="center" className={style.textHead}>
-                        {item.productname}
-                      </Text>
-                      <Text className={style.textBody}>{item.detail}</Text>
-                    </CardBody>
-                    <CardFooter className={style.setPadding}>
-                      <Box alignSelf="end">
-                        <HStack>{stars}</HStack>
-                      </Box>
-                      <Spacer />
-                      <Box>
-                        <Text>{item.pricesale}</Text>
-                        <Box>
-                          <Text>{item.price}</Text>
-                        </Box>
-                      </Box>
-                    </CardFooter>
-                  </Card>
-                </Link>
-              </>
-            );
-          }
-        })}
-      </SimpleGrid>
-=======
               <Text>.-)</Text>
             </Flex>
             <Box ml="10px" borderRadius="md" bg="red" alignSelf="center">
@@ -383,7 +284,6 @@ export default function App() {
           </Flex>
         </Box>
       </Box>
->>>>>>> b9af2b18896b9ca52544d41637a4357106c502f1
     </>
   );
 }

@@ -28,7 +28,7 @@ function paymentQRcode() {
       <Box pt="15px">
         <Box bg="white" py="10px" mt="10px">
           <Flex px="15px">
-            <Box pr="15px">icon</Box>
+            <Box pr="15px"><Image src="/img/approval.png" h="25px" w="25px" maxWidth="none"/></Box>
             <Box>
               <Text>ข้อมูลการชำระเงิน</Text>
             </Box>

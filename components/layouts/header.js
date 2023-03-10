@@ -61,10 +61,24 @@ export default function Header() {
           >
             <Flex alignItems="center">
               <Flex textColor="white" h="7" alignItems="center">
-                <Button borderRadius="xl" onClick={handleBack} bg="red">
-                  <Text className="set--font" px="1">
-                    &lt; ย้อนกลับ
-                  </Text>
+                <Button
+                  fontSize="xs"
+                  borderRadius="xl"
+                  onClick={handleBack}
+                  bg="red"
+                  h="25px"
+                  leftIcon={
+                    <Image
+                      src="/img/arrow-left-sign-to-navigate.png"
+                      alt=""
+                      h="10px"
+                      w="10px"
+                      maxWidth="none"
+                      filter="white"
+                    />
+                  }
+                >
+                  ย้อนกลับ
                 </Button>
               </Flex>
               <Spacer />
@@ -263,10 +277,24 @@ export default function Header() {
           >
             <Grid templateColumns="repeat(3, 1fr)">
               <Flex textColor="white" h="7" alignItems="center">
-                <Button borderRadius="xl" onClick={handleBack} bg="red">
-                  <Text className="set--font" px="1">
-                    &lt; ย้อนกลับ
-                  </Text>
+                <Button
+                  fontSize="xs"
+                  borderRadius="xl"
+                  onClick={handleBack}
+                  bg="red"
+                  h="25px"
+                  leftIcon={
+                    <Image
+                      src="/img/arrow-left-sign-to-navigate.png"
+                      alt=""
+                      h="10px"
+                      w="10px"
+                      maxWidth="none"
+                      filter="white"
+                    />
+                  }
+                >
+                  ย้อนกลับ
                 </Button>
               </Flex>
 

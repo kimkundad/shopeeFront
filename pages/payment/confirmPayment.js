@@ -5,18 +5,26 @@ import {
   Box,
   Card,
   Flex,
-  Stack,
   Input,
   Text,
-  Center,
+  useDisclosure,
   Image,
-  CardHeader,
-  CardBody,
-  CardFooter,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   Button,
   Spacer,
 } from "@chakra-ui/react";
+import Upload from "@/components/Dropzone"
 function confirmPayment() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleSizeClick = (newSize) => {
+    onOpen();
+  };
   return (
     <>
       <Head>
@@ -34,7 +42,7 @@ function confirmPayment() {
           </Flex>
         </Box>
         <Box px="25px">
-          <Text noWrap py="10px" textColor="gray.400">
+          <Text py="10px" textColor="gray.400">
             กรุณาอัพโหลดรูปหลักฐานการชำระเงิน ทางเราจะตรวจสอบยอดเงินของคุณภายใน
             48 ชั่วโมง
           </Text>
@@ -45,7 +53,7 @@ function confirmPayment() {
           <Flex px="25px">
             <Text>อัพโหลดหลักฐานการชำระเงิน</Text>
           </Flex>
-          <Image src="/img/หมาโง่.jpg" alt="" w="100%" p="25px" />
+          <Upload/>
         </Box>
       </Box>
       <Box pt="15px">
@@ -59,7 +67,7 @@ function confirmPayment() {
               bg="white"
               placeholder="Select Date and Time"
               size="md"
-              type="datetime-local"
+              type="date"
             />
           </Box>
         </Box>
@@ -73,18 +81,41 @@ function confirmPayment() {
               bg="white"
               placeholder="Select Date and Time"
               size="md"
-              type="datetime-local"
+              type="time"
             />
           </Box>
         </Box>
       </Box>
       <Box py="15px" px="30px" display="flex" justifyContent="end">
-        <Link href="/payment/confirmPayment">
-          <Button bg="red" borderRadius="xl">
-            <Text>ถัดไป</Text>
-          </Button>
-        </Link>
+        <Button bg="red" borderRadius="xl" onClick={() => handleSizeClick()}>
+          <Text>ถัดไป</Text>
+        </Button>
       </Box>
+      <Modal onClose={onClose} size="xs" isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent alignSelf="center">
+          <ModalHeader alignSelf="center">
+            ยืนยันการชำระเงินเรียบร้อย
+          </ModalHeader>
+          <ModalBody alignSelf="center">
+            <Box textAlign="center">
+              <Image src="/img/check3.png" alt="" h="100px" mx="auto" />
+              <Text fontWeight="bold" fontSize="xl">ขอบคุณสำหรับการสั่งซื้อ</Text>
+              <Text>
+                ท่านสามารถตรวจสอบสถานะสินค้าที่ท่านสั่งซื้อได้ที่ปุ่มเมนู
+                "ดูสถานะสินค้า" ในหน้าโปรไฟล์ได้เลย
+              </Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter alignSelf="center">
+            <Link href="/profile" justifySelf="center">
+              <Button w="100%" bg="red" borderRadius="xl">
+                <Text color="white">ไปยังหน้าโปรไฟล์</Text>
+              </Button>
+            </Link>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

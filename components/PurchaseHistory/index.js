@@ -70,7 +70,7 @@ export default function purchaseHistory(props) {
                         <Flex alignItems="center">
                           <Text className={style.textHead}>{item.price}.-</Text>
                           <Spacer />
-                          <Text className={style.textBody}>
+                          <Text className={style.textBody} color="blue">
                             พัสดุจัดส่งเรียบร้อย: {item.address}
                           </Text>
                         </Flex>

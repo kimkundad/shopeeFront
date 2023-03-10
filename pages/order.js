@@ -21,7 +21,6 @@ function order() {
   function handleClick(event) {
     setButtonId(event.target.id);
   }
-  console.log(buttonId);
   const paymenttype = [
     { label: "QR Code", img: "/img/qr.png" },
     { label: "บัญชีธนาคาร", img: "/img/user-interface.png" },
@@ -56,7 +55,7 @@ function order() {
             </Box>
             <Box display="flex" alignSelf="center">
               <Link href="/address/">
-                <Box pl="15px">icon</Box>
+                <Box><Image src="/img/arrow-right-sign-to-navigate.png" alt="" h="25px" w="25px" maxWidth="none"/></Box>
               </Link>
             </Box>
           </Flex>
