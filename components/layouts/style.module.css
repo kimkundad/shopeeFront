@@ -2,16 +2,20 @@
     .wh{
         width: 60px !important;
         height: 60px !important;
+        max-width: none;
     }
     .textHead{
-      font-size: 15px !important;
+      font-size: 17px !important;
     }
     .textBody{
-      font-size: 10px !important;
+      font-size: 12px !important;
     }
     .setIcon{
         height: 10px !important;
         width: 10px !important;
+    }
+    .setWidth{
+      width: 80px !important;
     }
   }
   @media screen and (min-width: 768px){
@@ -19,6 +23,7 @@
     .wh{
         width: 80px !important;
         height: 80px !important;
+        max-width: none;
     }
     .setIcon{
         height: 20px !important;
@@ -29,6 +34,9 @@
     }
     .textBody{
       font-size: 15px !important;
+    }
+    .setWidth{
+      width: 80px !important;
     }
   }
   

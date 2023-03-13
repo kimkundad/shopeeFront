@@ -112,7 +112,7 @@ export default function Layout({ data }) {
           if (id == "" || isBorderActive[0] || id == "สินค้าทั้งหมด") {
             return (
               <Link href="/product" key={item.id}>
-                <Card borderRadius="xl" boxShadow="xl">
+                <Card borderRadius="xl" boxShadow="xl" h="100%">
                   <Box
                     pos="absolute"
                     bg="red"
@@ -129,9 +129,13 @@ export default function Layout({ data }) {
                   </CardHeader>
                   <CardBody className={style.setPadding}>
                     <Text textAlign="center" className={style.textHead}>
-                      {item.productname}
+                      {item.productname.length > 20
+                        ? item.productname.substr(0, 20) + "..."
+                        : item.productname}
                     </Text>
-                    <Text className={style.textBody}>{item.detail}</Text>
+                    <Box className={style.textBody}>
+                      <Text className={style.lineclamp}>{item.detail}</Text>
+                    </Box>
                   </CardBody>
                   <CardFooter px="15px" py="10px">
                     <Box alignSelf="end">

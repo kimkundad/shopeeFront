@@ -241,17 +241,17 @@ export default function Header(props) {
                 className={style.wh}
               />
             </Box>
-            <Box className="set--width" textColor="white" pl="4">
-              <Text className="set--font">SHOPZY สินค้าน่าใช้ ราคาถูก</Text>
+            <Box textColor="white" pl="4">
+              <Text className={style.textHead}>SHOPZY สินค้าน่าใช้ ราคาถูก</Text>
               <Flex alignItems="center" height="100%" mt="10px">
                 <Center bg="red" borderRadius="md" px="5px">
                   <StarIcon color="yellow.400" className={style.setIcon} />
-                  <Text pl="5px" className="set--font">
+                  <Text pl="5px" className={style.textBody}>
                     4.8/5.0
                   </Text>
                 </Center>
                 <Box bg="red" borderRadius="md" ml="10px">
-                  <Text px="5px" className="set--font">
+                  <Text px="5px" className={style.textBody}>
                     ร้านแนะนำ
                   </Text>
                 </Box>
@@ -261,12 +261,13 @@ export default function Header(props) {
             <Link href="/chat">
               <Flex
                 textColor="black"
-                h="7"
+                h="20px !important"
                 mr="2"
                 borderRadius="xl"
                 bg="white"
                 alignItems="center"
-                mb="5"
+                mb="8"
+                className={style.setWidth}
               >
                 <Image
                   pl="3"
@@ -275,7 +276,7 @@ export default function Header(props) {
                   alt=""
                   h="10px"
                 />
-                <Text className="set--font" px="1">
+                <Text className={style.textBody} px="1">
                   แชทร้านค้า
                 </Text>
               </Flex>

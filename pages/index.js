@@ -1,20 +1,6 @@
 import Head from "next/head";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import {
-  Box,
-  Card,
-  Flex,
-  Stack,
-  SimpleGrid,
-  Text,
-  Center,
-  Image,
-  CardHeader,
-  CardBody,
-  CardFooter,
-} from "@chakra-ui/react";
-import Link from "next/link";
 import Product from "@/components/ProductAll"
 
 export default function Home() {
