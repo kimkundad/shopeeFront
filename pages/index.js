@@ -1,11 +1,27 @@
 import Head from "next/head";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import Product from "@/components/ProductAll"
-
+import Product from "@/components/ProductAll";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  Form,
+  useDisclosure,
+  Box,
+  Text,
+  Image,
+  Input,
+  Flex,
+  Spacer,
+  Button,
+  FormControl,
+} from "@chakra-ui/react";
 export default function Home() {
-
-  const Category =[
+  const Category = [
     {
       categoryname: "สินค้าทั้งหมด",
     },
@@ -18,64 +34,76 @@ export default function Home() {
     {
       categoryname: "สินค้าแม่และเด็ก",
     },
-  ]
-  const ProductAll =[
-   {
-    id: "1",
-    productname: "ร้องเท้าฉลาม สุดฮิต!",
-    detail: "น่ารักไม่ไหว",
-    price: "390.-",
-    pricesale: "290",
-    num: "1000",
-    image: "/img/หมาโง่.jpg",
-    category: "เสื้อผ้าแฟชั่น",
-    totalsale: "100",
-   },
-   {
-    id: "2",
-    productname: "ร้องเท้าฉลาม สุดฮิต!1",
-    detail: "น่ารักไม่ไหว",
-    price: "390.-",
-    pricesale: "290",
-    num: "1000",
-    image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน",
-    totalsale: "100",
-   },
-   {
-    id: "3",
-    productname: "ร้องเท้าฉลาม สุดฮิต!2",
-    detail: "น่ารักไม่ไหว",
-    price: "390.-",
-    pricesale: "290",
-    num: "1000",
-    image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก",
-    totalsale: "100",
-   },
-   {
-    id: "4",
-    productname: "ร้องเท้าฉลาม สุดฮิต!3",
-    detail: "น่ารักไม่ไหว",
-    price: "390.-",
-    pricesale: "290",
-    num: "1000",
-    image: "/img/หมาโง่.jpg",
-    category: "สินค้าแม่และเด็ก",
-    totalsale: "100",
-   },
-   {
-    id: "5",
-    productname: "ร้องเท้าฉลาม สุดฮิต!4",
-    detail: "น่ารักไม่ไหว",
-    price: "390.-",
-    pricesale: "290",
-    num: "1000",
-    image: "/img/หมาโง่.jpg",
-    category: "ของใช้ภายในบ้าน",
-    totalsale: "100",
-   },
-  ]
+  ];
+  const ProductAll = [
+    {
+      id: "1",
+      productname: "ร้องเท้าฉลาม สุดฮิต!",
+      detail: "น่ารักไม่ไหว",
+      price: "390.-",
+      pricesale: "290",
+      num: "1000",
+      image: "/img/หมาโง่.jpg",
+      category: "เสื้อผ้าแฟชั่น",
+      totalsale: "100",
+    },
+    {
+      id: "2",
+      productname: "ร้องเท้าฉลาม สุดฮิต!1",
+      detail: "น่ารักไม่ไหว",
+      price: "390.-",
+      pricesale: "290",
+      num: "1000",
+      image: "/img/หมาโง่.jpg",
+      category: "ของใช้ภายในบ้าน",
+      totalsale: "100",
+    },
+    {
+      id: "3",
+      productname: "ร้องเท้าฉลาม สุดฮิต!2",
+      detail: "น่ารักไม่ไหว",
+      price: "390.-",
+      pricesale: "290",
+      num: "1000",
+      image: "/img/หมาโง่.jpg",
+      category: "สินค้าแม่และเด็ก",
+      totalsale: "100",
+    },
+    {
+      id: "4",
+      productname: "ร้องเท้าฉลาม สุดฮิต!3",
+      detail: "น่ารักไม่ไหว",
+      price: "390.-",
+      pricesale: "290",
+      num: "1000",
+      image: "/img/หมาโง่.jpg",
+      category: "สินค้าแม่และเด็ก",
+      totalsale: "100",
+    },
+    {
+      id: "5",
+      productname: "ร้องเท้าฉลาม สุดฮิต!4",
+      detail: "น่ารักไม่ไหว",
+      price: "390.-",
+      pricesale: "290",
+      num: "1000",
+      image: "/img/หมาโง่.jpg",
+      category: "ของใช้ภายในบ้าน",
+      totalsale: "100",
+    },
+  ];
+  const { isOpen: isOpenForm1, onOpen: onOpenForm1, onClose: onCloseForm1 } = useDisclosure({defaultIsOpen: true});
+  const { isOpen: isOpenForm2, onOpen: onOpenForm2, onClose: onCloseForm2 } = useDisclosure();
+
+
+  const handleClick = () => {
+    onCloseForm1();
+    onCloseForm2();
+  };
+
+  const loginClick = () => {
+    onOpenForm2();
+  };
   return (
     <>
       <Head>
@@ -84,7 +112,65 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Product data={{ ProductAll, Category }}/>
+      <Product data={{ ProductAll, Category }} />
+      <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader alignSelf="flex-end" pr="10px" pt="10px"><Image src="/img/cancel.png" alt="" h="25px" w="25px" onClick={() => handleClick()}/></ModalHeader>
+          <ModalBody>
+            <Box px="5px">
+              <Text bg="red" textAlign="center" borderRadius="xl" fontSize="25px" color="white" fontWeight="bold" onClick={() => loginClick()}>ลงชื่อเข้าใช้ด้วยโทรศัพท์</Text>
+              <Text color="gray.400" textAlign="center">ระบบจะจดจำที่อยู่ในการส่งสินค้าเมื่อใช้งานในครั้งต่อไป</Text>
+              <Text mt="15px" bg="gray.100" textAlign="center" borderRadius="xl" fontSize="25px" fontWeight="bold" onClick={() => handleClick()}>สั่งตอนนี้</Text>
+              <Text color="gray.400" textAlign="center">ต้องกรอกที่อยู่ในการจัดส่งทุกครั้งที่เข้้าใช้งานใหม่</Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+        <Modal onClose={onCloseForm2} size="xs" isOpen={isOpenForm2} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader alignSelf="flex-end" pr="10px" pt="10px">
+              <Image
+                src="/img/cancel.png"
+                alt=""
+                h="25px"
+                w="25px"
+                onClick={() => handleClick()}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Box px="5px">
+                <FormControl>
+                  <Text fontSize="25px" fontWeight="bold">
+                    กรอกเบอร์โทรศัพท์
+                  </Text>
+                  <Input bg="gray.100" />
+                  <Flex mt="15px">
+                    <Text fontSize="25px" fontWeight="bold">
+                      กรอกรหัส OTP
+                    </Text>
+                    <Spacer />
+                    <Text fontSize="25px" color="orange" as='u'>
+                      รับรหัส OTP
+                    </Text>
+                  </Flex>
+
+                  <Input bg="gray.100" />
+                </FormControl>
+
+                <Box textAlign="center">
+                  <Button mt="15px" bg="red" color="white" type="submit">
+                    ยืนยัน
+                  </Button>
+                </Box>
+              </Box>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
     </>
   );
 }
