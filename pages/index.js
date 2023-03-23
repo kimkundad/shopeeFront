@@ -1,7 +1,6 @@
 import Head from "next/head";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import Product from "@/components/ProductAll";
 import {
   Modal,
   ModalOverlay,
@@ -36,35 +35,36 @@ import Link from "next/link";
 import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
+import StarRatings from "react-star-ratings";
 export default function Home(props) {
   const [categoryAll, setCategoryAll] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get("http://127.0.0.1:8000/api/get_category_all");
-      setCategoryAll(res.data);
-      res.data.category.unshift({cat_name: "สินค้าทั้งหมด"});
+      const shop = await axios.get("http://127.0.0.1:8000/api/shop");
+      const allProduct = await axios.get(
+        "http://127.0.0.1:8000/api/allProduct"
+      );
+      const allCat = await axios.get(
+        "http://127.0.0.1:8000/api/get_category_all"
+      );
+      setNameShop(shop.data);
+      setProductAll(allProduct.data);
+      setCategoryAll(allCat.data);
+      allCat.data.category.unshift({ cat_name: "สินค้าทั้งหมด" });
       setIsBorderActive(
-        Array(res.data.category.length).fill(false).fill(true, 0, 1)
+        Array(allCat.data.category.length).fill(false).fill(true, 0, 1)
       );
     }
     fetchData();
   }, []);
   const [ProductAll, setProductAll] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get("http://127.0.0.1:8000/api/allProduct");
-      setProductAll(res.data);
-    }
-
-    fetchData();
-  }, []);
 
   const [bgColor, setBgColor] = useState("rgba(255,255,255,0)");
 
   const [scrollPosition, setScrollPosition] = useState(0);
   useEffect(() => {
     setScrollPosition(props.data);
-  }, [props.data]);
+  }, []);
 
   useEffect(() => {
     if (scrollPosition == 0) {
@@ -84,14 +84,6 @@ export default function Home(props) {
     }
   });
   const [nameShop, setNameShop] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get("http://127.0.0.1:8000/api/shop");
-      setNameShop(res.data);
-    }
-
-    fetchData();
-  }, []);
 
   const {
     isOpen: isOpenForm1,
@@ -139,26 +131,6 @@ export default function Home(props) {
     setIsBorderActive(newArray);
     setCatName(catName);
   };
-
-  const fullStars = Math.floor(4.5);
-  const hasHalfStar = 4.5 % 1 !== 0;
-
-  const stars = [];
-
-  for (let i = 0; i < fullStars; i++) {
-    stars.push(<StarIcon key={i} color="yellow.400" className="setIcon" />);
-  }
-
-  if (hasHalfStar) {
-    stars.push(
-      <Icon
-        key={fullStars}
-        as={StarIcon}
-        color="yellow.400"
-        className="setIcon"
-      />
-    );
-  }
   return (
     <>
       <Head>
@@ -364,7 +336,13 @@ export default function Home(props) {
                 catName == "สินค้าทั้งหมด"
               ) {
                 return (
-                  <Link href="/product" key={item.id}>
+                  <Link
+                    href={{
+                      pathname: "/product",
+                      query: item.id,
+                    }}
+                    key={item.id}
+                  >
                     <Card borderRadius="xl" boxShadow="xl" h="100%">
                       {item.price_sales !== 0 ? (
                         <Box
@@ -408,7 +386,14 @@ export default function Home(props) {
                       </CardBody>
                       <CardFooter px="15px" py="10px">
                         <Box alignSelf="end">
-                          <HStack>{stars}</HStack>
+                          <HStack>
+                            <StarRatings
+                              rating={item.ratting}
+                              starDimension="10px"
+                              starSpacing="0px"
+                              starRatedColor="yellow"
+                            />
+                          </HStack>
                           <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
                         </Box>
                         <Spacer />
@@ -455,40 +440,93 @@ export default function Home(props) {
                 );
               } else if (catName == item.category) {
                 return (
-                  <Link href="/product" key={item.id}>
-                    <Card borderRadius="xl" boxShadow="xl">
-                      <Box
-                        pos="absolute"
-                        bg="red"
-                        borderRadius="xl"
-                        top="-8px"
-                        right="-4px"
+                  <Link
+                    href={{
+                      pathname: "/product",
+                      query: item.id,
+                    }}
+                    key={item.id}
+                  >
+                    <Card borderRadius="xl" boxShadow="xl" h="100%">
+                      {item.price_sales !== 0 ? (
+                        <Box
+                          pos="absolute"
+                          bg="red"
+                          borderRadius="xl"
+                          top="-8px"
+                          right="-4px"
+                        >
+                          <Text color="white" px="10px" className="textHead">
+                            ลด {item.price_sales}%
+                          </Text>
+                        </Box>
+                      ) : null}
+
+                      <CardHeader
+                        className="setPadding"
+                        h="170px"
+                        alignSelf="center"
+                        w="100%"
                       >
-                        <Text color="white" px="10px" className="textHead">
-                          ลด 27%
-                        </Text>
-                      </Box>
-                      <CardHeader className="setPadding">
-                        <Image src={item.image} alt="" borderRadius="xl" />
+                        <Image
+                          src={`http://127.0.0.1:8000/images/shopee/products/${item.img_product}`}
+                          alt={item.product_name}
+                          height="100%"
+                          width="100%"
+                          borderRadius="xl"
+                        />
                       </CardHeader>
                       <CardBody className="setPadding">
                         <Text textAlign="center" className="textHead">
-                          {item.productname}
+                          {item.name_product.length > 20
+                            ? item.name_product.substr(0, 20) + "..."
+                            : item.name_product}
                         </Text>
-                        <Text className="textBody">{item.detail}</Text>
+                        <Box className="textBody">
+                          <Text className="lineclamp">
+                            {item.detail_product}
+                          </Text>
+                        </Box>
                       </CardBody>
                       <CardFooter px="15px" py="10px">
                         <Box alignSelf="end">
-                          <HStack>{stars}</HStack>
-                          <Text className="textFooter">
-                            ขายไปแล้ว {item.totalsale} ชิ้น
-                          </Text>
+                          <HStack>
+                            <StarRatings
+                              rating={item.ratting}
+                              starDimension="10px"
+                              starSpacing="0px"
+                              starRatedColor="yellow"
+                            />
+                          </HStack>
+                          <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
                         </Box>
                         <Spacer />
                         <Box>
-                          <Text className="textFooter">
-                            (ราคาปกติ {item.pricesale})
-                          </Text>
+                          <Flex className="textFooter">
+                            <Text position="relative">(ราคาปกติ </Text>
+                            <Box
+                              ml="7px"
+                              display="inline-block"
+                              position="relative"
+                            >
+                              <Text position="relative" display="inline">
+                                {item.price}
+                              </Text>
+                              <Box
+                                opacity="7"
+                                content=""
+                                position="absolute"
+                                top="50%"
+                                left="0"
+                                w="100%"
+                                h="1px"
+                                bgColor="red"
+                                transform="rotate(-15deg)"
+                              />
+                            </Box>
+                            <Text>.-)</Text>
+                          </Flex>
+
                           <Box borderRadius="md" bg="red">
                             <Text
                               px="5px"
@@ -496,7 +534,7 @@ export default function Home(props) {
                               className="textHead"
                               textAlign="center"
                             >
-                              {item.price}
+                              {sales}
                             </Text>
                           </Box>
                         </Box>
