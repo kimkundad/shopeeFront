@@ -16,8 +16,8 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
-function order() {
-  const [buttonId, setButtonId] = useState("");
+function Order() {
+  const [buttonId, setButtonId] = useState([]);
   function handleClick(event) {
     setButtonId(event.target.id);
   }
@@ -211,4 +211,4 @@ function order() {
   );
 }
 
-export default order;
+export default Order;

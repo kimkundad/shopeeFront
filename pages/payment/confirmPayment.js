@@ -20,8 +20,8 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import Upload from "@/components/Dropzone"
-function confirmPayment() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+function ConfirmPayment() {
+  const { isOpen, onOpen, onClose } = useDisclosure([]);
   const handleSizeClick = (newSize) => {
     onOpen();
   };
@@ -103,7 +103,7 @@ function confirmPayment() {
               <Text fontWeight="bold" fontSize="xl">ขอบคุณสำหรับการสั่งซื้อ</Text>
               <Text>
                 ท่านสามารถตรวจสอบสถานะสินค้าที่ท่านสั่งซื้อได้ที่ปุ่มเมนู
-                "ดูสถานะสินค้า" ในหน้าโปรไฟล์ได้เลย
+                &quot;ดูสถานะสินค้า&quot; ในหน้าโปรไฟล์ได้เลย
               </Text>
             </Box>
           </ModalBody>
@@ -120,4 +120,4 @@ function confirmPayment() {
   );
 }
 
-export default confirmPayment;
+export default ConfirmPayment;

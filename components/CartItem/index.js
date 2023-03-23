@@ -10,8 +10,8 @@ import {
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import style from "./style.module.css";
-export default function cartItem(props) {
-  const [checkAll, setCheckAll] = useState(null);
+export default function CartItem(props) {
+  const [checkAll, setCheckAll] = useState([]);
 
   const handleCheckAllChange = (event, index, subIndex) => {
     const newCheckAll = [...checkAll];
@@ -28,9 +28,9 @@ export default function cartItem(props) {
     setCheckAll(newItems);
   }, [props.data]);
 
-  const [sum, setSum] = useState(0);
+  const [sum, setSum] = useState([]);
 
-  const [num, setNum] = useState(null);
+  const [num, setNum] = useState([]);
   useEffect(() => {
     const newItems = props.data.map((item) => {
       const subItems = item.product.map((subItem) => subItem.num);
@@ -88,7 +88,7 @@ export default function cartItem(props) {
           <Checkbox
             px="15px"
             isChecked={
-              checkAll !== null ? checkAll[index].every(Boolean) : false
+              checkAll.length > 0 ? checkAll[index].every(Boolean) : false
             }
             onChange={(event) => CheckAll(event, index)}
             colorScheme="red"
@@ -133,7 +133,7 @@ export default function cartItem(props) {
                   key={subItem.shopname}
                   id={subIndex}
                   isChecked={
-                    checkAll !== null ? checkAll[index][subIndex] : false
+                    checkAll.length > 0 ? checkAll[index][subIndex] : false
                   }
                   onChange={(event) =>
                     handleCheckAllChange(event, index, subIndex)
@@ -180,7 +180,7 @@ export default function cartItem(props) {
                               ></Image>
                             </Button>
                             <Text px="5px" className={style.textHead}>
-                              {num !== null ? num[index][subIndex] : false}
+                              {num.length > 0 ? num[index][subIndex] : false}
                             </Text>
                             <Button
                               h="15px"

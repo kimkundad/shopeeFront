@@ -1,11 +1,6 @@
 import { Box, Checkbox, Text, Flex, Spacer, Link } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 export default function checkbox(props) {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
 
   return (
     <>
