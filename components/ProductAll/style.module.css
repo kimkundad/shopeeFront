@@ -6,20 +6,20 @@
   }
 
   .textHead {
-    font-size: 19px !important;
+    font-size: 16px !important;
   }
 
   .textBody {
-    font-size: 14px !important;
-  }
-
-  .textFooter {
     font-size: 12px !important;
   }
 
+  .textFooter {
+    font-size: 7px !important;
+  }
+
   .setIcon {
-    height: 8px !important;
-    width: 8px !important;
+    height: 7px !important;
+    width: 7px !important;
     margin: 0px !important;
   }
 }
@@ -33,20 +33,20 @@
   }
 
   .textHead {
-    font-size: 20px !important;
+    font-size: 17px !important;
   }
 
   .textBody {
-    font-size: 15px !important;
+    font-size: 13px !important;
   }
 
   .textFooter {
-    font-size: 12px !important;
+    font-size: 10px !important;
   }
 
   .setIcon {
-    height: 15px !important;
-    width: 15px !important;
+    height: 10px !important;
+    width: 10px !important;
     margin: 0px !important;
   }
 }

@@ -1,5 +1,5 @@
 import Header from "./header";
-import { useContext, useEffect, useState } from "react";
+import React,{ useContext, useEffect, useState } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ScrollPositionContext from "../checkScroll/ScrollPositionContext";
@@ -41,7 +41,7 @@ export default function Layout({ children }) {
           }
           border="-1px"
         >
-          {children}
+          {children && React.cloneElement(children, { data: scrollPosition })}
         </Box>
       </Box>
     </>
