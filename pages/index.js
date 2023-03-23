@@ -21,6 +21,13 @@ import {
   FormControl,
   InputGroup,
   InputLeftElement,
+  Icon,
+  SimpleGrid,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  HStack,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
@@ -30,8 +37,18 @@ import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 export default function Home(props) {
-  const Category = null;
-
+  const [categoryAll, setCategoryAll] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get("http://127.0.0.1:8000/api/get_category_all");
+      setCategoryAll(res.data);
+      res.data.category.unshift({cat_name: "สินค้าทั้งหมด"});
+      setIsBorderActive(
+        Array(res.data.category.length).fill(false).fill(true, 0, 1)
+      );
+    }
+    fetchData();
+  }, []);
   const [ProductAll, setProductAll] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -98,13 +115,50 @@ export default function Home(props) {
 
   const search = (event) => {
     async function fetchData() {
-      const res = await axios.post(`http://127.0.0.1:8000/api/searchProduct?search=${event.target.value}`);
+      const res = await axios.post(
+        `http://127.0.0.1:8000/api/searchProduct?search=${event.target.value}`
+      );
       setProductAll(res.data);
-      console.log(res.data);
     }
-    
+
     fetchData();
   };
+
+  const [isBorderActive, setIsBorderActive] = useState([true]);
+
+  const [catName, setCatName] = useState("");
+  const handleElementClick = (index, catName) => {
+    const newArray = [...isBorderActive];
+    for (let i = 0; i < newArray.length; i++) {
+      if (i == index) {
+        newArray[i] = true;
+      } else {
+        newArray[i] = false;
+      }
+    }
+    setIsBorderActive(newArray);
+    setCatName(catName);
+  };
+
+  const fullStars = Math.floor(4.5);
+  const hasHalfStar = 4.5 % 1 !== 0;
+
+  const stars = [];
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<StarIcon key={i} color="yellow.400" className="setIcon" />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(
+      <Icon
+        key={fullStars}
+        as={StarIcon}
+        color="yellow.400"
+        className="setIcon"
+      />
+    );
+  }
   return (
     <>
       <Head>
@@ -213,10 +267,7 @@ export default function Home(props) {
                     <Text className="textHead">{item.name_shop}</Text>
                     <Flex alignItems="center" height="100%" mt="10px">
                       <Center bg="red" borderRadius="md" px="5px">
-                        <StarIcon
-                          color="yellow.400"
-                          className="setIcon"
-                        />
+                        <StarIcon color="yellow.400" className="setIcon" />
                         <Text pl="5px" className="textBody">
                           4.8/5.0
                         </Text>
@@ -257,7 +308,206 @@ export default function Home(props) {
             );
           })
         : null}
-      <Product data={{ ProductAll, Category }} />
+      {categoryAll.length !== 0 ? (
+        <Flex
+          flexWrap="nowrap"
+          overflowX="auto"
+          overflowY="hidden"
+          h="12"
+          pos="sticky"
+          top="53px"
+          bg="white"
+          zIndex={1000}
+          sx={{
+            "::-webkit-scrollbar": {
+              width: "0",
+              height: "0",
+            },
+          }}
+        >
+          {categoryAll.category.map((item, index) => {
+            return (
+              <Box
+                key={index}
+                alignSelf="end"
+                px="15px"
+                pb="3px"
+                flex="1"
+                textAlign="center"
+                whiteSpace="nowrap"
+                borderBottom={isBorderActive[index] ? "2px" : "1px"}
+                borderColor={isBorderActive[index] ? "red" : "gray.300"}
+                onClick={() => handleElementClick(index, item.cat_name)}
+                id={item.cat_name}
+              >
+                <Text fontWeight="bold">{item.cat_name}</Text>
+              </Box>
+            );
+          })}
+        </Flex>
+      ) : null}
+
+      <SimpleGrid
+        spacing={4}
+        templateColumns="repeat(2, minmax(150px, 1fr))"
+        m="15px"
+      >
+        {ProductAll.length !== 0
+          ? ProductAll.product.map((item, index) => {
+              let sales =
+                item.price_sales !== 0
+                  ? item.price - (item.price_sales * item.price) / 100
+                  : item.price;
+              if (
+                catName == "" ||
+                isBorderActive[0] ||
+                catName == "สินค้าทั้งหมด"
+              ) {
+                return (
+                  <Link href="/product" key={item.id}>
+                    <Card borderRadius="xl" boxShadow="xl" h="100%">
+                      {item.price_sales !== 0 ? (
+                        <Box
+                          pos="absolute"
+                          bg="red"
+                          borderRadius="xl"
+                          top="-8px"
+                          right="-4px"
+                        >
+                          <Text color="white" px="10px" className="textHead">
+                            ลด {item.price_sales}%
+                          </Text>
+                        </Box>
+                      ) : null}
+
+                      <CardHeader
+                        className="setPadding"
+                        h="170px"
+                        alignSelf="center"
+                        w="100%"
+                      >
+                        <Image
+                          src={`http://127.0.0.1:8000/images/shopee/products/${item.img_product}`}
+                          alt={item.product_name}
+                          height="100%"
+                          width="100%"
+                          borderRadius="xl"
+                        />
+                      </CardHeader>
+                      <CardBody className="setPadding">
+                        <Text textAlign="center" className="textHead">
+                          {item.name_product.length > 20
+                            ? item.name_product.substr(0, 20) + "..."
+                            : item.name_product}
+                        </Text>
+                        <Box className="textBody">
+                          <Text className="lineclamp">
+                            {item.detail_product}
+                          </Text>
+                        </Box>
+                      </CardBody>
+                      <CardFooter px="15px" py="10px">
+                        <Box alignSelf="end">
+                          <HStack>{stars}</HStack>
+                          <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
+                        </Box>
+                        <Spacer />
+                        <Box>
+                          <Flex className="textFooter">
+                            <Text position="relative">(ราคาปกติ </Text>
+                            <Box
+                              ml="7px"
+                              display="inline-block"
+                              position="relative"
+                            >
+                              <Text position="relative" display="inline">
+                                {item.price}
+                              </Text>
+                              <Box
+                                opacity="7"
+                                content=""
+                                position="absolute"
+                                top="50%"
+                                left="0"
+                                w="100%"
+                                h="1px"
+                                bgColor="red"
+                                transform="rotate(-15deg)"
+                              />
+                            </Box>
+                            <Text>.-)</Text>
+                          </Flex>
+
+                          <Box borderRadius="md" bg="red">
+                            <Text
+                              px="5px"
+                              color="white"
+                              className="textHead"
+                              textAlign="center"
+                            >
+                              {sales}
+                            </Text>
+                          </Box>
+                        </Box>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                );
+              } else if (catName == item.category) {
+                return (
+                  <Link href="/product" key={item.id}>
+                    <Card borderRadius="xl" boxShadow="xl">
+                      <Box
+                        pos="absolute"
+                        bg="red"
+                        borderRadius="xl"
+                        top="-8px"
+                        right="-4px"
+                      >
+                        <Text color="white" px="10px" className="textHead">
+                          ลด 27%
+                        </Text>
+                      </Box>
+                      <CardHeader className="setPadding">
+                        <Image src={item.image} alt="" borderRadius="xl" />
+                      </CardHeader>
+                      <CardBody className="setPadding">
+                        <Text textAlign="center" className="textHead">
+                          {item.productname}
+                        </Text>
+                        <Text className="textBody">{item.detail}</Text>
+                      </CardBody>
+                      <CardFooter px="15px" py="10px">
+                        <Box alignSelf="end">
+                          <HStack>{stars}</HStack>
+                          <Text className="textFooter">
+                            ขายไปแล้ว {item.totalsale} ชิ้น
+                          </Text>
+                        </Box>
+                        <Spacer />
+                        <Box>
+                          <Text className="textFooter">
+                            (ราคาปกติ {item.pricesale})
+                          </Text>
+                          <Box borderRadius="md" bg="red">
+                            <Text
+                              px="5px"
+                              color="white"
+                              className="textHead"
+                              textAlign="center"
+                            >
+                              {item.price}
+                            </Text>
+                          </Box>
+                        </Box>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                );
+              }
+            })
+          : null}
+      </SimpleGrid>
       <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
         <ModalOverlay />
         <ModalContent>
