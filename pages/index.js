@@ -95,6 +95,16 @@ export default function Home(props) {
   const loginClick = () => {
     onOpenForm2();
   };
+
+  const search = (event) => {
+    async function fetchData() {
+      const res = await axios.post(`http://127.0.0.1:8000/api/searchProduct?search=${event.target.value}`);
+      setProductAll(res.data);
+      console.log(res.data);
+    }
+    
+    fetchData();
+  };
   return (
     <>
       <Head>
@@ -106,7 +116,7 @@ export default function Home(props) {
       {nameShop.length !== 0
         ? nameShop.shop.map((item, index) => {
             return (
-              <Box className="test" h="172px">
+              <Box key={index} className="test" h="172px">
                 <Box
                   className="test"
                   w="100%"
@@ -136,6 +146,7 @@ export default function Home(props) {
                         borderRadius="xl"
                         type="text"
                         placeholder="ค้นหา"
+                        onChange={search}
                       />
                     </InputGroup>
                     <Flex justifyContent="flex-end">
