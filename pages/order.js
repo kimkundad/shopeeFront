@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -16,7 +16,18 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 function Order() {
+  const router = useRouter();
+  const data = router.query;
+  const [sales, setSales] = useState(null);
+  useEffect(() => {
+    if (data.price_sales !== 0) {
+      setSales(data.price - (data.price_sales * data.price) / 100);
+    } else {
+      setSales(data.price);
+    }
+  }, [data]);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
@@ -55,7 +66,15 @@ function Order() {
             </Box>
             <Box display="flex" alignSelf="center">
               <Link href="/address/">
-                <Box><Image src="/img/arrow-right-sign-to-navigate.png" alt="" h="25px" w="25px" maxWidth="none"/></Box>
+                <Box>
+                  <Image
+                    src="/img/arrow-right-sign-to-navigate.png"
+                    alt=""
+                    h="25px"
+                    w="25px"
+                    maxWidth="none"
+                  />
+                </Box>
               </Link>
             </Box>
           </Flex>
@@ -73,20 +92,25 @@ function Order() {
             <Text>ร้านแนะนำ</Text>
           </Box>
           <Box pl="8px">
-            <Text>SHOPZY สินค้าน่าใช้ ราคาถูก</Text>
+            <Text>{data.name_shop}</Text>
           </Box>
         </Flex>
       </Box>
       <Box bg="white" py="10px">
         <Flex px="15px">
           <Box pt="10px">
-            <Image src="/img/หมาโง่.jpg" alt="" w="100%" maxHeight="130px" />
+            <Image
+              src={`http://192.168.0.86:8000/images/shopee/products/${data.img_product}`}
+              alt=""
+              w="100%"
+              maxHeight="130px"
+            />
           </Box>
           <Box pl="15px" width="-webkit-fill-available">
             <Text fontSize="xl" pt="7px">
-              ร้องเท้าฉลาม สุดฮิต!
+              {data.name_product}
             </Text>
-            <Text fontSize="sm">น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี</Text>
+            <Text fontSize="sm">{data.detail_product}</Text>
             <Text
               fontSize="sm"
               bg="gray.300"
@@ -94,12 +118,12 @@ function Order() {
               display="initial"
               px="7px"
             >
-              ตัวเลือกสินค้า: สีฟ้า ไซด์ 42
+              ตัวเลือกสินค้า: {data.color} ไซด์ {data.size}
             </Text>
             <Flex fontSize="xl">
-              <Text>290.-</Text>
+              <Text>{sales}.-</Text>
               <Spacer />
-              <Text>x2</Text>
+              <Text>x{data.num}</Text>
             </Flex>
           </Box>
         </Flex>
@@ -129,7 +153,16 @@ function Order() {
                 boxShadow="outline"
                 id={item.label}
                 className="set--font"
-                leftIcon={<Image onClick={handleClick} id={item.label} src={item.img} alt="" h="20px" pr="5px" />} 
+                leftIcon={
+                  <Image
+                    onClick={handleClick}
+                    id={item.label}
+                    src={item.img}
+                    alt=""
+                    h="20px"
+                    pr="5px"
+                  />
+                }
               >
                 {item.label}
               </Button>
@@ -140,7 +173,16 @@ function Order() {
                 w="100%"
                 onClick={handleClick}
                 id={item.label}
-                leftIcon={<Image src={item.img} onClick={handleClick} id={item.label} alt="" h="20px" pr="5px" />}
+                leftIcon={
+                  <Image
+                    src={item.img}
+                    onClick={handleClick}
+                    id={item.label}
+                    alt=""
+                    h="20px"
+                    pr="5px"
+                  />
+                }
               >
                 {item.label}
               </Button>
@@ -160,7 +202,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>รวมการสั่งซื้อ</Text>
           <Spacer />
-          <Text>580.-</Text>
+          <Text>{sales * data.num}.-</Text>
         </Flex>
         <Flex pl="60px" pr="15px">
           <Text>ค่าจัดส่ง</Text>
@@ -170,7 +212,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>ยอดชำระเงินทั้งหมด</Text>
           <Spacer />
-          <Text>620.-</Text>
+          <Text>{sales * data.num + 40}.-</Text>
         </Flex>
       </Box>
       <Box className="test" bottom={0}>
@@ -190,19 +232,17 @@ function Order() {
             fontSize="sm"
           >
             <GridItem colSpan={1} gridColumn={2}>
-              <Link
-                href={
-                  buttonId !== ""
-                    ? buttonId == "QR Code"
-                      ? "/payment/paymentQRcode"
-                      : "/payment/paymentBank"
-                    : ""
-                }
-              >
+              {buttonId !== "" ? (
+                <Link href={buttonId == "QR Code" ? "/payment/" : "/payment/"}>
+                  <Button w="100%" bg="red" borderRadius="xl">
+                    <Text>สั่งสินค้า</Text>
+                  </Button>
+                </Link>
+              ) : (
                 <Button w="100%" bg="red" borderRadius="xl">
                   <Text>สั่งสินค้า</Text>
                 </Button>
-              </Link>
+              )}
             </GridItem>
           </Grid>
         </Box>

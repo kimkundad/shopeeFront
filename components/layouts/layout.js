@@ -10,8 +10,8 @@ export default function Layout({ children }) {
   return (
     <>
       <Box
-        overflow="auto"
-        h="100vh"
+        overflow={pathname == "/"? "auto":"none"}
+        h={pathname == "/"? "100vh":""}
         bg={
           pathname == "/address/newaddress" ||
           pathname == "/statusProduct" ||

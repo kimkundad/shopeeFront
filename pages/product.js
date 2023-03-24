@@ -34,8 +34,10 @@ function product() {
         const res = await axios.get(
           `http://192.168.0.86:8000/api/getProduct/${data.id}`
         );
-        res.data.product[0].allImage.unshift({image: res.data.product[0].img_product})
-        setProduct(res.data)
+        res.data.product[0].allImage.unshift({
+          image: res.data.product[0].img_product,
+        });
+        setProduct(res.data);
       }
       fetchData();
     }
@@ -77,9 +79,9 @@ function product() {
     { label: "43" },
     { label: "44" },
   ];
-  const [colorId, setColorId] = useState("");
+  const [colorId, setColorId] = useState(null);
 
-  const [sizeId, setSizeId] = useState("");
+  const [sizeId, setSizeId] = useState(null);
   function selectSize(event) {
     setSizeId(event.target.id);
   }
@@ -95,7 +97,7 @@ function product() {
       <Box px="15px" py="10px" bg="white">
         {product.length !== 0
           ? product.product.map((item, index) => {
-              let sales =
+              const sales =
                 item.price_sales !== 0
                   ? item.price - (item.price_sales * item.price) / 100
                   : item.price;
@@ -320,7 +322,28 @@ function product() {
                 <Text>เพิ่มไปยังรถเข็น</Text>
               </Button>
             </Link>
-            <Link href="/order">
+            <Link
+              href={
+                sizeId !== null && colorId !== null && num > 0
+                  ? {
+                      pathname: "/order",
+                      query: {
+                        name_shop: data.name_shop,
+                        product_id: product.product[0].id,
+                        name_product: product.product[0].name_product,
+                        detail_product: product.product[0].detail_product,
+                        img_product: product.product[0].img_product,
+                        price: product.product[0].price,
+                        price_sales: product.product[0].price_sales,
+                        size: sizeId,
+                        color: colorId,
+                        num: num,
+                      },
+                    }
+                  : ""
+              }
+              as={`/order`}
+            >
               <Button w="100%" bg="red" borderRadius="xl">
                 <Text>ซื้อสินค้า</Text>
               </Button>

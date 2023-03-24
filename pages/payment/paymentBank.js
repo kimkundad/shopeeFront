@@ -16,7 +16,7 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
-function paymentBank() {
+function paymentQRcode() {
   return (
     <>
       <Head>
@@ -25,9 +25,6 @@ function paymentBank() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Card>
-        
-      </Card>
       <Box pt="15px">
         <Box bg="white" py="10px" mt="10px">
           <Flex px="15px">
@@ -53,10 +50,15 @@ function paymentBank() {
           </Flex>
         </Box>
       </Box>
-      <Box pt="20px" pb="10px" display="flex" justifyContent="center">
-        <Text>บัญชีธนาคาร</Text>
+      <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
+        <Image src="/img/QR_code_for_mobile_English_Wikipedia.svg.png" />
       </Box>
-      <Box mx="30px" mb="10px" bg="white" borderRadius="2xl">
+      <Box mt="10px" display="flex" justifyContent="center">
+        <Button bg="white" borderRadius="xl">
+          <Text fontSize="xs">บันทึก QR CODE</Text>
+        </Button>
+      </Box>
+      <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
         <Flex alignItems="center" className="set--font" py="10px">
           <Image src="/img/icon_kbank.png" borderRadius="xl" h="14" mx="15px" />
           <Box pr="5px">
@@ -66,52 +68,7 @@ function paymentBank() {
           </Box>
           <Box>
             <Text>: กสิกรไทย</Text>
-            <Text>: 123-4-5789-0</Text>
-            <Text>: นางสาวบี นามสมมุติ</Text>
-          </Box>
-        </Flex>
-      </Box>
-      <Box mx="30px" mb="10px" bg="white" borderRadius="2xl">
-        <Flex alignItems="center" className="set--font" py="10px">
-          <Image src="/img/icon_kbank.png" borderRadius="xl" h="14" mx="15px" />
-          <Box pr="5px">
-            <Text>ธนาคาร</Text>
-            <Text>เลขบัญชี</Text>
-            <Text>ชื่อบัญชี</Text>
-          </Box>
-          <Box>
-            <Text>: กสิกรไทย</Text>
-            <Text>: 123-4-5789-0</Text>
-            <Text>: นางสาวบี นามสมมุติ</Text>
-          </Box>
-        </Flex>
-      </Box>
-      <Box mx="30px" mb="10px" bg="white" borderRadius="2xl">
-        <Flex alignItems="center" className="set--font" py="10px">
-          <Image src="/img/icon_kbank.png" borderRadius="xl" h="14" mx="15px" />
-          <Box pr="5px">
-            <Text>ธนาคาร</Text>
-            <Text>เลขบัญชี</Text>
-            <Text>ชื่อบัญชี</Text>
-          </Box>
-          <Box>
-            <Text>: กสิกรไทย</Text>
-            <Text>: 123-4-5789-0</Text>
-            <Text>: นางสาวบี นามสมมุติ</Text>
-          </Box>
-        </Flex>
-      </Box>
-      <Box mx="30px" mb="10px" bg="white" borderRadius="2xl">
-        <Flex alignItems="center" className="set--font" py="10px">
-          <Image src="/img/icon_kbank.png" borderRadius="xl" h="14" mx="15px" />
-          <Box pr="5px">
-            <Text>ธนาคาร</Text>
-            <Text>เลขบัญชี</Text>
-            <Text>ชื่อบัญชี</Text>
-          </Box>
-          <Box>
-            <Text>: กสิกรไทย</Text>
-            <Text>: 123-4-5789-0</Text>
+            <Text>: 123-4-5ุ789-0</Text>
             <Text>: นางสาวบี นามสมมุติ</Text>
           </Box>
         </Flex>
@@ -127,4 +84,4 @@ function paymentBank() {
   );
 }
 
-export default paymentBank;
+export default paymentQRcode;

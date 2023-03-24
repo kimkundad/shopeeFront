@@ -17,9 +17,14 @@ export default function Header() {
   const router = useRouter();
   const { pathname } = router;
   const handleBack = () => {
+    const backUrl = {
+      pathname: router.pathname,
+      query: router.query
+    };
+
     router.back();
+    router.push(backUrl, backUrl, { shallow: true });
   };
-  
   let nameheader = "";
   if (pathname == "/address") {
     nameheader = "เลือกที่อยู่";
@@ -29,7 +34,7 @@ export default function Header() {
     nameheader = "เพิ่มที่อยู่ใหม่";
   } else if (pathname == "/payment/confirmPayment") {
     nameheader = "ยืนยันการชำระเงิน";
-  } else if (pathname.match("/payment/")) {
+  } else if (pathname.match("/payment")) {
     nameheader = "การชำระเงิน";
   } else if (pathname == "/cartShop") {
     nameheader = "รถเข็น";
