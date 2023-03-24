@@ -15,7 +15,6 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import Product from "@/components/Product";
 import axios from "axios";
 // Import Swiper styles
 import "swiper/css";
