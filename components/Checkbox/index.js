@@ -26,7 +26,7 @@ export default function checkbox(props) {
                       <Text>{item.name}</Text>
                       <Text pl="5px">({item.tel})</Text>
                       <Spacer />
-                      <Link href="/">
+                      <Link href="/address/editaddress">
                         <Box borderRadius="xl" bg="red" border="2px" borderColor="red" width="50px" textAlign="center">
                           <Text color="white">แก้ไข</Text>
                         </Box>

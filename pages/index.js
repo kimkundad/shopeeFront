@@ -20,7 +20,6 @@ import {
   FormControl,
   InputGroup,
   InputLeftElement,
-  Icon,
   SimpleGrid,
   Card,
   CardHeader,
@@ -40,12 +39,12 @@ export default function Home(props) {
   const [categoryAll, setCategoryAll] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const shop = await axios.get("http://127.0.0.1:8000/api/shop");
+      const shop = await axios.get("http://192.168.0.86:8000/api/shop");
       const allProduct = await axios.get(
-        "http://127.0.0.1:8000/api/allProduct"
+        "http://192.168.0.86:8000/api/allProduct"
       );
       const allCat = await axios.get(
-        "http://127.0.0.1:8000/api/get_category_all"
+        "http://192.168.0.86:8000/api/get_category_all"
       );
       setNameShop(shop.data);
       setProductAll(allProduct.data);
@@ -64,7 +63,7 @@ export default function Home(props) {
   const [scrollPosition, setScrollPosition] = useState(0);
   useEffect(() => {
     setScrollPosition(props.data);
-  }, []);
+  }, [props.data]);
 
   useEffect(() => {
     if (scrollPosition == 0) {
@@ -108,7 +107,7 @@ export default function Home(props) {
   const search = (event) => {
     async function fetchData() {
       const res = await axios.post(
-        `http://127.0.0.1:8000/api/searchProduct?search=${event.target.value}`
+        `http://192.168.0.86:8000/api/searchProduct?search=${event.target.value}`
       );
       setProductAll(res.data);
     }
@@ -216,7 +215,7 @@ export default function Home(props) {
                   px="2"
                   pt="16"
                   pb="28px"
-                  backgroundImage={`url(http://127.0.0.1:8000/images/shopee/cover_img_shop/${item.cover_img_shop})`}
+                  backgroundImage={`url(http://192.168.0.86:8000/images/shopee/cover_img_shop/${item.cover_img_shop})`}
                   h="100%"
                 >
                   <Box
@@ -360,12 +359,12 @@ export default function Home(props) {
 
                       <CardHeader
                         className="setPadding"
-                        h="170px"
+                        h="160px"
                         alignSelf="center"
                         w="100%"
                       >
                         <Image
-                          src={`http://127.0.0.1:8000/images/shopee/products/${item.img_product}`}
+                          src={`http://192.168.0.86:8000/images/shopee/products/${item.img_product}`}
                           alt={item.product_name}
                           height="100%"
                           width="100%"
@@ -469,7 +468,7 @@ export default function Home(props) {
                         w="100%"
                       >
                         <Image
-                          src={`http://127.0.0.1:8000/images/shopee/products/${item.img_product}`}
+                          src={`http://192.168.0.86:8000/images/shopee/products/${item.img_product}`}
                           alt={item.product_name}
                           height="100%"
                           width="100%"

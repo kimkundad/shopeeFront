@@ -17,7 +17,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 function Order() {
-  const [buttonId, setButtonId] = useState([]);
+  const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
   }

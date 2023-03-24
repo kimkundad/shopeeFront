@@ -16,7 +16,7 @@ export default function CartItem(props) {
   const handleCheckAllChange = (event, index, subIndex) => {
     const newCheckAll = [...checkAll];
     newCheckAll[index][subIndex] = event.target.checked;
-    sumPrice()
+    sumPrice();
     setCheckAll(newCheckAll);
   };
 
@@ -44,9 +44,8 @@ export default function CartItem(props) {
     for (let i = 0; i < newCheckAll[index].length; i++) {
       newCheckAll[index][i] = event.target.checked;
     }
-    sumPrice()
+    sumPrice();
     setCheckAll(newCheckAll);
-    
   };
 
   const sumPrice = () => {
@@ -55,20 +54,19 @@ export default function CartItem(props) {
     for (let i = 0; i < newCheckAll.length; i++) {
       for (let k = 0; k < newCheckAll[i].length; k++) {
         newCheckAll[i][k]
-          ? (newSum = newSum + (props.data[i].product[k].price * num[i][k]))
+          ? (newSum = newSum + props.data[i].product[k].price * num[i][k])
           : false;
       }
     }
     setSum(newSum);
-  }
+  };
   const plusnum = (index, subIndex) => {
     const newNum = [...num];
     let number = 0;
     number = newNum[index][subIndex] + 1;
     newNum[index][subIndex] = number;
     setNum(newNum);
-    sumPrice()
-
+    sumPrice();
   };
 
   const minusnum = (index, subIndex) => {
@@ -79,7 +77,7 @@ export default function CartItem(props) {
       newNum[index][subIndex] = number;
     }
     setNum(newNum);
-    sumPrice()
+    sumPrice();
   };
   return (
     <div>
@@ -170,7 +168,12 @@ export default function CartItem(props) {
                         <Spacer />
                         <Box borderRadius="xl" bg="gray.100">
                           <Flex alignItems="center">
-                            <Button h="15px" w="15px" onClick={() => minusnum(index, subIndex)} px="0px">
+                            <Button
+                              h="15px"
+                              w="15px"
+                              onClick={() => minusnum(index, subIndex)}
+                              px="0px"
+                            >
                               <Image
                                 src="/img/minus.png"
                                 alt="My Icon"
@@ -199,7 +202,11 @@ export default function CartItem(props) {
                           </Flex>
                         </Box>
                       </Flex>
+                      
                     </Box>
+                    <Box h="20px" w="20px">
+                        <Image src="/img/delete.png" alt="" h="20px" w="20px" />
+                      </Box>
                   </Flex>
                 </Checkbox>
               </div>
