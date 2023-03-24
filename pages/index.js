@@ -338,7 +338,9 @@ export default function Home(props) {
                   <Link
                     href={{
                       pathname: "/product",
-                      query: item.id,
+                      query: {
+                        id: item.id,
+                      }
                     }}
                     key={item.id}
                   >
@@ -463,7 +465,7 @@ export default function Home(props) {
 
                       <CardHeader
                         className="setPadding"
-                        h="170px"
+                        h="160px"
                         alignSelf="center"
                         w="100%"
                       >

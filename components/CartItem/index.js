@@ -205,7 +205,7 @@ export default function CartItem(props) {
                       
                     </Box>
                     <Box h="20px" w="20px">
-                        <Image src="/img/delete.png" alt="" h="20px" w="20px" />
+                        <Image src="/img/delete.png" alt="" h="20px" w="20px" maxWidth="none"/>
                       </Box>
                   </Flex>
                 </Checkbox>
