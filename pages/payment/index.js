@@ -1,22 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Head from "next/head";
-import {
-  Box,
-  Card,
-  Flex,
-  Stack,
-  SimpleGrid,
-  Text,
-  Center,
-  Image,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Button,
-  Spacer,
-} from "@chakra-ui/react";
+import { Box, Card, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 function index() {
+  const router = useRouter();
+  const data = router.query;
   return (
     <>
       <Head>
@@ -25,13 +14,18 @@ function index() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Card>
-        
-      </Card>
+      <Card></Card>
       <Box pt="15px">
         <Box bg="white" py="10px" mt="10px">
           <Flex px="15px">
-            <Box pr="15px"><Image src="/img/approval.png" h="25px" w="25px" maxWidth="none"/></Box>
+            <Box pr="15px">
+              <Image
+                src="/img/approval.png"
+                h="25px"
+                w="25px"
+                maxWidth="none"
+              />
+            </Box>
             <Box>
               <Text>ข้อมูลการชำระเงิน</Text>
             </Box>
@@ -39,17 +33,17 @@ function index() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>580.-</Text>
+            <Text>{data.num_price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>40.-</Text>
+            <Text>{data.delivery_fee}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>620.-</Text>
+            <Text>{data.total}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -117,7 +111,17 @@ function index() {
         </Flex>
       </Box>
       <Box py="15px" px="30px" display="flex" justifyContent="end">
-        <Link href="/payment/paymentbank">
+        <Link
+          href={{
+            pathname: "/payment/paymentbank",
+            query: {
+              num_price: data.num_price,
+              delivery_fee: data.delivery_fee,
+              total: data.total,
+            },
+          }}
+          as={`/payment/paymentbank`}
+        >
           <Button bg="red" borderRadius="xl">
             <Text>ถัดไป</Text>
           </Button>

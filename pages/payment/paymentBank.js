@@ -16,7 +16,10 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 function paymentQRcode() {
+  const router = useRouter();
+  const data = router.query;
   return (
     <>
       <Head>
@@ -28,7 +31,14 @@ function paymentQRcode() {
       <Box pt="15px">
         <Box bg="white" py="10px" mt="10px">
           <Flex px="15px">
-            <Box pr="15px"><Image src="/img/approval.png" h="25px" w="25px" maxWidth="none"/></Box>
+            <Box pr="15px">
+              <Image
+                src="/img/approval.png"
+                h="25px"
+                w="25px"
+                maxWidth="none"
+              />
+            </Box>
             <Box>
               <Text>ข้อมูลการชำระเงิน</Text>
             </Box>
@@ -36,17 +46,17 @@ function paymentQRcode() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>580.-</Text>
+            <Text>{data.num_price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>40.-</Text>
+            <Text>{data.delivery_fee}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>620.-</Text>
+            <Text>{data.total}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -74,7 +84,13 @@ function paymentQRcode() {
         </Flex>
       </Box>
       <Box py="15px" px="30px" display="flex" justifyContent="end">
-        <Link href="/payment/confirmPayment">
+        <Link
+          href={{
+            pathname: "/payment/confirmPayment",
+            query: { total: data.total },
+          }}
+          as={`/payment/confirmPayment`}
+        >
           <Button bg="red" borderRadius="xl">
             <Text>ถัดไป</Text>
           </Button>

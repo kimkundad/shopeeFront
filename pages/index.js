@@ -129,7 +129,7 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {nameShop.length !== 0 ? (
-        <Box className="test" h="172px">
+        <Box className="test" h="150px">
           <Box
             className="test"
             w="100%"
@@ -350,7 +350,7 @@ export default function Home(props) {
 
                       <CardHeader
                         className="setPadding"
-                        h="160px"
+                        h="170px"
                         alignSelf="center"
                         w="100%"
                       >
@@ -439,6 +439,7 @@ export default function Home(props) {
                     },
                   }}
                     key={item.id}
+                    as={`/product`}
                   >
                     <Card borderRadius="xl" boxShadow="xl" h="100%">
                       {item.price_sales !== 0 ? (
@@ -457,7 +458,7 @@ export default function Home(props) {
 
                       <CardHeader
                         className="setPadding"
-                        h="160px"
+                        h="170px"
                         alignSelf="center"
                         w="100%"
                       >

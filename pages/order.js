@@ -3,38 +3,53 @@ import Link from "next/link";
 import Head from "next/head";
 import {
   Box,
-  Card,
   Flex,
   Grid,
   SimpleGrid,
   Text,
   GridItem,
   Image,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Button,
   Spacer,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 function Order() {
+  const { isOpen, onOpen, onClose } = useDisclosure([]);
+  const handleModalClick = () => {
+    onOpen();
+  };
   const router = useRouter();
   const data = router.query;
   const [sales, setSales] = useState(null);
+  const [numPrice, setNumPrice] = useState(null);
+  const [total, setTotal] = useState(null);
   useEffect(() => {
     if (data.price_sales !== 0) {
+      setNumPrice((data.price - (data.price_sales * data.price) / 100)*data.num)
       setSales(data.price - (data.price_sales * data.price) / 100);
+      setTotal((data.price - (data.price_sales * data.price) / 100)*data.num+40);
     } else {
       setSales(data.price);
+      setNumPrice(data.price*data.num)
+      setTotal(data.price+40);
     }
+    
   }, [data]);
+  console.log(numPrice);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
   }
   const paymenttype = [
-    { label: "QR Code", img: "/img/qr.png" },
-    { label: "บัญชีธนาคาร", img: "/img/user-interface.png" },
+    { label: "โอนเงิน", img: "/img/qr.png" },
+    { label: "เก็บเงินปลายทาง", img: "/img/user-interface.png" },
   ];
   return (
     <>
@@ -141,7 +156,7 @@ function Order() {
           spacing={4}
           templateColumns="repeat(2, minmax(0px, 1fr))"
           mt="15px"
-          px="58px"
+          px="40px"
           fontSize="sm"
         >
           {paymenttype.map((item, index) => {
@@ -160,7 +175,6 @@ function Order() {
                     src={item.img}
                     alt=""
                     h="20px"
-                    pr="5px"
                   />
                 }
               >
@@ -180,7 +194,6 @@ function Order() {
                     id={item.label}
                     alt=""
                     h="20px"
-                    pr="5px"
                   />
                 }
               >
@@ -202,7 +215,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>รวมการสั่งซื้อ</Text>
           <Spacer />
-          <Text>{sales * data.num}.-</Text>
+          <Text>{numPrice}.-</Text>
         </Flex>
         <Flex pl="60px" pr="15px">
           <Text>ค่าจัดส่ง</Text>
@@ -212,7 +225,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>ยอดชำระเงินทั้งหมด</Text>
           <Spacer />
-          <Text>{sales * data.num + 40}.-</Text>
+          <Text>{total}.-</Text>
         </Flex>
       </Box>
       <Box className="test" bottom={0}>
@@ -232,14 +245,29 @@ function Order() {
             fontSize="sm"
           >
             <GridItem colSpan={1} gridColumn={2}>
-              {buttonId !== "" ? (
-                <Link href={buttonId == "QR Code" ? "/payment/" : "/payment/"}>
+              {buttonId === "โอนเงิน" ? (
+                <Link
+                  href={{
+                    pathname: "/payment",
+                    query: {
+                      num_price: numPrice,
+                      delivery_fee: 40,
+                      total: total,
+                    },
+                  }}
+                  as={`/payment`}
+                >
                   <Button w="100%" bg="red" borderRadius="xl">
                     <Text>สั่งสินค้า</Text>
                   </Button>
                 </Link>
               ) : (
-                <Button w="100%" bg="red" borderRadius="xl">
+                <Button
+                  w="100%"
+                  bg="red"
+                  borderRadius="xl"
+                  onClick={() => handleModalClick()}
+                >
                   <Text>สั่งสินค้า</Text>
                 </Button>
               )}
@@ -247,6 +275,31 @@ function Order() {
           </Grid>
         </Box>
       </Box>
+      <Modal onClose={onClose} size="xs" isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent alignSelf="center">
+          <ModalHeader alignSelf="center">สั่งซื้อสินค้าสำเร็จ</ModalHeader>
+          <ModalBody alignSelf="center">
+            <Box textAlign="center">
+              <Image src="/img/check3.png" alt="" h="100px" mx="auto" />
+              <Text fontWeight="bold" fontSize="xl">
+                ขอบคุณสำหรับการสั่งซื้อ
+              </Text>
+              <Text>
+                ท่านสามารถตรวจสอบสถานะสินค้าที่ท่านสั่งซื้อได้ที่ปุ่มเมนู
+                &quot;ดูสถานะสินค้า&quot; ในหน้าโปรไฟล์ได้เลย
+              </Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter alignSelf="center">
+            <Link href="/profile" justifySelf="center">
+              <Button w="100%" bg="red" borderRadius="xl">
+                <Text color="white">ไปยังหน้าโปรไฟล์</Text>
+              </Button>
+            </Link>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

@@ -19,10 +19,13 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import Upload from "@/components/Dropzone"
 function ConfirmPayment() {
+  const router = useRouter();
+  const data = router.query;
   const { isOpen, onOpen, onClose } = useDisclosure([]);
-  const handleSizeClick = (newSize) => {
+  const handleModalClick = () => {
     onOpen();
   };
   return (
@@ -38,7 +41,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>620.-</Text>
+            <Text>{data.total}.-</Text>
           </Flex>
         </Box>
         <Box px="25px">
@@ -87,7 +90,7 @@ function ConfirmPayment() {
         </Box>
       </Box>
       <Box py="15px" px="30px" display="flex" justifyContent="end">
-        <Button bg="red" borderRadius="xl" onClick={() => handleSizeClick()}>
+        <Button bg="red" borderRadius="xl" onClick={() => handleModalClick()}>
           <Text>ถัดไป</Text>
         </Button>
       </Box>
