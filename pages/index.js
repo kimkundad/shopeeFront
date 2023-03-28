@@ -39,12 +39,13 @@ export default function Home(props) {
   const [categoryAll, setCategoryAll] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const shop = await axios.get("http://192.168.0.86:8000/api/shop");
+      const shop = await axios.get("https://shopee-api.deksilp.com/api/shop");
+      console.log(shop);
       const allProduct = await axios.get(
-        "http://192.168.0.86:8000/api/allProduct"
+        `https://shopee-api.deksilp.com/api/allProduct/${shop.data.shop[0].id}`
       );
       const allCat = await axios.get(
-        "http://192.168.0.86:8000/api/get_category_all"
+        "https://shopee-api.deksilp.com/api/get_category_all"
       );
       setNameShop(shop.data);
       setProductAll(allProduct.data);
@@ -97,7 +98,7 @@ export default function Home(props) {
   const search = (event) => {
     async function fetchData() {
       const res = await axios.post(
-        `http://192.168.0.86:8000/api/searchProduct?search=${event.target.value}`
+        `https://shopee-api.deksilp.com/api/searchProduct/${nameShop.shop[0].id}?search=${event.target.value}`
       );
       setProductAll(res.data);
     }
@@ -120,6 +121,7 @@ export default function Home(props) {
     setIsBorderActive(newArray);
     setCatName(catName);
   };
+  console.log(catName);
   return (
     <>
       <Head>
@@ -204,7 +206,7 @@ export default function Home(props) {
             px="2"
             pt="16"
             pb="28px"
-            backgroundImage={`url(http://192.168.0.86:8000/images/shopee/cover_img_shop/${nameShop.shop[0].cover_img_shop})`}
+            backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${nameShop.shop[0].cover_img_shop})`}
             h="100%"
           >
             <Box
@@ -218,13 +220,16 @@ export default function Home(props) {
             >
               <Image
                 borderRadius="50%"
-                src="/img/หมาโง่.jpg"
+                src={`https://shopee-api.deksilp.com/images/shopee/shop/${nameShop.shop[0].img_shop}`}
                 alt=""
                 className="wh"
               />
             </Box>
             <Box textColor="white" pl="4">
-              <Text className="textHead">{nameShop.shop[0].name_shop}</Text>
+              <Box bg="black" borderRadius="md">
+                <Text pl="10px" className="textHead">{nameShop.shop[0].name_shop}</Text>
+              </Box>
+
               <Flex alignItems="center" height="100%" mt="10px">
                 <Center bg="red" borderRadius="md" px="5px">
                   <StarIcon color="yellow.400" className="setIcon" />
@@ -295,8 +300,8 @@ export default function Home(props) {
                 whiteSpace="nowrap"
                 borderBottom={isBorderActive[index] ? "2px" : "1px"}
                 borderColor={isBorderActive[index] ? "red" : "gray.300"}
-                onClick={() => handleElementClick(index, item.cat_name)}
-                id={item.cat_name}
+                onClick={() => handleElementClick(index, item.id)}
+                id={item.id}
               >
                 <Text fontWeight="bold">{item.cat_name}</Text>
               </Box>
@@ -355,7 +360,7 @@ export default function Home(props) {
                         w="100%"
                       >
                         <Image
-                          src={`http://192.168.0.86:8000/images/shopee/products/${item.img_product}`}
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
                           alt={item.product_name}
                           height="100%"
                           width="100%"
@@ -431,13 +436,13 @@ export default function Home(props) {
               } else if (catName == item.category) {
                 return (
                   <Link
-                  href={{
-                    pathname: "/product",
-                    query: {
-                      id: item.id,
-                      name_shop: nameShop.shop[0].name_shop,
-                    },
-                  }}
+                    href={{
+                      pathname: "/product",
+                      query: {
+                        id: item.id,
+                        name_shop: nameShop.shop[0].name_shop,
+                      },
+                    }}
                     key={item.id}
                     as={`/product`}
                   >
@@ -463,7 +468,7 @@ export default function Home(props) {
                         w="100%"
                       >
                         <Image
-                          src={`http://192.168.0.86:8000/images/shopee/products/${item.img_product}`}
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
                           alt={item.product_name}
                           height="100%"
                           width="100%"
