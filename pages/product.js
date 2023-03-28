@@ -15,7 +15,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import axios from "axios";
+import axios, { all } from "axios";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -28,26 +28,30 @@ function product() {
   const router = useRouter();
   const data = router.query;
   const [product, setProduct] = useState([]);
+  const [allSubOption, setAllSubOption] = useState([]);
   useEffect(() => {
     if (data.id !== undefined) {
       async function fetchData() {
         const res = await axios.get(
-          `https://shopee-api.deksilp.com/api/getProduct/${data.id}?shop_id${data.shop_id}`
+          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data.id}&shop_id=${data.shop_id}`
         );
-        res.data.product[0].allImage.unshift({
-          image: res.data.product[0].img_product,
+        res.data.product[0].allOption1.unshift({
+          img_name: res.data.product[0].img_product,
         });
-        setProduct(res.data);
+        const subOption = res.data.allSupOption;
+        const getProduct = res.data.product
+        setProduct(getProduct);
+        setAllSubOption(subOption);
       }
       fetchData();
     }
   }, [data]);
-
+  console.log(product);
   const swiperRef = useRef(null);
   async function selectColor(event) {
     setColorId(event.target.id);
-    const slideIndex = product.product[0].allImage.findIndex(
-      (item) => item.color === event.target.id
+    const slideIndex = product[0].allOption1.findIndex(
+      (item) => item.op_name === event.target.id
     );
     swiperRef.current.swiper.slideTo(slideIndex);
   }
@@ -64,21 +68,6 @@ function product() {
     }
   }
 
-  const colorProduct = [
-    { label: "สีชมพู" },
-    { label: "สีฟ้า" },
-    { label: "สีเหลือง" },
-    { label: "สีส้ม" },
-  ];
-  const size = [
-    { label: "38" },
-    { label: "39" },
-    { label: "40" },
-    { label: "41" },
-    { label: "42" },
-    { label: "43" },
-    { label: "44" },
-  ];
   const [colorId, setColorId] = useState(null);
 
   const [sizeId, setSizeId] = useState(null);
@@ -96,7 +85,7 @@ function product() {
 
       <Box px="15px" py="10px" bg="white">
         {product.length !== 0
-          ? product.product.map((item, index) => {
+          ? product.map((item, index) => {
               const sales =
                 item.price_sales !== 0
                   ? item.price - (item.price_sales * item.price) / 100
@@ -111,11 +100,11 @@ function product() {
                     className="mySwiper"
                     ref={swiperRef}
                   >
-                    {item.allImage.map((item, index) => {
+                    {item.allOption1.map((item, index) => {
                       return (
                         <SwiperSlide key={index}>
                           <Image
-                            src={`http://192.168.0.86:8000/images/shopee/products/${item.image}`}
+                            src={`http://192.168.0.86:8000/images/shopee/products/${item.img_name}`}
                             alt=""
                             h="350px"
                             w="100%"
@@ -189,86 +178,85 @@ function product() {
           : null}
       </Box>
       <Box px="15px" mt="10px" bg="white" pb="10px">
+        {product.length !== 0 ? (
+          product[0].option1 !== null ? (
+            <Box>
+              <Text fontSize="xl" mt="7px">
+                {product[0].option1}
+              </Text>
+              <SimpleGrid
+                spacing={4}
+                templateColumns="repeat(4, minmax(0px, 1fr))"
+                my="15px"
+                fontSize="sm"
+              >
+                {product[0].allOption1.map((item, index) => {
+                  return index !== 0 ? (
+                    colorId === item.op_name ? (
+                      // eslint-disable-next-line react/jsx-key
+                      <Button
+                        height="35px"
+                        key={index}
+                        w="100%"
+                        borderRadius="md"
+                        onClick={selectColor}
+                        outline={`2px solid red`}
+                        bg="gray.300"
+                        id={item.op_name}
+                      >
+                        {item.op_name}
+                      </Button>
+                    ) : (
+                      <Button
+                        height="35px"
+                        key={index}
+                        w="100%"
+                        borderRadius="md"
+                        onClick={selectColor}
+                        id={item.op_name}
+                      >
+                        {item.op_name}
+                      </Button>
+                    )
+                  ) : null;
+                })}
+              </SimpleGrid>
+            </Box>
+          ) : null
+        ) : null}
+
+        {product.length !== 0 ? (
+          <Box>
+            <Text fontSize="xl" mt="7px">
+              {product[0].option2}
+            </Text>
+            <SimpleGrid
+              spacing={4}
+              templateColumns="repeat(4, minmax(0px, 1fr))"
+              my="15px"
+              fontSize="sm"
+            >
+              {allSubOption.map((item, index) => {
+                return (
+                  // eslint-disable-next-line react/jsx-key
+                  <Button
+                    height="35px"
+                    key={index}
+                    w="100%"
+                    borderRadius="md"
+                    onClick={selectColor}
+                    outline={`2px solid red`}
+                    bg="gray.300"
+                    id={item.sub_op_name}
+                  >
+                    {item.sub_op_name}
+                  </Button>
+                );
+              })}
+            </SimpleGrid>
+          </Box>
+        ) : null}
         <Box>
-          <Text fontSize="xl" mt="7px">
-            สี
-          </Text>
-          <SimpleGrid
-            spacing={4}
-            templateColumns="repeat(4, minmax(0px, 1fr))"
-            my="15px"
-            fontSize="sm"
-          >
-            {colorProduct.map((item, index) => {
-              return colorId === item.label ? (
-                // eslint-disable-next-line react/jsx-key
-                <Button
-                  height="35px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  outline={`2px solid red`}
-                  bg="gray.300"
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              ) : (
-                <Button
-                  height="35px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              );
-            })}
-          </SimpleGrid>
-          <Text fontSize="xl" pt="7px">
-            ขนาด
-          </Text>
-          <SimpleGrid
-            spacing={4}
-            templateColumns="repeat(4, minmax(0px, 1fr))"
-            mt="15px"
-            pb="15px"
-            fontSize="sm"
-            borderBottom="1px"
-            borderColor="gray.300"
-          >
-            {size.map((item, index) => {
-              return sizeId === item.label ? (
-                // eslint-disable-next-line react/jsx-key
-                <Button
-                  height="30px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectColor}
-                  bg="gray.300"
-                  outline={`2px solid red`}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              ) : (
-                <Button
-                  height="30px"
-                  key={index}
-                  w="100%"
-                  borderRadius="md"
-                  onClick={selectSize}
-                  id={item.label}
-                >
-                  {item.label}
-                </Button>
-              );
-            })}
-          </SimpleGrid>
           <Flex alignItems="center" pt="7px">
             <Text fontSize="xl">จำนวน</Text>
             <Spacer />
