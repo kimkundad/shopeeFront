@@ -333,6 +333,7 @@ export default function Home(props) {
                       query: {
                         id: item.id,
                         name_shop: nameShop.shop[0].name_shop,
+                        shop_id: nameShop.shop[0].id,
                       },
                     }}
                     key={item.id}

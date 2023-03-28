@@ -32,7 +32,7 @@ function product() {
     if (data.id !== undefined) {
       async function fetchData() {
         const res = await axios.get(
-          `http://192.168.0.86:8000/api/getProduct/${data.id}`
+          `https://shopee-api.deksilp.com/api/getProduct/${data.id}?shop_id${data.shop_id}`
         );
         res.data.product[0].allImage.unshift({
           image: res.data.product[0].img_product,
@@ -162,7 +162,7 @@ function product() {
                           w="100%"
                           h="1px"
                           bgColor="red"
-                          transform="rotate(-15deg)"
+                          transform="rotate(-20deg)"
                         />
                       </Box>
                       <Text>.-)</Text>
