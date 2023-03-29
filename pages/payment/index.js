@@ -1,11 +1,40 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { Box, Card, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 function index() {
   const router = useRouter();
-  const data = router.query;
+  const [queryParams, setQueryParams] = useState({});
+
+  // Store query parameters in localStorage
+  useEffect(() => {
+    const { num_price, delivery_fee, total } = router.query;
+
+    if (num_price && delivery_fee && total ) {
+      localStorage.setItem('query', JSON.stringify({
+        num_price,
+        delivery_fee,
+        total
+      }));
+    }
+  }, [router.query]);
+
+  // Get query parameters from localStorage on page load
+  useEffect(() => {
+    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
+
+    if (storedQueryParams) {
+      setQueryParams(storedQueryParams);
+    }
+  }, []);
+
+  // Clear query parameters from localStorage on page unload
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('query');
+    };
+  }, []);
   return (
     <>
       <Head>
@@ -33,17 +62,17 @@ function index() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>{data.num_price}.-</Text>
+            <Text>{queryParams.num_price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>{data.delivery_fee}.-</Text>
+            <Text>{queryParams.delivery_fee}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{data.total}.-</Text>
+            <Text>{queryParams.total}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -115,9 +144,9 @@ function index() {
           href={{
             pathname: "/payment/paymentbank",
             query: {
-              num_price: data.num_price,
-              delivery_fee: data.delivery_fee,
-              total: data.total,
+              num_price: queryParams.num_price,
+              delivery_fee: queryParams.delivery_fee,
+              total: queryParams.total,
             },
           }}
           as={`/payment/paymentbank`}

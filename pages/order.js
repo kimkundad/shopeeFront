@@ -21,27 +21,71 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 function Order() {
+  const router = useRouter();
+  const [queryParams, setQueryParams] = useState({});
+
+  // Store query parameters in localStorage
+  useEffect(() => {
+    const { name_shop, product_id, name_product, detail_product, img_product, price, price_sales, option1, option2, name_option1, name_option2, type, num } = router.query;
+
+    if (name_shop && product_id && name_product && detail_product && img_product && price && price_sales && option1 && option2 && name_option1 && name_option2 && type && num) {
+      localStorage.setItem('query', JSON.stringify({
+        name_shop,
+        product_id,
+        name_product,
+        detail_product,
+        img_product,
+        price,
+        price_sales,
+        option1,
+        option2,
+        name_option1,
+        name_option2,
+        type,
+        num
+      }));
+    }
+  }, [router.query]);
+
+  // Get query parameters from localStorage on page load
+  useEffect(() => {
+    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
+
+    if (storedQueryParams) {
+      setQueryParams(storedQueryParams);
+    }
+  }, []);
+
+  // Clear query parameters from localStorage on page unload
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('query');
+    };
+  }, []);
+
   const { isOpen, onOpen, onClose } = useDisclosure([]);
   const handleModalClick = () => {
     onOpen();
   };
-  const router = useRouter();
-  const data = router.query;
+  
   const [sales, setSales] = useState(null);
   const [numPrice, setNumPrice] = useState(null);
   const [total, setTotal] = useState(null);
   useEffect(() => {
-    if (data.price_sales !== 0) {
-      setNumPrice((data.price - (data.price_sales * data.price) / 100)*data.num)
-      setSales(data.price - (data.price_sales * data.price) / 100);
-      setTotal((data.price - (data.price_sales * data.price) / 100)*data.num+40);
+    if (queryParams.price_sales !== 0) {
+      setNumPrice(
+        (queryParams.price - (queryParams.price_sales * queryParams.price) / 100) * queryParams.num
+      );
+      setSales(queryParams.price - (queryParams.price_sales * queryParams.price) / 100);
+      setTotal(
+        (queryParams.price - (queryParams.price_sales * queryParams.price) / 100) * queryParams.num + 40
+      );
     } else {
-      setSales(data.price);
-      setNumPrice(data.price*data.num)
-      setTotal(data.price+40);
+      setSales(queryParams.price);
+      setNumPrice(queryParams.price * queryParams.num);
+      setTotal(queryParams.price + 40);
     }
-    
-  }, [data]);
+  }, [queryParams]);
   console.log(numPrice);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
@@ -107,7 +151,7 @@ function Order() {
             <Text>ร้านแนะนำ</Text>
           </Box>
           <Box pl="8px">
-            <Text>{data.name_shop}</Text>
+            <Text>{queryParams.name_shop}</Text>
           </Box>
         </Flex>
       </Box>
@@ -115,7 +159,7 @@ function Order() {
         <Flex px="15px">
           <Box pt="10px">
             <Image
-              src={`http://192.168.0.86:8000/images/shopee/products/${data.img_product}`}
+              src={`https://shopee-api.deksilp.com/images/shopee/products/${queryParams.img_product}`}
               alt=""
               w="100%"
               maxHeight="130px"
@@ -123,22 +167,26 @@ function Order() {
           </Box>
           <Box pl="15px" width="-webkit-fill-available">
             <Text fontSize="xl" pt="7px">
-              {data.name_product}
+              {queryParams.name_product}
             </Text>
-            <Text fontSize="sm">{data.detail_product}</Text>
-            <Text
-              fontSize="sm"
-              bg="gray.300"
-              borderRadius="md"
-              display="initial"
-              px="7px"
-            >
-              ตัวเลือกสินค้า: {data.color} ไซด์ {data.size}
-            </Text>
+            <Text fontSize="sm">{queryParams.detail_product}</Text>
+            {queryParams.type != 1 ? (
+              <Text
+                fontSize="sm"
+                bg="gray.300"
+                borderRadius="md"
+                display="initial"
+                px="7px"
+              >
+                ตัวเลือกสินค้า: {queryParams.name_option1} {queryParams.option1}{" "}
+                {queryParams.name_option2} {queryParams.option2}
+              </Text>
+            ) : null}
+
             <Flex fontSize="xl">
               <Text>{sales}.-</Text>
               <Spacer />
-              <Text>x{data.num}</Text>
+              <Text>x{queryParams.num}</Text>
             </Flex>
           </Box>
         </Flex>

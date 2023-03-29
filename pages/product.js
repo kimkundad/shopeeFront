@@ -27,29 +27,63 @@ import StarRatings from "react-star-ratings";
 function product() {
   const router = useRouter();
   const data = router.query;
+
+  const [queryParams, setQueryParams] = useState({});
+
+  // Store query parameters in localStorage
+  useEffect(() => {
+    const { id, name_shop, shop_id } = router.query;
+
+    if (id && name_shop && shop_id) {
+      localStorage.setItem('query', JSON.stringify({
+        id,
+        name_shop,
+        shop_id
+      }));
+    }
+  }, [router.query]);
+
+  // Get query parameters from localStorage on page load
+  useEffect(() => {
+    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
+
+    if (storedQueryParams) {
+      setQueryParams(storedQueryParams);
+    }
+  }, []);
+
+   // Clear query parameters from localStorage on page unload
+   useEffect(() => {
+    return () => {
+      localStorage.removeItem('query');
+    };
+  }, []);
   const [product, setProduct] = useState([]);
   const [allSubOption, setAllSubOption] = useState([]);
   useEffect(() => {
-    if (data.id !== undefined) {
+    if (queryParams.id !== undefined) {
       async function fetchData() {
         const res = await axios.get(
-          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data.id}&shop_id=${data.shop_id}`
+          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${queryParams.id}&shop_id=${queryParams.shop_id}`
         );
-        res.data.product[0].allOption1.unshift({
-          img_name: res.data.product[0].img_product,
-        });
+        if (res.data.product[0].option1 !== null) {
+          res.data.product[0].allOption1.unshift({
+            img_name: res.data.product[0].img_product,
+          });
+        }
+
         const subOption = res.data.allSupOption;
-        const getProduct = res.data.product
+        const getProduct = res.data.product;
         setProduct(getProduct);
         setAllSubOption(subOption);
       }
       fetchData();
     }
-  }, [data]);
-  console.log(product);
+  }, [queryParams]);
   const swiperRef = useRef(null);
-  async function selectColor(event) {
-    setColorId(event.target.id);
+  const [option1, setOption1] = useState(null);
+  async function selectOption1(event) {
+    setOption1(event.target.id);
     const slideIndex = product[0].allOption1.findIndex(
       (item) => item.op_name === event.target.id
     );
@@ -68,11 +102,9 @@ function product() {
     }
   }
 
-  const [colorId, setColorId] = useState(null);
-
-  const [sizeId, setSizeId] = useState(null);
-  function selectSize(event) {
-    setSizeId(event.target.id);
+  const [option2, setOption2] = useState(null);
+  function selectOption2(event) {
+    setOption2(event.target.id);
   }
   return (
     <>
@@ -100,19 +132,31 @@ function product() {
                     className="mySwiper"
                     ref={swiperRef}
                   >
-                    {item.allOption1.map((item, index) => {
-                      return (
-                        <SwiperSlide key={index}>
-                          <Image
-                            src={`http://192.168.0.86:8000/images/shopee/products/${item.img_name}`}
-                            alt=""
-                            h="350px"
-                            w="100%"
-                            maxHeight="500px"
-                          />
-                        </SwiperSlide>
-                      );
-                    })}
+                    {item.option1 !== null ? (
+                      item.allOption1.map((item, index) => {
+                        return (
+                          <SwiperSlide key={index}>
+                            <Image
+                              src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                              alt=""
+                              h="400px"
+                              w="100%"
+                              maxHeight="500px"
+                            />
+                          </SwiperSlide>
+                        );
+                      })
+                    ) : (
+                      <SwiperSlide key={index}>
+                        <Image
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                          alt=""
+                          h="350px"
+                          w="100%"
+                          maxHeight="500px"
+                        />
+                      </SwiperSlide>
+                    )}
                   </Swiper>
 
                   <Box>
@@ -146,12 +190,12 @@ function product() {
                           opacity="7"
                           content=""
                           position="absolute"
-                          top="50%"
+                          top="45%"
                           left="0"
                           w="100%"
                           h="1px"
                           bgColor="red"
-                          transform="rotate(-20deg)"
+                          transform="rotate(-15deg)"
                         />
                       </Box>
                       <Text>.-)</Text>
@@ -192,14 +236,14 @@ function product() {
               >
                 {product[0].allOption1.map((item, index) => {
                   return index !== 0 ? (
-                    colorId === item.op_name ? (
+                    option1 === item.op_name ? (
                       // eslint-disable-next-line react/jsx-key
                       <Button
                         height="35px"
                         key={index}
                         w="100%"
                         borderRadius="md"
-                        onClick={selectColor}
+                        onClick={selectOption1}
                         outline={`2px solid red`}
                         bg="gray.300"
                         id={item.op_name}
@@ -212,7 +256,7 @@ function product() {
                         key={index}
                         w="100%"
                         borderRadius="md"
-                        onClick={selectColor}
+                        onClick={selectOption1}
                         id={item.op_name}
                       >
                         {item.op_name}
@@ -225,7 +269,7 @@ function product() {
           ) : null
         ) : null}
 
-        {product.length !== 0 ? (
+        {allSubOption.length !== 0 ? (
           <Box>
             <Text fontSize="xl" mt="7px">
               {product[0].option2}
@@ -237,16 +281,27 @@ function product() {
               fontSize="sm"
             >
               {allSubOption.map((item, index) => {
-                return (
+                return option2 === item.sub_op_name ? (
                   // eslint-disable-next-line react/jsx-key
                   <Button
                     height="35px"
                     key={index}
                     w="100%"
                     borderRadius="md"
-                    onClick={selectColor}
                     outline={`2px solid red`}
                     bg="gray.300"
+                    onClick={selectOption2}
+                    id={item.sub_op_name}
+                  >
+                    {item.sub_op_name}
+                  </Button>
+                ) : (
+                  <Button
+                    height="35px"
+                    key={index}
+                    w="100%"
+                    borderRadius="md"
+                    onClick={selectOption2}
                     id={item.sub_op_name}
                   >
                     {item.sub_op_name}
@@ -312,22 +367,68 @@ function product() {
             </Link>
             <Link
               href={
-                sizeId !== null && colorId !== null && num > 0
-                  ? {
-                      pathname: "/order",
-                      query: {
-                        name_shop: data.name_shop,
-                        product_id: product.product[0].id,
-                        name_product: product.product[0].name_product,
-                        detail_product: product.product[0].detail_product,
-                        img_product: product.product[0].img_product,
-                        price: product.product[0].price,
-                        price_sales: product.product[0].price_sales,
-                        size: sizeId,
-                        color: colorId,
-                        num: num,
-                      },
-                    }
+                product.length !== 0
+                  ? product[0].type == 1 && num > 0
+                    ? {
+                        pathname: "/order",
+                        query: {
+                          name_shop: data.name_shop,
+                          product_id: product[0].id,
+                          name_product: product[0].name_product,
+                          detail_product: product[0].detail_product,
+                          img_product: product[0].img_product,
+                          price: product[0].price,
+                          price_sales: product[0].price_sales,
+                          option1: option1,
+                          option2: option2,
+                          name_option1: product[0].option1,
+                          name_option2: product[0].option2,
+                          type: product[0].type,
+                          num: num,
+                        },
+                      }
+                    : product[0].type == 2 && option1 !== null && num > 0
+                    ? {
+                        pathname: "/order",
+                        query: {
+                          name_shop: data.name_shop,
+                          product_id: product[0].id,
+                          name_product: product[0].name_product,
+                          detail_product: product[0].detail_product,
+                          img_product: product[0].img_product,
+                          price: product[0].price,
+                          price_sales: product[0].price_sales,
+                          option1: option1,
+                          option2: option2,
+                          name_option1: product[0].option1,
+                          name_option2: product[0].option2,
+                          type: product[0].type,
+                          num: num,
+                        },
+                      }
+                    : product[0].type == 3 &&
+                      option1 !== null &&
+                      option2 !== null &&
+                      num > 0
+                    ? {
+                        pathname: "/order",
+                        query: {
+                          name_shop: data.name_shop,
+                          product_id: product[0].id,
+                          name_product: product[0].name_product,
+                          detail_product: product[0].detail_product,
+                          img_product: product[0].img_product,
+                          price: product[0].price,
+                          price_sales: product[0].price_sales,
+                          option1: option1,
+                          option2: option2,
+                          name_option1: product[0].option1,
+                          name_option2: product[0].option2,
+                          type: product[0].type,
+                          num: num,
+                        },
+                      }
+                    : ""
                   : ""
               }
               as={`/order`}

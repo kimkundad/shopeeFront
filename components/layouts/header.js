@@ -122,7 +122,7 @@ export default function Header() {
         </Box>
       </>
     );
-  } else if (pathname == "/") {
+  } else if (pathname == "/" || pathname == "/[id]") {
     return null;
   } else {
     return (
