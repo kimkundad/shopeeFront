@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -23,34 +23,7 @@ import { useRouter } from "next/router";
 import Upload from "@/components/Dropzone"
 function ConfirmPayment() {
   const router = useRouter();
-  const [queryParams, setQueryParams] = useState({});
-
-  // Store query parameters in localStorage
-  useEffect(() => {
-    const { total } = router.query;
-
-    if (num_price && delivery_fee && total ) {
-      localStorage.setItem('query', JSON.stringify({
-        total
-      }));
-    }
-  }, [router.query]);
-
-  // Get query parameters from localStorage on page load
-  useEffect(() => {
-    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
-
-    if (storedQueryParams) {
-      setQueryParams(storedQueryParams);
-    }
-  }, []);
-
-  // Clear query parameters from localStorage on page unload
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem('query');
-    };
-  }, []);
+  const data = router.query;
   const { isOpen, onOpen, onClose } = useDisclosure([]);
   const handleModalClick = () => {
     onOpen();
@@ -68,7 +41,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{queryParams.total}.-</Text>
+            <Text>{data.total}.-</Text>
           </Flex>
         </Box>
         <Box px="25px">

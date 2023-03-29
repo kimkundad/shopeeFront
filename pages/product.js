@@ -27,51 +27,20 @@ import StarRatings from "react-star-ratings";
 function product() {
   const router = useRouter();
   const data = router.query;
-
-  const [queryParams, setQueryParams] = useState({});
-
-  // Store query parameters in localStorage
-  useEffect(() => {
-    const { id, name_shop, shop_id } = router.query;
-
-    if (id && name_shop && shop_id) {
-      localStorage.setItem('query', JSON.stringify({
-        id,
-        name_shop,
-        shop_id
-      }));
-    }
-  }, [router.query]);
-
-  // Get query parameters from localStorage on page load
-  useEffect(() => {
-    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
-
-    if (storedQueryParams) {
-      setQueryParams(storedQueryParams);
-    }
-  }, []);
-
-   // Clear query parameters from localStorage on page unload
-   useEffect(() => {
-    return () => {
-      localStorage.removeItem('query');
-    };
-  }, []);
   const [product, setProduct] = useState([]);
   const [allSubOption, setAllSubOption] = useState([]);
   useEffect(() => {
-    if (queryParams.id !== undefined) {
+    if (data.id !== undefined) {
       async function fetchData() {
         const res = await axios.get(
-          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${queryParams.id}&shop_id=${queryParams.shop_id}`
+          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data.id}&shop_id=${data.shop_id}`
         );
         if (res.data.product[0].option1 !== null) {
           res.data.product[0].allOption1.unshift({
             img_name: res.data.product[0].img_product,
           });
         }
-
+        
         const subOption = res.data.allSupOption;
         const getProduct = res.data.product;
         setProduct(getProduct);
@@ -79,7 +48,7 @@ function product() {
       }
       fetchData();
     }
-  }, [queryParams]);
+  }, [data]);
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
   async function selectOption1(event) {
@@ -106,6 +75,7 @@ function product() {
   function selectOption2(event) {
     setOption2(event.target.id);
   }
+  console.log(router.query);
   return (
     <>
       <Head>
@@ -428,10 +398,10 @@ function product() {
                           num: num,
                         },
                       }
-                    : ""
-                  : ""
+                    : {query: data}
+                  : {query: data}
               }
-              as={`/order`}
+              /* as={`/order`} */
             >
               <Button w="100%" bg="red" borderRadius="xl">
                 <Text>ซื้อสินค้า</Text>

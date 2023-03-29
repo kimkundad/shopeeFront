@@ -19,36 +19,7 @@ import {
 import { useRouter } from "next/router";
 function paymentQRcode() {
   const router = useRouter();
-  const [queryParams, setQueryParams] = useState({});
-
-  // Store query parameters in localStorage
-  useEffect(() => {
-    const { num_price, delivery_fee, total } = router.query;
-
-    if (num_price && delivery_fee && total ) {
-      localStorage.setItem('query', JSON.stringify({
-        num_price,
-        delivery_fee,
-        total
-      }));
-    }
-  }, [router.query]);
-
-  // Get query parameters from localStorage on page load
-  useEffect(() => {
-    const storedQueryParams = JSON.parse(localStorage.getItem('query'));
-
-    if (storedQueryParams) {
-      setQueryParams(storedQueryParams);
-    }
-  }, []);
-
-  // Clear query parameters from localStorage on page unload
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem('query');
-    };
-  }, []);
+  const data = router.query;
   return (
     <>
       <Head>
@@ -75,17 +46,17 @@ function paymentQRcode() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>{queryParams.num_price}.-</Text>
+            <Text>{data.num_price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>{queryParams.delivery_fee}.-</Text>
+            <Text>{data.delivery_fee}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{queryParams.total}.-</Text>
+            <Text>{data.total}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -116,7 +87,7 @@ function paymentQRcode() {
         <Link
           href={{
             pathname: "/payment/confirmPayment",
-            query: { total: queryParams.total },
+            query: { total: data.total },
           }}
           as={`/payment/confirmPayment`}
         >

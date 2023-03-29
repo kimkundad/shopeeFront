@@ -340,12 +340,11 @@ export default function Home(props) {
                       pathname: "/product",
                       query: {
                         id: item.id,
-                        name_shop: nameShop.shop[0].name_shop,
                         shop_id: nameShop.shop[0].id,
                       },
                     }}
                     key={item.id}
-                    as={`/product`}
+                    /* as={`/product`} */
                   >
                     <Card borderRadius="xl" boxShadow="xl" h="100%">
                       {item.price_sales !== 0 ? (
@@ -449,12 +448,11 @@ export default function Home(props) {
                       pathname: "/product",
                       query: {
                         id: item.id,
-                        name_shop: nameShop.shop[0].name_shop,
                         shop_id: nameShop.shop[0].id,
                       },
                     }}
                     key={item.id}
-                    as={`/product`}
+                    /* as={`/product`} */
                   >
                     <Card borderRadius="xl" boxShadow="xl" h="100%">
                       {item.price_sales !== 0 ? (
