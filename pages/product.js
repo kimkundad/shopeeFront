@@ -40,7 +40,7 @@ function product() {
             img_name: res.data.product[0].img_product,
           });
         }
-        
+
         const subOption = res.data.allSupOption;
         const getProduct = res.data.product;
         setProduct(getProduct);
@@ -59,14 +59,14 @@ function product() {
     swiperRef.current.swiper.slideTo(slideIndex);
   }
 
-  const [num, setNum] = useState(0);
+  const [num, setNum] = useState(1);
   function plusnum() {
     let a = num + 1;
     setNum(a);
   }
   function minusnum() {
     let a = num - 1;
-    if (a >= 0) {
+    if (a >= 1) {
       setNum(a);
     }
   }
@@ -75,7 +75,38 @@ function product() {
   function selectOption2(event) {
     setOption2(event.target.id);
   }
-  console.log(router.query);
+
+  async function addToCart(event) {
+    event.preventDefault();
+    let user_id = 1;
+    const productId = product[0].id;
+    const shopId = router.query.shop_id;
+    const productOptionId = option1;
+    let productSubOptionId = 0;
+    for (let i = 1; i < product[0].allOption1.length; i++) {
+      for (let k = 0; k < product[0].allOption1[i].allOption2.length; k++) {
+        if (
+          product[0].allOption1[i].id == option1 &&
+          product[0].allOption1[i].allOption2[k].sub_op_name == option2
+        ) {
+          productSubOptionId = product[0].allOption1[i].allOption2[k].id;
+        }
+      }
+    }
+    const data = {
+      user_id,
+      productId,
+      shopId,
+      productOptionId,
+      productSubOptionId,
+      num,
+    };
+    console.log(data);
+    const response = await axios.post(
+      "https://shopee-api.deksilp.com/api/addProductToCart",
+      data
+    );
+  }
   return (
     <>
       <Head>
@@ -84,7 +115,6 @@ function product() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Box px="15px" py="10px" bg="white">
         {product.length !== 0
           ? product.map((item, index) => {
@@ -206,7 +236,7 @@ function product() {
               >
                 {product[0].allOption1.map((item, index) => {
                   return index !== 0 ? (
-                    option1 === item.op_name ? (
+                    option1 == item.id ? (
                       // eslint-disable-next-line react/jsx-key
                       <Button
                         height="35px"
@@ -216,7 +246,7 @@ function product() {
                         onClick={selectOption1}
                         outline={`2px solid red`}
                         bg="gray.300"
-                        id={item.op_name}
+                        id={item.id}
                       >
                         {item.op_name}
                       </Button>
@@ -227,7 +257,7 @@ function product() {
                         w="100%"
                         borderRadius="md"
                         onClick={selectOption1}
-                        id={item.op_name}
+                        id={item.id}
                       >
                         {item.op_name}
                       </Button>
@@ -251,7 +281,7 @@ function product() {
               fontSize="sm"
             >
               {allSubOption.map((item, index) => {
-                return option2 === item.sub_op_name ? (
+                return option2 == item.sub_op_name ? (
                   // eslint-disable-next-line react/jsx-key
                   <Button
                     height="35px"
@@ -330,11 +360,9 @@ function product() {
             my="15px"
             fontSize="sm"
           >
-            <Link href="">
-              <Button w="100%" borderRadius="xl">
-                <Text>เพิ่มไปยังรถเข็น</Text>
-              </Button>
-            </Link>
+            <Button w="100%" borderRadius="xl" onClick={addToCart}>
+              <Text>เพิ่มไปยังรถเข็น</Text>
+            </Button>
             <Link
               href={
                 product.length !== 0
@@ -398,8 +426,8 @@ function product() {
                           num: num,
                         },
                       }
-                    : {query: data}
-                  : {query: data}
+                    : { query: data }
+                  : { query: data }
               }
               /* as={`/order`} */
             >

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import react, { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -17,67 +17,18 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import CartItem from "@/components/CartItem";
+import axios from "axios";
 function chartShop() {
-  const item = [
-    {
-      shopname: "SHOPZY",
-      product: [
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี33333333333333333333333333333333333333333333333",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-      ],
-    },
-    {
-      shopname: "SHOPZY 2",
-      product: [
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-        {
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          price: 290,
-          num: 1,
-        },
-      ],
-    },
-  ];
+  const [cartsItem, setCartsItem] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const carts = await axios.get(
+        `http://127.0.0.1:8000/api/getAllCartItem/1`
+      );
+      setCartsItem(carts.data);
+    }
+    fetchData();
+  }, []);
   return (
     <>
       <Head>
@@ -86,9 +37,7 @@ function chartShop() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <CartItem data={item} />
-
-      
+      {cartsItem.length !== 0 ? <CartItem data={cartsItem} /> : null}
     </>
   );
 }
