@@ -148,7 +148,7 @@ function product() {
                               <Image
                                 src={`https://shopee-api.deksilp.com/images/shopee/products/${item.image}`}
                                 alt=""
-                                h="350px"
+                                h="100%"
                                 w="100%"
                                 maxHeight="500px"
                               />
@@ -163,7 +163,7 @@ function product() {
                             <Image
                               src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
                               alt=""
-                              h="350px"
+                              h="100%"
                               w="100%"
                               maxHeight="500px"
                             />
@@ -175,7 +175,7 @@ function product() {
                         <Image
                           src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
                           alt=""
-                          h="350px"
+                          h="100%"
                           w="100%"
                           maxHeight="500px"
                         />
