@@ -58,12 +58,10 @@ function product() {
   const [option1, setOption1] = useState(null);
   async function selectOption1(event) {
     setOption1(event.target.id);
-    console.log(event.target.id);
     const slideIndex = product[0].allOption1.findIndex(
       (item) => item.id == event.target.id
     );
     swiperRef.current.swiper.slideTo(slideIndex);
-    console.log(slideIndex);
   }
 
   const [num, setNum] = useState(1);
