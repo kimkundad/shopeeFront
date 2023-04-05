@@ -23,7 +23,7 @@ function chartShop() {
   useEffect(() => {
     async function fetchData() {
       const carts = await axios.get(
-        `http://127.0.0.1:8000/api/getAllCartItem/1`
+        `https://shopee-api.deksilp.com/api/getAllCartItem/1`
       );
       setCartsItem(carts.data);
     }

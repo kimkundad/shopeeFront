@@ -83,16 +83,19 @@ function product() {
     const shopId = router.query.shop_id;
     const productOptionId = option1;
     let productSubOptionId = 0;
-    for (let i = 1; i < product[0].allOption1.length; i++) {
-      for (let k = 0; k < product[0].allOption1[i].allOption2.length; k++) {
-        if (
-          product[0].allOption1[i].id == option1 &&
-          product[0].allOption1[i].allOption2[k].sub_op_name == option2
-        ) {
-          productSubOptionId = product[0].allOption1[i].allOption2[k].id;
+    if (product[0].option2 !== null) {
+      for (let i = 1; i < product[0].allOption1.length; i++) {
+        for (let k = 0; k < product[0].allOption1[i].allOption2.length; k++) {
+          if (
+            product[0].allOption1[i].id == option1 &&
+            product[0].allOption1[i].allOption2[k].sub_op_name == option2
+          ) {
+            productSubOptionId = product[0].allOption1[i].allOption2[k].id;
+          }
         }
       }
     }
+
     const data = {
       user_id,
       productId,

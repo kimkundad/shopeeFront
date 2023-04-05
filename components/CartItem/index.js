@@ -91,10 +91,10 @@ export default function CartItem(props) {
     sumPrice();
   };
 
-  /* const delete = async ($id) => {
-    const res = await axios.post(`/api/deleteCartItem/${$id}`)
-
-  } */
+  const deleteCartItem = async (id) => {
+    const res = await axios.post(`https://shopee-api.deksilp.com/api/deleteCartItem/${id}`)
+    setCartItem(res.data.cartItem)
+  }
   return (
     <div>
       {cartItem.map((item, index) => (
@@ -243,7 +243,7 @@ export default function CartItem(props) {
                       </Flex>
                     </Box>
                     <Box h="20px" w="30px" bg="white" alignSelf="start" pt="10px">
-                      <Button bg="white" h="20px" w="20px">
+                      <Button bg="white" h="20px" w="20px" onClick={() => deleteCartItem(subItem.id)}>
                         <Image
                           src="/img/delete.png"
                           alt=""
