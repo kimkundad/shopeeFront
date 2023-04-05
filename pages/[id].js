@@ -553,7 +553,7 @@ export default function Home(props) {
             })
           : null}
       </SimpleGrid>
-      <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
+      {/* <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader alignSelf="flex-end" pr="10px" pt="10px">
@@ -594,7 +594,7 @@ export default function Home(props) {
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

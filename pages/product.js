@@ -35,12 +35,17 @@ function product() {
         const res = await axios.get(
           `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data.id}&shop_id=${data.shop_id}`
         );
-        if (res.data.product[0].option1 !== null) {
-          res.data.product[0].allOption1.unshift({
-            img_name: res.data.product[0].img_product,
+        if (res.data.product[0].type !== 1) {
+          if (res.data.product[0].option1 !== null) {
+            res.data.product[0].allOption1.unshift({
+              img_name: res.data.product[0].img_product,
+            });
+          }
+        } else {
+          res.data.product[0].allImage.unshift({
+            image: res.data.product[0].img_product,
           });
         }
-
         const subOption = res.data.allSupOption;
         const getProduct = res.data.product;
         setProduct(getProduct);
@@ -53,10 +58,12 @@ function product() {
   const [option1, setOption1] = useState(null);
   async function selectOption1(event) {
     setOption1(event.target.id);
+    console.log(event.target.id);
     const slideIndex = product[0].allOption1.findIndex(
-      (item) => item.op_name === event.target.id
+      (item) => item.id == event.target.id
     );
     swiperRef.current.swiper.slideTo(slideIndex);
+    console.log(slideIndex);
   }
 
   const [num, setNum] = useState(1);
@@ -135,14 +142,30 @@ function product() {
                     className="mySwiper"
                     ref={swiperRef}
                   >
-                    {item.option1 !== null ? (
+                    {item.type === 1 ? (
+                      item.allImage !== null ? (
+                        item.allImage.map((item, index) => {
+                          return (
+                            <SwiperSlide key={index}>
+                              <Image
+                                src={`https://shopee-api.deksilp.com/images/shopee/products/${item.image}`}
+                                alt=""
+                                h="350px"
+                                w="100%"
+                                maxHeight="500px"
+                              />
+                            </SwiperSlide>
+                          );
+                        })
+                      ) : null
+                    ) : item.option1 !== null ? (
                       item.allOption1.map((item, index) => {
                         return (
                           <SwiperSlide key={index}>
                             <Image
                               src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
                               alt=""
-                              h="400px"
+                              h="350px"
                               w="100%"
                               maxHeight="500px"
                             />
