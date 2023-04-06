@@ -59,7 +59,7 @@ function product() {
   async function selectOption1(event) {
     setOption1(event.target.id);
     const slideIndex = product[0].allOption1.findIndex(
-      (item) => item.id == event.target.id
+      (item) => item.op_name == event.target.id
     );
     swiperRef.current.swiper.slideTo(slideIndex);
   }
@@ -124,179 +124,125 @@ function product() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box px="15px" py="10px" bg="white">
-        {product.length !== 0
-          ? product.map((item, index) => {
-              const sales =
-                item.price_sales !== 0
-                  ? item.price - (item.price_sales * item.price) / 100
-                  : item.price;
-              return (
-                <Box key={index}>
-                  <Swiper
-                    pagination={{
-                      dynamicBullets: true,
-                    }}
-                    modules={[Pagination]}
-                    className="mySwiper"
-                    ref={swiperRef}
-                  >
-                    {item.type === 1 ? (
-                      item.allImage !== null ? (
-                        item.allImage.map((item, index) => {
-                          return (
-                            <SwiperSlide key={index}>
-                              <Image
-                                src={`https://shopee-api.deksilp.com/images/shopee/products/${item.image}`}
-                                alt=""
-                                h="100%"
-                                w="100%"
-                                maxHeight="500px"
-                              />
-                            </SwiperSlide>
-                          );
-                        })
-                      ) : null
-                    ) : item.option1 !== null ? (
-                      item.allOption1.map((item, index) => {
-                        return (
-                          <SwiperSlide key={index}>
-                            <Image
-                              src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
-                              alt=""
-                              h="100%"
-                              w="100%"
-                              maxHeight="500px"
-                            />
-                          </SwiperSlide>
-                        );
-                      })
-                    ) : (
+        {product?.map((item, index) => {
+          const sales =
+            item.price_sales !== 0
+              ? item.price - (item.price_sales * item.price) / 100
+              : item.price;
+          return (
+            <Box key={index}>
+              <Swiper
+                pagination={{
+                  dynamicBullets: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiper"
+                ref={swiperRef}
+              >
+                {item.type === 1 ? (
+                  item.allImage !== null ? (
+                    item.allImage.map((item, index) => {
+                      return (
+                        <SwiperSlide key={index}>
+                          <Image
+                            src={`https://shopee-api.deksilp.com/images/shopee/products/${item.image}`}
+                            alt=""
+                            h="100%"
+                            w="100%"
+                            maxHeight="500px"
+                          />
+                        </SwiperSlide>
+                      );
+                    })
+                  ) : null
+                ) : item.option1 !== null ? (
+                  item.allOption1.map((item, index) => {
+                    return (
                       <SwiperSlide key={index}>
                         <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
                           alt=""
                           h="100%"
                           w="100%"
                           maxHeight="500px"
                         />
                       </SwiperSlide>
-                    )}
-                  </Swiper>
+                    );
+                  })
+                ) : (
+                  <SwiperSlide key={index}>
+                    <Image
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                      alt=""
+                      h="100%"
+                      w="100%"
+                      maxHeight="500px"
+                    />
+                  </SwiperSlide>
+                )}
+              </Swiper>
 
-                  <Box>
-                    <Text fontSize="xl" pt="7px">
-                      {item.name_product}
-                    </Text>
-                    <Text fontSize="sm">{item.detail_product}</Text>
-                  </Box>
-                  <Flex pt="15px">
-                    <Box>
-                      <HStack>
-                        <StarRatings
-                          rating={item.ratting}
-                          starDimension="10px"
-                          starSpacing="0px"
-                          starRatedColor="yellow"
-                        />
-                      </HStack>
-                      <Text pt="4px" fontSize="xs">
-                        ขายไปแล้ว 1000 ชิ้น
-                      </Text>
-                    </Box>
-                    <Spacer />
-                    <Flex alignSelf="center" fontSize="xs">
-                      <Text position="relative">(ราคาปกติ </Text>
-                      <Box ml="7px" display="inline-block" position="relative">
-                        <Text position="relative" display="inline">
-                          {item.price}
-                        </Text>
-                        <Box
-                          opacity="7"
-                          content=""
-                          position="absolute"
-                          top="45%"
-                          left="0"
-                          w="100%"
-                          h="1px"
-                          bgColor="red"
-                          transform="rotate(-15deg)"
-                        />
-                      </Box>
-                      <Text>.-)</Text>
-                    </Flex>
-                    <Box
-                      ml="10px"
-                      borderRadius="md"
-                      bg="red"
-                      alignSelf="center"
-                    >
-                      <Text
-                        px="10px"
-                        color="white"
-                        fontSize="2xl"
-                        fontWeight="bold"
-                      >
-                        {sales}.-
-                      </Text>
-                    </Box>
-                  </Flex>
+              <Box>
+                <Text fontSize="xl" pt="7px">
+                  {item.name_product}
+                </Text>
+                <Text fontSize="sm">{item.detail_product}</Text>
+              </Box>
+              <Flex pt="15px">
+                <Box>
+                  <HStack>
+                    <StarRatings
+                      rating={item.ratting}
+                      starDimension="10px"
+                      starSpacing="0px"
+                      starRatedColor="yellow"
+                    />
+                  </HStack>
+                  <Text pt="4px" fontSize="xs">
+                    ขายไปแล้ว 1000 ชิ้น
+                  </Text>
                 </Box>
-              );
-            })
-          : null}
+                <Spacer />
+                <Flex alignSelf="center" fontSize="xs">
+                  <Text position="relative">(ราคาปกติ </Text>
+                  <Box ml="7px" display="inline-block" position="relative">
+                    <Text position="relative" display="inline">
+                      {item.price}
+                    </Text>
+                    <Box
+                      opacity="7"
+                      content=""
+                      position="absolute"
+                      top="45%"
+                      left="0"
+                      w="100%"
+                      h="1px"
+                      bgColor="red"
+                      transform="rotate(-15deg)"
+                    />
+                  </Box>
+                  <Text>.-)</Text>
+                </Flex>
+                <Box ml="10px" borderRadius="md" bg="red" alignSelf="center">
+                  <Text
+                    px="10px"
+                    color="white"
+                    fontSize="2xl"
+                    fontWeight="bold"
+                  >
+                    {sales}.-
+                  </Text>
+                </Box>
+              </Flex>
+            </Box>
+          );
+        })}
       </Box>
       <Box px="15px" mt="10px" bg="white" pb="10px">
-        {product.length !== 0 ? (
-          product[0].option1 !== null ? (
-            <Box>
-              <Text fontSize="xl" mt="7px">
-                {product[0].option1}
-              </Text>
-              <SimpleGrid
-                spacing={4}
-                templateColumns="repeat(4, minmax(0px, 1fr))"
-                my="15px"
-                fontSize="sm"
-              >
-                {product[0].allOption1.map((item, index) => {
-                  return index !== 0 ? (
-                    option1 == item.id ? (
-                      // eslint-disable-next-line react/jsx-key
-                      <Button
-                        height="35px"
-                        key={index}
-                        w="100%"
-                        borderRadius="md"
-                        onClick={selectOption1}
-                        outline={`2px solid red`}
-                        bg="gray.300"
-                        id={item.id}
-                      >
-                        {item.op_name}
-                      </Button>
-                    ) : (
-                      <Button
-                        height="35px"
-                        key={index}
-                        w="100%"
-                        borderRadius="md"
-                        onClick={selectOption1}
-                        id={item.id}
-                      >
-                        {item.op_name}
-                      </Button>
-                    )
-                  ) : null;
-                })}
-              </SimpleGrid>
-            </Box>
-          ) : null
-        ) : null}
-
-        {allSubOption.length !== 0 ? (
+        {product[0]?.option1 !== null ? (
           <Box>
             <Text fontSize="xl" mt="7px">
-              {product[0].option2}
+              {product[0]?.option1}
             </Text>
             <SimpleGrid
               spacing={4}
@@ -304,37 +250,80 @@ function product() {
               my="15px"
               fontSize="sm"
             >
-              {allSubOption.map((item, index) => {
-                return option2 == item.sub_op_name ? (
-                  // eslint-disable-next-line react/jsx-key
-                  <Button
-                    height="35px"
-                    key={index}
-                    w="100%"
-                    borderRadius="md"
-                    outline={`2px solid red`}
-                    bg="gray.300"
-                    onClick={selectOption2}
-                    id={item.sub_op_name}
-                  >
-                    {item.sub_op_name}
-                  </Button>
-                ) : (
-                  <Button
-                    height="35px"
-                    key={index}
-                    w="100%"
-                    borderRadius="md"
-                    onClick={selectOption2}
-                    id={item.sub_op_name}
-                  >
-                    {item.sub_op_name}
-                  </Button>
-                );
+              {product[0]?.allOption1.map((item, index) => {
+                return index !== 0 ? (
+                  option1 == item.id ? (
+                    // eslint-disable-next-line react/jsx-key
+                    <Button
+                      height="35px"
+                      key={index}
+                      w="100%"
+                      borderRadius="md"
+                      onClick={selectOption1}
+                      outline={`2px solid red`}
+                      bg="gray.300"
+                      id={item.op_name}
+                    >
+                      {item.op_name}
+                    </Button>
+                  ) : (
+                    <Button
+                      height="35px"
+                      key={index}
+                      w="100%"
+                      borderRadius="md"
+                      onClick={selectOption1}
+                      id={item.op_name}
+                    >
+                      {item.op_name}
+                    </Button>
+                  )
+                ) : null;
               })}
             </SimpleGrid>
           </Box>
         ) : null}
+
+        <Box>
+          <Text fontSize="xl" mt="7px">
+            {product[0]?.option2}
+          </Text>
+          <SimpleGrid
+            spacing={4}
+            templateColumns="repeat(4, minmax(0px, 1fr))"
+            my="15px"
+            fontSize="sm"
+          >
+            {allSubOption?.map((item, index) => {
+              return option2 == item.sub_op_name ? (
+                // eslint-disable-next-line react/jsx-key
+                <Button
+                  height="35px"
+                  key={index}
+                  w="100%"
+                  borderRadius="md"
+                  outline={`2px solid red`}
+                  bg="gray.300"
+                  onClick={selectOption2}
+                  id={item.sub_op_name}
+                >
+                  {item.sub_op_name}
+                </Button>
+              ) : (
+                <Button
+                  height="35px"
+                  key={index}
+                  w="100%"
+                  borderRadius="md"
+                  onClick={selectOption2}
+                  id={item.sub_op_name}
+                >
+                  {item.sub_op_name}
+                </Button>
+              );
+            })}
+          </SimpleGrid>
+        </Box>
         <Box>
           <Flex alignItems="center" pt="7px">
             <Text fontSize="xl">จำนวน</Text>
@@ -390,7 +379,7 @@ function product() {
             <Link
               href={
                 product.length !== 0
-                  ? product[0].type == 1 && num > 0
+                  ? product[0]?.type == 1 && num > 0
                     ? {
                         pathname: "/order",
                         query: {
@@ -409,7 +398,7 @@ function product() {
                           num: num,
                         },
                       }
-                    : product[0].type == 2 && option1 !== null && num > 0
+                    : product[0]?.type == 2 && option1 !== null && num > 0
                     ? {
                         pathname: "/order",
                         query: {
@@ -428,7 +417,7 @@ function product() {
                           num: num,
                         },
                       }
-                    : product[0].type == 3 &&
+                    : product[0]?.type == 3 &&
                       option1 !== null &&
                       option2 !== null &&
                       num > 0
