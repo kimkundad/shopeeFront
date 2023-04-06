@@ -2,12 +2,6 @@ import Head from "next/head";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
   Center,
   useDisclosure,
   Box,
@@ -36,35 +30,42 @@ import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
 import { useRouter } from "next/router";
+import { getAllProduct, getShop, getAllCategory } from "@/hooks/allProduct";
 export default function Home(props) {
   const router = useRouter();
   const shopId = router.query.id;
+  const [scrollTop, setScrollTop] = useState(0)
 
-  const [categoryAll, setCategoryAll] = useState([]);
   useEffect(() => {
-    async function fetchData() {
-      const shop = await axios.get(
-        `https://shopee-api.deksilp.com/api/shop/${shopId}`
-      );
-      if (shop.data.shop.length !== 0) {
-        const allProduct = await axios.get(
-          `https://shopee-api.deksilp.com/api/allProduct/${shop.data.shop[0].id}`
-        );
-        const allCat = await axios.get(
-          "https://shopee-api.deksilp.com/api/get_category_all"
-        );
-        setNameShop(shop.data);
-        setProductAll(allProduct.data);
-        setCategoryAll(allCat.data);
-        allCat.data.category.unshift({ cat_name: "สินค้าทั้งหมด" });
-        setIsBorderActive(
-          Array(allCat.data.category.length).fill(false).fill(true, 0, 1)
-        );
+    if (typeof window !== 'undefined') {
+      const handleScroll = () => {
+        setScrollTop(window.scrollY)
+      }
+
+      window.addEventListener('scroll', handleScroll)
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll)
       }
     }
-    fetchData();
-  }, [shopId]);
-  const [ProductAll, setProductAll] = useState([]);
+  }, [])
+  console.log(scrollTop);
+  const [categoryAll, setCategoryAll] = useState(null);
+  const [ProductAll, setProductAll] = useState(null);
+  const { data: shop } = getShop(shopId);
+  const { data: product } = getAllProduct(shop?.shop[0]?.id);
+  const { data: category } = getAllCategory();
+  useEffect(() => {
+    setNameShop(shop);
+    setProductAll(product);
+    if (category?.category[0].cat_name !== "สินค้าทั้งหมด") {
+      category?.category.unshift({ cat_name: "สินค้าทั้งหมด" });
+    }
+    setCategoryAll(category);
+    setIsBorderActive(
+      Array(category?.category.length).fill(false).fill(true, 0, 1)
+    );
+  }, [product]);
 
   const [bgColor, setBgColor] = useState("rgba(255,255,255,0)");
 
@@ -74,23 +75,23 @@ export default function Home(props) {
   }, [props.data]);
 
   useEffect(() => {
-    if (scrollPosition == 0) {
+    if (scrollTop == 0) {
       setBgColor("rgba(255,255,255,0)");
-    } else if (scrollPosition > 0 && scrollPosition < 40) {
+    } else if (scrollTop > 0 && scrollTop < 40) {
       setBgColor("rgba(255,255,255,0.1)");
-    } else if (scrollPosition > 40 && scrollPosition < 50) {
+    } else if (scrollTop > 40 && scrollTop < 50) {
       setBgColor("rgba(255,255,255,0.3)");
-    } else if (scrollPosition > 50 && scrollPosition < 60) {
+    } else if (scrollTop > 50 && scrollTop < 60) {
       setBgColor("rgba(255,255,255,0.5)");
-    } else if (scrollPosition > 60 && scrollPosition < 70) {
+    } else if (scrollTop > 60 && scrollTop < 70) {
       setBgColor("rgba(255,255,255,0.7)");
-    } else if (scrollPosition > 80 && scrollPosition < 90) {
+    } else if (scrollTop > 80 && scrollTop < 90) {
       setBgColor("rgba(255,255,255,0.9)");
-    } else if (scrollPosition > 90) {
+    } else if (scrollTop > 90) {
       setBgColor("rgba(255,255,255,1)");
     }
   });
-  const [nameShop, setNameShop] = useState([]);
+  const [nameShop, setNameShop] = useState(null);
 
   const {
     isOpen: isOpenForm1,
@@ -136,422 +137,413 @@ export default function Home(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {nameShop.length !== 0 ? (
-        <Box className="test" h="150px">
-          <Box
-            className="test"
-            w="100%"
-            p="10px"
-            pb="15px"
-            pt="15px"
-            pos="fixed"
-            zIndex={100}
-            bg={bgColor}
-          >
-            <Flex alignItems="center">
-              <InputGroup
-                ml="2"
-                mr="5"
-                maxW="100%"
-                bg="white"
-                borderRadius="xl"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-              >
-                <InputLeftElement
-                  h="7"
-                  pointerEvents="none"
-                  children={<FaSearch color="gray.300" />}
-                />
-                <Input
-                  h="7"
-                  borderRadius="xl"
-                  type="text"
-                  placeholder="ค้นหา"
-                  onChange={search}
-                />
-              </InputGroup>
-              <Flex justifyContent="flex-end">
-                <Link href="/cartShop">
-                  <Box
-                    bg="white"
-                    borderRadius="50%"
-                    w="7"
-                    h="7"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    mr="5"
-                    border="1px"
-                    borderColor="gray.300"
-                  >
-                    <Image src={cart.src} alt="" h="4" />
-                  </Box>
-                </Link>
-                <Link href="/profile">
-                  <Box
-                    bg="white"
-                    borderRadius="50%"
-                    w="7"
-                    h="7"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    mr="2"
-                    order="1px"
-                    borderColor="gray.300"
-                  >
-                    <Image src={user.src} alt="" h="7" />
-                  </Box>
-                </Link>
-              </Flex>
-            </Flex>
-          </Box>
-          <Flex
-            alignItems="center"
-            px="2"
-            pt="16"
-            pb="28px"
-            backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${nameShop.shop[0].cover_img_shop})`}
-            h="100%"
-          >
-            <Box
-              bg="white"
-              borderRadius="50%"
-              className="wh"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
+      <Box className="test" h="150px">
+        <Box
+          className="test"
+          w="100%"
+          p="10px"
+          pb="15px"
+          pt="15px"
+          pos="fixed"
+          zIndex={100}
+          bg={bgColor}
+        >
+          <Flex alignItems="center">
+            <InputGroup
               ml="2"
+              mr="5"
+              maxW="100%"
+              bg="white"
+              borderRadius="xl"
+              justifyContent="flex-start"
+              alignItems="flex-start"
             >
-              <Image
-                borderRadius="50%"
-                src={`https://shopee-api.deksilp.com/images/shopee/shop/${nameShop.shop[0].img_shop}`}
-                alt=""
-                className="wh"
+              <InputLeftElement
+                h="7"
+                pointerEvents="none"
+                children={<FaSearch color="gray.300" />}
               />
-            </Box>
-            <Box textColor="white" pl="4">
-              <Box bg="black" borderRadius="md">
-                <Text pl="10px" className="textHead">
-                  {nameShop.shop[0].name_shop}
-                </Text>
-              </Box>
-
-              <Flex alignItems="center" height="100%" mt="10px">
-                <Center bg="red" borderRadius="md" px="5px">
-                  <StarIcon color="yellow.400" className="setIcon" />
-                  <Text pl="5px" className="textBody">
-                    4.8/5.0
-                  </Text>
-                </Center>
-                <Box bg="red" borderRadius="md" ml="10px">
-                  <Text px="5px" className="textBody">
-                    ร้านแนะนำ
-                  </Text>
-                </Box>
-              </Flex>
-            </Box>
-            <Spacer />
-            <Link href="/chat">
-              <Flex
-                textColor="black"
-                h="20px !important"
-                mr="2"
+              <Input
+                h="7"
                 borderRadius="xl"
-                bg="white"
-                alignItems="center"
-                mb="8"
-                className="setWidth"
-              >
-                <Image
-                  pl="3"
+                type="text"
+                placeholder="ค้นหา"
+                onChange={search}
+              />
+            </InputGroup>
+            <Flex justifyContent="flex-end">
+              <Link href="/cartShop">
+                <Box
+                  bg="white"
                   borderRadius="50%"
-                  src="/img/chat.png"
-                  alt=""
-                  h="10px"
-                />
-                <Text className="textBody" px="1">
-                  แชทร้านค้า
-                </Text>
-              </Flex>
-            </Link>
+                  w="7"
+                  h="7"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  mr="5"
+                  border="1px"
+                  borderColor="gray.300"
+                >
+                  <Image src={cart.src} alt="" h="4" />
+                </Box>
+              </Link>
+              <Link href="/profile">
+                <Box
+                  bg="white"
+                  borderRadius="50%"
+                  w="7"
+                  h="7"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  mr="2"
+                  order="1px"
+                  borderColor="gray.300"
+                >
+                  <Image src={user.src} alt="" h="7" />
+                </Box>
+              </Link>
+            </Flex>
           </Flex>
         </Box>
-      ) : null}
-      {categoryAll.length !== 0 ? (
         <Flex
-          flexWrap="nowrap"
-          overflowX="auto"
-          overflowY="hidden"
-          h="12"
-          pos="sticky"
-          top="53px"
-          bg="white"
-          zIndex={1000}
-          sx={{
-            "::-webkit-scrollbar": {
-              width: "0",
-              height: "0",
-            },
-          }}
+          alignItems="center"
+          px="2"
+          pt="16"
+          pb="28px"
+          backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${nameShop?.shop[0]?.cover_img_shop})`}
+          h="100%"
         >
-          {categoryAll.category.map((item, index) => {
-            return (
-              <Box
-                key={index}
-                alignSelf="end"
-                px="15px"
-                pb="3px"
-                flex="1"
-                textAlign="center"
-                whiteSpace="nowrap"
-                borderBottom={isBorderActive[index] ? "2px" : "1px"}
-                borderColor={isBorderActive[index] ? "red" : "gray.300"}
-                onClick={() => handleElementClick(index, item.id)}
-                id={item.id}
-              >
-                <Text fontWeight="bold">{item.cat_name}</Text>
+          <Box
+            bg="white"
+            borderRadius="50%"
+            className="wh"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            ml="2"
+          >
+            <Image
+              borderRadius="50%"
+              src={`https://shopee-api.deksilp.com/images/shopee/shop/${nameShop?.shop[0]?.img_shop}`}
+              alt=""
+              className="wh"
+            />
+          </Box>
+          <Box textColor="white" pl="4">
+            <Box bg="black" borderRadius="md">
+              <Text pl="10px" className="textHead">
+                {nameShop?.shop[0]?.name_shop}
+              </Text>
+            </Box>
+
+            <Flex alignItems="center" height="100%" mt="10px">
+              <Center bg="red" borderRadius="md" px="5px">
+                <StarIcon color="yellow.400" className="setIcon" />
+                <Text pl="5px" className="textBody">
+                  4.8/5.0
+                </Text>
+              </Center>
+              <Box bg="red" borderRadius="md" ml="10px">
+                <Text px="5px" className="textBody">
+                  ร้านแนะนำ
+                </Text>
               </Box>
-            );
-          })}
+            </Flex>
+          </Box>
+          <Spacer />
+          <Link href="/chat">
+            <Flex
+              textColor="black"
+              h="20px !important"
+              mr="2"
+              borderRadius="xl"
+              bg="white"
+              alignItems="center"
+              mb="8"
+              className="setWidth"
+            >
+              <Image
+                pl="3"
+                borderRadius="50%"
+                src="/img/chat.png"
+                alt=""
+                h="10px"
+              />
+              <Text className="textBody" px="1">
+                แชทร้านค้า
+              </Text>
+            </Flex>
+          </Link>
         </Flex>
-      ) : null}
+      </Box>
+
+      <Flex
+        flexWrap="nowrap"
+        overflowX="auto"
+        overflowY="hidden"
+        h="12"
+        pos="sticky"
+        top="53px"
+        bg="white"
+        zIndex={1000}
+        sx={{
+          "::-webkit-scrollbar": {
+            width: "0",
+            height: "0",
+          },
+        }}
+      >
+        {categoryAll?.category?.map((item, index) => {
+          return (
+            <Box
+              key={index}
+              alignSelf="end"
+              px="15px"
+              pb="3px"
+              flex="1"
+              textAlign="center"
+              whiteSpace="nowrap"
+              borderBottom={isBorderActive[index] ? "2px" : "1px"}
+              borderColor={isBorderActive[index] ? "red" : "gray.300"}
+              onClick={() => handleElementClick(index, item.id)}
+              id={item.id}
+            >
+              <Text fontWeight="bold">{item.cat_name}</Text>
+            </Box>
+          );
+        })}
+      </Flex>
 
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(2, minmax(150px, 1fr))"
         m="15px"
       >
-        {ProductAll.length !== 0
-          ? ProductAll.product.map((item, index) => {
-              let sales =
-                item.price_sales !== 0
-                  ? item.price - (item.price_sales * item.price) / 100
-                  : item.price;
-              if (
-                catName == "" ||
-                isBorderActive[0] ||
-                catName == "สินค้าทั้งหมด"
-              ) {
-                return (
-                  <Link
-                    href={{
-                      pathname: "/product",
-                      query: {
-                        id: item.id,
-                        shop_id: nameShop.shop[0].id,
-                      },
-                    }}
-                    key={item.id}
-                    /* as={`/product`} */
+        {ProductAll?.product?.map((item, index) => {
+          let sales =
+            item.price_sales !== 0
+              ? item.price - (item.price_sales * item.price) / 100
+              : item.price;
+          if (
+            catName == "" ||
+            isBorderActive[0] ||
+            catName == "สินค้าทั้งหมด"
+          ) {
+            return (
+              <Link
+                href={{
+                  pathname: "/product",
+                  query: {
+                    id: item.id,
+                    shop_id: nameShop.shop[0].id,
+                  },
+                }}
+                key={item.id}
+                /* as={`/product`} */
+              >
+                <Card borderRadius="xl" boxShadow="xl" h="100%">
+                  {item.price_sales !== 0 ? (
+                    <Box
+                      pos="absolute"
+                      bg="red"
+                      borderRadius="xl"
+                      top="-8px"
+                      right="-4px"
+                    >
+                      <Text color="white" px="10px" className="textHead">
+                        ลด {item.price_sales}%
+                      </Text>
+                    </Box>
+                  ) : null}
+
+                  <CardHeader
+                    className="setPadding"
+                    maxHeight="170px"
+                    alignSelf="center"
+                    w="100%"
                   >
-                    <Card borderRadius="xl" boxShadow="xl" h="100%">
-                      {item.price_sales !== 0 ? (
-                        <Box
-                          pos="absolute"
-                          bg="red"
-                          borderRadius="xl"
-                          top="-8px"
-                          right="-4px"
-                        >
-                          <Text color="white" px="10px" className="textHead">
-                            ลด {item.price_sales}%
-                          </Text>
-                        </Box>
-                      ) : null}
-
-                      <CardHeader
-                        className="setPadding"
-                        h="170px"
-                        alignSelf="center"
-                        w="100%"
-                      >
-                        <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
-                          alt={item.product_name}
-                          height="100%"
-                          width="100%"
-                          borderRadius="xl"
+                    <Image
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                      alt={item.product_name}
+                      height="100%"
+                      width="100%"
+                      borderRadius="xl"
+                    />
+                  </CardHeader>
+                  <CardBody className="setPadding">
+                    <Text textAlign="center" className="textHead">
+                      {item.name_product.length > 20
+                        ? item.name_product.substr(0, 20) + "..."
+                        : item.name_product}
+                    </Text>
+                    <Box className="textBody">
+                      <Text className="lineclamp">{item.detail_product}</Text>
+                    </Box>
+                  </CardBody>
+                  <CardFooter px="15px" py="10px">
+                    <Box alignSelf="end">
+                      <HStack>
+                        <StarRatings
+                          rating={item.ratting}
+                          starDimension="10px"
+                          starSpacing="0px"
+                          starRatedColor="yellow"
                         />
-                      </CardHeader>
-                      <CardBody className="setPadding">
-                        <Text textAlign="center" className="textHead">
-                          {item.name_product.length > 20
-                            ? item.name_product.substr(0, 20) + "..."
-                            : item.name_product}
-                        </Text>
-                        <Box className="textBody">
-                          <Text className="lineclamp">
-                            {item.detail_product}
+                      </HStack>
+                      <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                      <Flex className="textFooter">
+                        <Text position="relative">(ราคาปกติ </Text>
+                        <Box
+                          ml="7px"
+                          display="inline-block"
+                          position="relative"
+                        >
+                          <Text position="relative" display="inline">
+                            {item.price}
                           </Text>
+                          <Box
+                            opacity="7"
+                            content=""
+                            position="absolute"
+                            top="50%"
+                            left="0"
+                            w="100%"
+                            h="1px"
+                            bgColor="red"
+                            transform="rotate(-15deg)"
+                          />
                         </Box>
-                      </CardBody>
-                      <CardFooter px="15px" py="10px">
-                        <Box alignSelf="end">
-                          <HStack>
-                            <StarRatings
-                              rating={item.ratting}
-                              starDimension="10px"
-                              starSpacing="0px"
-                              starRatedColor="yellow"
-                            />
-                          </HStack>
-                          <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
-                        </Box>
-                        <Spacer />
-                        <Box>
-                          <Flex className="textFooter">
-                            <Text position="relative">(ราคาปกติ </Text>
-                            <Box
-                              ml="7px"
-                              display="inline-block"
-                              position="relative"
-                            >
-                              <Text position="relative" display="inline">
-                                {item.price}
-                              </Text>
-                              <Box
-                                opacity="7"
-                                content=""
-                                position="absolute"
-                                top="50%"
-                                left="0"
-                                w="100%"
-                                h="1px"
-                                bgColor="red"
-                                transform="rotate(-15deg)"
-                              />
-                            </Box>
-                            <Text>.-)</Text>
-                          </Flex>
+                        <Text>.-)</Text>
+                      </Flex>
 
-                          <Box borderRadius="md" bg="red">
-                            <Text
-                              px="5px"
-                              color="white"
-                              className="textHead"
-                              textAlign="center"
-                            >
-                              {sales}
-                            </Text>
-                          </Box>
-                        </Box>
-                      </CardFooter>
-                    </Card>
-                  </Link>
-                );
-              } else if (catName == item.category) {
-                return (
-                  <Link
-                    href={{
-                      pathname: "/product",
-                      query: {
-                        id: item.id,
-                        shop_id: nameShop.shop[0].id,
-                      },
-                    }}
-                    key={item.id}
-                    /* as={`/product`} */
+                      <Box borderRadius="md" bg="red">
+                        <Text
+                          px="5px"
+                          color="white"
+                          className="textHead"
+                          textAlign="center"
+                        >
+                          {sales}
+                        </Text>
+                      </Box>
+                    </Box>
+                  </CardFooter>
+                </Card>
+              </Link>
+            );
+          } else if (catName == item.category) {
+            return (
+              <Link
+                href={{
+                  pathname: "/product",
+                  query: {
+                    id: item.id,
+                    shop_id: nameShop.shop[0].id,
+                  },
+                }}
+                key={item.id}
+                /* as={`/product`} */
+              >
+                <Card borderRadius="xl" boxShadow="xl" h="100%">
+                  {item.price_sales !== 0 ? (
+                    <Box
+                      pos="absolute"
+                      bg="red"
+                      borderRadius="xl"
+                      top="-8px"
+                      right="-4px"
+                    >
+                      <Text color="white" px="10px" className="textHead">
+                        ลด {item.price_sales}%
+                      </Text>
+                    </Box>
+                  ) : null}
+
+                  <CardHeader
+                    className="setPadding"
+                    h="170px"
+                    alignSelf="center"
+                    w="100%"
                   >
-                    <Card borderRadius="xl" boxShadow="xl" h="100%">
-                      {item.price_sales !== 0 ? (
-                        <Box
-                          pos="absolute"
-                          bg="red"
-                          borderRadius="xl"
-                          top="-8px"
-                          right="-4px"
-                        >
-                          <Text color="white" px="10px" className="textHead">
-                            ลด {item.price_sales}%
-                          </Text>
-                        </Box>
-                      ) : null}
-
-                      <CardHeader
-                        className="setPadding"
-                        h="170px"
-                        alignSelf="center"
-                        w="100%"
-                      >
-                        <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
-                          alt={item.product_name}
-                          height="100%"
-                          width="100%"
-                          borderRadius="xl"
+                    <Image
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                      alt={item.product_name}
+                      height="100%"
+                      width="100%"
+                      borderRadius="xl"
+                    />
+                  </CardHeader>
+                  <CardBody className="setPadding">
+                    <Text textAlign="center" className="textHead">
+                      {item.name_product.length > 20
+                        ? item.name_product.substr(0, 20) + "..."
+                        : item.name_product}
+                    </Text>
+                    <Box className="textBody">
+                      <Text className="lineclamp">{item.detail_product}</Text>
+                    </Box>
+                  </CardBody>
+                  <CardFooter px="15px" py="10px">
+                    <Box alignSelf="end">
+                      <HStack>
+                        <StarRatings
+                          rating={item.ratting}
+                          starDimension="10px"
+                          starSpacing="0px"
+                          starRatedColor="yellow"
                         />
-                      </CardHeader>
-                      <CardBody className="setPadding">
-                        <Text textAlign="center" className="textHead">
-                          {item.name_product.length > 20
-                            ? item.name_product.substr(0, 20) + "..."
-                            : item.name_product}
-                        </Text>
-                        <Box className="textBody">
-                          <Text className="lineclamp">
-                            {item.detail_product}
+                      </HStack>
+                      <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                      <Flex className="textFooter">
+                        <Text position="relative">(ราคาปกติ </Text>
+                        <Box
+                          ml="7px"
+                          display="inline-block"
+                          position="relative"
+                        >
+                          <Text position="relative" display="inline">
+                            {item.price}
                           </Text>
+                          <Box
+                            opacity="7"
+                            content=""
+                            position="absolute"
+                            top="50%"
+                            left="0"
+                            w="100%"
+                            h="1px"
+                            bgColor="red"
+                            transform="rotate(-15deg)"
+                          />
                         </Box>
-                      </CardBody>
-                      <CardFooter px="15px" py="10px">
-                        <Box alignSelf="end">
-                          <HStack>
-                            <StarRatings
-                              rating={item.ratting}
-                              starDimension="10px"
-                              starSpacing="0px"
-                              starRatedColor="yellow"
-                            />
-                          </HStack>
-                          <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
-                        </Box>
-                        <Spacer />
-                        <Box>
-                          <Flex className="textFooter">
-                            <Text position="relative">(ราคาปกติ </Text>
-                            <Box
-                              ml="7px"
-                              display="inline-block"
-                              position="relative"
-                            >
-                              <Text position="relative" display="inline">
-                                {item.price}
-                              </Text>
-                              <Box
-                                opacity="7"
-                                content=""
-                                position="absolute"
-                                top="50%"
-                                left="0"
-                                w="100%"
-                                h="1px"
-                                bgColor="red"
-                                transform="rotate(-15deg)"
-                              />
-                            </Box>
-                            <Text>.-)</Text>
-                          </Flex>
+                        <Text>.-)</Text>
+                      </Flex>
 
-                          <Box borderRadius="md" bg="red">
-                            <Text
-                              px="5px"
-                              color="white"
-                              className="textHead"
-                              textAlign="center"
-                            >
-                              {sales}
-                            </Text>
-                          </Box>
-                        </Box>
-                      </CardFooter>
-                    </Card>
-                  </Link>
-                );
-              }
-            })
-          : null}
+                      <Box borderRadius="md" bg="red">
+                        <Text
+                          px="5px"
+                          color="white"
+                          className="textHead"
+                          textAlign="center"
+                        >
+                          {sales}
+                        </Text>
+                      </Box>
+                    </Box>
+                  </CardFooter>
+                </Card>
+              </Link>
+            );
+          }
+        })}
       </SimpleGrid>
       {/* <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
         <ModalOverlay />

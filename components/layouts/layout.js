@@ -8,10 +8,9 @@ export default function Layout({ children }) {
   const { pathname } = router;
   const [scrollPosition, setScrollPosition] = useState(0);
   return (
-    <>
       <Box
-        overflow={pathname == "/[id]"? "auto":"none"}
-        h={pathname == "/[id]"? "100vh":""}
+        /* overflow={pathname == "/[id]"? "auto":"none"}
+        h={pathname == "/[id]"? "100vh":""} */
         bg={
           pathname == "/address/newaddress" ||
           pathname == "/statusProduct" ||
@@ -44,6 +43,5 @@ export default function Layout({ children }) {
           {children && React.cloneElement(children, { data: scrollPosition })}
         </Box>
       </Box>
-    </>
   );
 }
