@@ -49,7 +49,6 @@ export default function Home(props) {
       }
     }
   }, [])
-  console.log(scrollTop);
   const [categoryAll, setCategoryAll] = useState(null);
   const [ProductAll, setProductAll] = useState(null);
   const { data: shop } = getShop(shopId);
@@ -308,9 +307,9 @@ export default function Home(props) {
               borderBottom={isBorderActive[index] ? "2px" : "1px"}
               borderColor={isBorderActive[index] ? "red" : "gray.300"}
               onClick={() => handleElementClick(index, item.id)}
-              id={item.id}
+              id={item?.id}
             >
-              <Text fontWeight="bold">{item.cat_name}</Text>
+              <Text fontWeight="bold">{item?.cat_name}</Text>
             </Box>
           );
         })}
@@ -323,9 +322,9 @@ export default function Home(props) {
       >
         {ProductAll?.product?.map((item, index) => {
           let sales =
-            item.price_sales !== 0
-              ? item.price - (item.price_sales * item.price) / 100
-              : item.price;
+            item?.price_sales !== 0
+              ? item?.price - (item?.price_sales * item?.price) / 100
+              : item?.price;
           if (
             catName == "" ||
             isBorderActive[0] ||
@@ -336,15 +335,16 @@ export default function Home(props) {
                 href={{
                   pathname: "/product",
                   query: {
-                    id: item.id,
-                    shop_id: nameShop.shop[0].id,
+                    product_id: item?.id,
+                    shop_id: nameShop?.shop[0]?.id,
+                    name_shop: nameShop?.shop[0]?.name_shop,
                   },
                 }}
                 key={item.id}
                 /* as={`/product`} */
               >
                 <Card borderRadius="xl" boxShadow="xl" h="100%">
-                  {item.price_sales !== 0 ? (
+                  {item?.price_sales !== 0 ? (
                     <Box
                       pos="absolute"
                       bg="red"
@@ -353,7 +353,7 @@ export default function Home(props) {
                       right="-4px"
                     >
                       <Text color="white" px="10px" className="textHead">
-                        ลด {item.price_sales}%
+                        ลด {item?.price_sales}%
                       </Text>
                     </Box>
                   ) : null}
@@ -361,12 +361,13 @@ export default function Home(props) {
                   <CardHeader
                     className="setPadding"
                     maxHeight="170px"
+                    maxWidth="170px"
                     alignSelf="center"
                     w="100%"
                   >
                     <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
-                      alt={item.product_name}
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                      alt={item?.product_name}
                       height="100%"
                       width="100%"
                       borderRadius="xl"
@@ -374,19 +375,19 @@ export default function Home(props) {
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">
-                      {item.name_product.length > 20
-                        ? item.name_product.substr(0, 20) + "..."
-                        : item.name_product}
+                      {item?.name_product?.length > 20
+                        ? item?.name_product.substr(0, 20) + "..."
+                        : item?.name_product}
                     </Text>
                     <Box className="textBody">
-                      <Text className="lineclamp">{item.detail_product}</Text>
+                      <Text className="lineclamp">{item?.detail_product}</Text>
                     </Box>
                   </CardBody>
                   <CardFooter px="15px" py="10px">
                     <Box alignSelf="end">
                       <HStack>
                         <StarRatings
-                          rating={item.ratting}
+                          rating={item?.ratting}
                           starDimension="10px"
                           starSpacing="0px"
                           starRatedColor="yellow"
@@ -404,7 +405,7 @@ export default function Home(props) {
                           position="relative"
                         >
                           <Text position="relative" display="inline">
-                            {item.price}
+                            {item?.price}
                           </Text>
                           <Box
                             opacity="7"
@@ -436,21 +437,22 @@ export default function Home(props) {
                 </Card>
               </Link>
             );
-          } else if (catName == item.category) {
+          } else if (catName == item?.category) {
             return (
               <Link
                 href={{
                   pathname: "/product",
                   query: {
-                    id: item.id,
-                    shop_id: nameShop.shop[0].id,
+                    product_id: item?.id,
+                    shop_id: nameShop?.shop[0]?.id,
+                    name_shop: nameShop?.shop[0]?.name_shop,
                   },
                 }}
-                key={item.id}
+                key={item?.id}
                 /* as={`/product`} */
               >
                 <Card borderRadius="xl" boxShadow="xl" h="100%">
-                  {item.price_sales !== 0 ? (
+                  {item?.price_sales !== 0 ? (
                     <Box
                       pos="absolute"
                       bg="red"
@@ -459,7 +461,7 @@ export default function Home(props) {
                       right="-4px"
                     >
                       <Text color="white" px="10px" className="textHead">
-                        ลด {item.price_sales}%
+                        ลด {item?.price_sales}%
                       </Text>
                     </Box>
                   ) : null}
@@ -471,8 +473,8 @@ export default function Home(props) {
                     w="100%"
                   >
                     <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
-                      alt={item.product_name}
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                      alt={item?.product_name}
                       height="100%"
                       width="100%"
                       borderRadius="xl"
@@ -480,19 +482,19 @@ export default function Home(props) {
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">
-                      {item.name_product.length > 20
-                        ? item.name_product.substr(0, 20) + "..."
-                        : item.name_product}
+                      {item?.name_product?.length > 20
+                        ? item?.name_product.substr(0, 20) + "..."
+                        : item?.name_product}
                     </Text>
                     <Box className="textBody">
-                      <Text className="lineclamp">{item.detail_product}</Text>
+                      <Text className="lineclamp">{item?.detail_product}</Text>
                     </Box>
                   </CardBody>
                   <CardFooter px="15px" py="10px">
                     <Box alignSelf="end">
                       <HStack>
                         <StarRatings
-                          rating={item.ratting}
+                          rating={item?.ratting}
                           starDimension="10px"
                           starSpacing="0px"
                           starRatedColor="yellow"
@@ -510,7 +512,7 @@ export default function Home(props) {
                           position="relative"
                         >
                           <Text position="relative" display="inline">
-                            {item.price}
+                            {item?.price}
                           </Text>
                           <Box
                             opacity="7"

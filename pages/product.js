@@ -30,10 +30,10 @@ function product() {
   const [product, setProduct] = useState([]);
   const [allSubOption, setAllSubOption] = useState([]);
   useEffect(() => {
-    if (data.id !== undefined) {
+    if (data?.product_id !== undefined) {
       async function fetchData() {
         const res = await axios.get(
-          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data.id}&shop_id=${data.shop_id}`
+          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data?.product_id}&shop_id=${data?.shop_id}`
         );
         if (res.data.product[0].type !== 1) {
           if (res.data.product[0].option1 !== null) {
@@ -58,7 +58,7 @@ function product() {
   const [option1, setOption1] = useState(null);
   async function selectOption1(event) {
     setOption1(event.target.id);
-    const slideIndex = product[0].allOption1.findIndex(
+    const slideIndex = product[0]?.allOption1.findIndex(
       (item) => item.op_name == event.target.id
     );
     swiperRef.current.swiper.slideTo(slideIndex);
@@ -126,9 +126,9 @@ function product() {
       <Box px="15px" py="10px" bg="white">
         {product?.map((item, index) => {
           const sales =
-            item.price_sales !== 0
-              ? item.price - (item.price_sales * item.price) / 100
-              : item.price;
+            item?.price_sales !== 0
+              ? item?.price - (item?.price_sales * item?.price) / 100
+              : item?.price;
           return (
             <Box key={index}>
               <Swiper
@@ -141,11 +141,11 @@ function product() {
               >
                 {item.type === 1 ? (
                   item.allImage !== null ? (
-                    item.allImage.map((item, index) => {
+                    item?.allImage.map((item, index) => {
                       return (
                         <SwiperSlide key={index}>
                           <Image
-                            src={`https://shopee-api.deksilp.com/images/shopee/products/${item.image}`}
+                            src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.image}`}
                             alt=""
                             h="100%"
                             w="100%"
@@ -156,11 +156,11 @@ function product() {
                     })
                   ) : null
                 ) : item.option1 !== null ? (
-                  item.allOption1.map((item, index) => {
+                  item?.allOption1.map((item, index) => {
                     return (
                       <SwiperSlide key={index}>
                         <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_name}`}
                           alt=""
                           h="100%"
                           w="100%"
@@ -172,7 +172,7 @@ function product() {
                 ) : (
                   <SwiperSlide key={index}>
                     <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_product}`}
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
                       alt=""
                       h="100%"
                       w="100%"
@@ -184,15 +184,15 @@ function product() {
 
               <Box>
                 <Text fontSize="xl" pt="7px">
-                  {item.name_product}
+                  {item?.name_product}
                 </Text>
-                <Text fontSize="sm">{item.detail_product}</Text>
+                <Text fontSize="sm">{item?.detail_product}</Text>
               </Box>
               <Flex pt="15px">
                 <Box>
                   <HStack>
                     <StarRatings
-                      rating={item.ratting}
+                      rating={item?.ratting}
                       starDimension="10px"
                       starSpacing="0px"
                       starRatedColor="yellow"
@@ -207,7 +207,7 @@ function product() {
                   <Text position="relative">(ราคาปกติ </Text>
                   <Box ml="7px" display="inline-block" position="relative">
                     <Text position="relative" display="inline">
-                      {item.price}
+                      {item?.price}
                     </Text>
                     <Box
                       opacity="7"
@@ -252,7 +252,7 @@ function product() {
             >
               {product[0]?.allOption1.map((item, index) => {
                 return index !== 0 ? (
-                  option1 == item.id ? (
+                  option1 == item?.op_name ? (
                     // eslint-disable-next-line react/jsx-key
                     <Button
                       height="35px"
@@ -262,9 +262,9 @@ function product() {
                       onClick={selectOption1}
                       outline={`2px solid red`}
                       bg="gray.300"
-                      id={item.op_name}
+                      id={item?.op_name}
                     >
-                      {item.op_name}
+                      {item?.op_name}
                     </Button>
                   ) : (
                     <Button
@@ -273,9 +273,9 @@ function product() {
                       w="100%"
                       borderRadius="md"
                       onClick={selectOption1}
-                      id={item.op_name}
+                      id={item?.op_name}
                     >
-                      {item.op_name}
+                      {item?.op_name}
                     </Button>
                   )
                 ) : null;
@@ -295,7 +295,7 @@ function product() {
             fontSize="sm"
           >
             {allSubOption?.map((item, index) => {
-              return option2 == item.sub_op_name ? (
+              return option2 == item?.sub_op_name ? (
                 // eslint-disable-next-line react/jsx-key
                 <Button
                   height="35px"
@@ -305,9 +305,9 @@ function product() {
                   outline={`2px solid red`}
                   bg="gray.300"
                   onClick={selectOption2}
-                  id={item.sub_op_name}
+                  id={item?.sub_op_name}
                 >
-                  {item.sub_op_name}
+                  {item?.sub_op_name}
                 </Button>
               ) : (
                 <Button
@@ -316,9 +316,9 @@ function product() {
                   w="100%"
                   borderRadius="md"
                   onClick={selectOption2}
-                  id={item.sub_op_name}
+                  id={item?.sub_op_name}
                 >
-                  {item.sub_op_name}
+                  {item?.sub_op_name}
                 </Button>
               );
             })}
@@ -383,18 +383,18 @@ function product() {
                     ? {
                         pathname: "/order",
                         query: {
-                          name_shop: data.name_shop,
-                          product_id: product[0].id,
-                          name_product: product[0].name_product,
-                          detail_product: product[0].detail_product,
-                          img_product: product[0].img_product,
-                          price: product[0].price,
-                          price_sales: product[0].price_sales,
+                          name_shop: data?.name_shop,
+                          product_id: product[0]?.id,
+                          name_product: product[0]?.name_product,
+                          detail_product: product[0]?.detail_product,
+                          img_product: product[0]?.img_product,
+                          price: product[0]?.price,
+                          price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
-                          name_option1: product[0].option1,
-                          name_option2: product[0].option2,
-                          type: product[0].type,
+                          name_option1: product[0]?.option1,
+                          name_option2: product[0]?.option2,
+                          type: product[0]?.type,
                           num: num,
                         },
                       }
@@ -402,18 +402,18 @@ function product() {
                     ? {
                         pathname: "/order",
                         query: {
-                          name_shop: data.name_shop,
-                          product_id: product[0].id,
-                          name_product: product[0].name_product,
-                          detail_product: product[0].detail_product,
-                          img_product: product[0].img_product,
-                          price: product[0].price,
-                          price_sales: product[0].price_sales,
+                          name_shop: data?.name_shop,
+                          product_id: product[0]?.id,
+                          name_product: product[0]?.name_product,
+                          detail_product: product[0]?.detail_product,
+                          img_product: product[0]?.img_product,
+                          price: product[0]?.price,
+                          price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
-                          name_option1: product[0].option1,
-                          name_option2: product[0].option2,
-                          type: product[0].type,
+                          name_option1: product[0]?.option1,
+                          name_option2: product[0]?.option2,
+                          type: product[0]?.type,
                           num: num,
                         },
                       }
@@ -424,18 +424,18 @@ function product() {
                     ? {
                         pathname: "/order",
                         query: {
-                          name_shop: data.name_shop,
-                          product_id: product[0].id,
-                          name_product: product[0].name_product,
-                          detail_product: product[0].detail_product,
-                          img_product: product[0].img_product,
-                          price: product[0].price,
-                          price_sales: product[0].price_sales,
+                          name_shop: data?.name_shop,
+                          product_id: product[0]?.id,
+                          name_product: product[0]?.name_product,
+                          detail_product: product[0]?.detail_product,
+                          img_product: product[0]?.img_product,
+                          price: product[0]?.price,
+                          price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
-                          name_option1: product[0].option1,
-                          name_option2: product[0].option2,
-                          type: product[0].type,
+                          name_option1: product[0]?.option1,
+                          name_option2: product[0]?.option2,
+                          type: product[0]?.type,
                           num: num,
                         },
                       }
