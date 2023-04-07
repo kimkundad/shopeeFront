@@ -13,6 +13,7 @@ import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
 export default function Header() {
   const router = useRouter();
   const { pathname } = router;
