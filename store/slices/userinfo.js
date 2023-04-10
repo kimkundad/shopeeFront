@@ -69,7 +69,7 @@ export const getUserInfo = (router) => async (dispatch, getState) => {
         if (response.status == 200) {
             console.log('มีข้อมูลนะ')
           //  location.href = '/profile';  
-           dispatch(slice.actions.getUserSuccess(response.data.user))
+           dispatch(slice.actions.getUserSuccess(response.data))
         
         } else {
         console.log('ไม่มี status 200')

@@ -5,8 +5,6 @@ import Router from "next/router";
 import { getUserAuthen } from '@/store/slices/authen'
 import Swal from 'sweetalert2'
 
-
-
 const initialState = {
     username:null,
     password:null,
@@ -102,7 +100,7 @@ export const postRegis = (user, router) => async dispatch => {
    // console.log(user)
     axios.request({
         method: "POST",
-        url: 'http://127.0.0.1:8000/api/auth/register',
+        url: 'https://shopee-api.deksilp.com/api/createUser',
         data: user,
         headers: {
           'Accept': 'application/json',
@@ -117,16 +115,10 @@ export const postRegis = (user, router) => async dispatch => {
             dispatch(getUserAuthen(user))
 
             Swal.fire({
-                title: 'อัพเดทสำเร็จ',
+                title: 'เข้าสุ่ระบบสำเร็จ',
                 icon: 'success',
                 timer: 2000
               })
-
-              setTimeout(function(){ 
-                dispatch(slice.actions.firstAdd())
-               // dispatch(getUserAuthen(user,router))
-               Router.push('/')
-             }, 4000);
             
         } else {
         console.log(response, 'ไม่มี status 201')

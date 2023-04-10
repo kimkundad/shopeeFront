@@ -3,6 +3,7 @@ import axios from 'axios'
 import Router from "next/router";
 import { getUserInfo } from '@/store/slices/userinfo'
 import { setCookie } from 'cookies-next';
+import Swal from 'sweetalert2'
 
 const initialState = {
     isLoading: false,
@@ -12,6 +13,7 @@ const initialState = {
     isError:false,
     errorData: null,
 };
+
 
 const slice = createSlice({
     name: 'authen',
@@ -63,21 +65,25 @@ export const getUserAuthen = (user, router) => async dispatch => {
      .then(function (response) {
         console.log(response)
         if (response.status == 200) { 
-            console.log(router,'มี router')
-            console.log('access_token', response.data.authorisation.token)
             setCookie('access_token', response.data.authorisation.token, { maxAge: 60 * 6 * 24 });
             // window.location = '/profile';  
             dispatch(slice.actions.authenSuccess(response.data.authorisation.token))
             dispatch(getUserInfo(router))
+            Swal.fire({
+                title: 'เข้าสุ่ระบบสำเร็จ',
+                icon: 'success',
+                timer: 2000
+              })
             //   dispatch(getUserTadd(router))
-        } else { 
-            console.log('ไม่มี status 200')    
-            return Promise.reject(response);
-       // dispatch(slice.actions.authenFailed(response.data.access_token))
+         
         }
      })
      .catch((response) => {
-        console.log('@@@Login error :: ',JSON.stringify(response))
+        Swal.fire({
+            title: 'ข้อมูลผู้ใช้งานไม่ถูกต้อง',
+            icon: 'error',
+            timer: 3000
+          })
         dispatch(slice.actions.authenFailed(response.data))
      })
 }

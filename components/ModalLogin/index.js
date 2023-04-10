@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react'
 import { connect, useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
+
 import {
     Modal,
     ModalOverlay,
@@ -34,8 +35,10 @@ import {
   import NextLink from 'next/link'
   import user from "@/public/img/icon/user copy.png";
   import cart from "@/public/img/icon/cart.png";
-  import { getUserAuthen } from '@/store/slices/authen'
+
   import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+
+  import Login from '@/components/ModalLogin/login';
 
   export default function ModalLogin(props) {
 
@@ -47,33 +50,11 @@ import {
     const [password, setPassword] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);  
-    
-    const [checkauth, setCheckauth] = useState(authen?.isAuthenticate); 
 
-    const onChangePhone = (e) => {
-        setPhone(e.target.value);
-    };
+    const [showLogin, setShowLogin] = useState(false);
 
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const user = {
-            phone,
-            password,
-          }
    
-          dispatch(getUserAuthen(user))
-          console.log('--->', user)
-
-          onCloseForm2() 
-    }
-
-
-
+    
     const {
         isOpen: isOpenForm1,
         onOpen: onOpenForm1,
@@ -84,15 +65,19 @@ import {
         onOpen: onOpenForm2,
         onClose: onCloseForm2,
       } = useDisclosure();
+
     const handleClick = () => {
         onCloseForm1();
         onCloseForm2();
+        console.log('--->handleClick')
       };
 
       const loginClick = () => {
+        setShowLogin(true)
         onCloseForm1();
-        onOpenForm2();
       };
+
+      
 
     return (
         <>
@@ -136,6 +121,31 @@ import {
                 </Box>
             </Link>
             }
+            {props?.type === 'chat' &&
+            <Link as={NextLink} href="/chat">
+                <Flex
+                textColor="black"
+                h="20px !important"
+                mr="2"
+                borderRadius="xl"
+                bg="white"
+                alignItems="center"
+                mb="8"
+                className="setWidth"
+                >
+                <Image
+                    pl="3"
+                    borderRadius="50%"
+                    src="/img/chat.png"
+                    alt=""
+                    h="10px"
+                />
+                <Text className="textBody" px="1">
+                    แชทร้านค้า
+                </Text>
+                </Flex>
+            </Link>
+            }
             </>
         ):(
             <>
@@ -171,6 +181,29 @@ import {
             >
                 <Image src={cart.src} alt="" h="4" />
             </Box>
+            }
+            {props?.type === 'chat' &&
+            <Flex onClick={onOpenForm1}
+                textColor="black"
+                h="20px !important"
+                mr="2"
+                borderRadius="xl"
+                bg="white"
+                alignItems="center"
+                mb="8"
+                className="setWidth"
+            >
+                <Image
+                pl="3"
+                borderRadius="50%"
+                src="/img/chat.png"
+                alt=""
+                h="10px"
+                />
+                <Text className="textBody" px="1">
+                แชทร้านค้า
+                </Text>
+            </Flex>
             }
             </>
         )
@@ -225,60 +258,9 @@ import {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm2} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader alignSelf="flex-end" pr="10px" pt="10px">
-            <Image
-              src="/img/cancel.png"
-              alt=""
-              h="25px"
-              w="25px"
-              onClick={() => handleClick()}
-            />
-          </ModalHeader>
-          <ModalBody>
-            <Box px="5px">
-              <FormControl>
-                <Text fontSize="24px" fontWeight="bold">
-                  กรอกเบอร์โทรศัพท์
-                </Text>
-                <Input bg="gray.100" type="number" name="phone" onChange={onChangePhone}/>
-                <Flex mt="15px">
-                  <Text fontSize="24px" fontWeight="bold">
-                   รหัสผ่าน
-                  </Text>
-                </Flex>
-
-                <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} name="password" onChange={onChangePassword} />
-                <InputRightElement h={'full'}>
-                  <Button
-                    variant={'ghost'}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }>
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              </FormControl>
-
-              <Box textAlign="center">
-                <Button mt="15px" bg="red" color="white" onClick={handleSubmit}>
-                  เข้าสู่ระบบ
-                </Button>
-              </Box>
-              <Stack pt={6}>
-              <Text align={'center'} fontSize="20px" >
-                หากคุณยังไม่มีบัญชี? <Link as={NextLink} fontSize="22px" href="#" color={'blue.400'}>สมัครใช้งาน</Link>
-              </Text>
-            </Stack>
-            </Box>
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
+      
+      <Login onOpen={showLogin} onClose={() => setShowLogin(false)}/> 
+      
         </>
     );
 

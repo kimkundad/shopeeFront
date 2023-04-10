@@ -223,29 +223,7 @@ export default function Home(props) {
             </Flex>
           </Box>
           <Spacer />
-          <Link href="/chat">
-            <Flex
-              textColor="black"
-              h="20px !important"
-              mr="2"
-              borderRadius="xl"
-              bg="white"
-              alignItems="center"
-              mb="8"
-              className="setWidth"
-            >
-              <Image
-                pl="3"
-                borderRadius="50%"
-                src="/img/chat.png"
-                alt=""
-                h="10px"
-              />
-              <Text className="textBody" px="1">
-                แชทร้านค้า
-              </Text>
-            </Flex>
-          </Link>
+          <ModalLogin type="chat"/>
         </Flex>
       </Box>
 
