@@ -126,7 +126,7 @@ export default function statusProduct(props) {
                                 bg={isBorderActive[0] ? "red" : ""}
                                 borderRadius="xl"
                                 className={style.textBody}
-                                height="-webkit-fill-available"
+                                height="15px"
                                 px="10px"
                                 color={
                                   isBorderActive[0]
@@ -204,7 +204,7 @@ export default function statusProduct(props) {
                               bg={isBorderActive[0] ? "red" : ""}
                               borderRadius="xl"
                               className={style.textBody}
-                              height="-webkit-fill-available"
+                              height="15px"
                               px="10px"
                               color={
                                 isBorderActive[0]
@@ -279,7 +279,7 @@ export default function statusProduct(props) {
                                 bg={isBorderActive[0] ? "red" : ""}
                                 borderRadius="xl"
                                 className={style.textBody}
-                                height="-webkit-fill-available"
+                                height="15px"
                                 px="10px"
                                 color={
                                   isBorderActive[0]
@@ -350,7 +350,7 @@ export default function statusProduct(props) {
                               bg={isBorderActive[0] ? "red" : ""}
                               borderRadius="xl"
                               className={style.textBody}
-                              height="-webkit-fill-available"
+                              height="15px"
                               px="10px"
                               color={
                                 isBorderActive[0]
