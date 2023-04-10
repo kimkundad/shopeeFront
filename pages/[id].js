@@ -31,6 +31,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
 import { useRouter } from "next/router";
 import { getAllProduct, getShop, getAllCategory } from "@/hooks/allProduct";
+import ModalLogin from "@/components/ModalLogin";
 export default function Home(props) {
   const router = useRouter();
   const shopId = router.query.id;
@@ -171,38 +172,8 @@ export default function Home(props) {
               />
             </InputGroup>
             <Flex justifyContent="flex-end">
-              <Link href="/cartShop">
-                <Box
-                  bg="white"
-                  borderRadius="50%"
-                  w="7"
-                  h="7"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  mr="5"
-                  border="1px"
-                  borderColor="gray.300"
-                >
-                  <Image src={cart.src} alt="" h="4" />
-                </Box>
-              </Link>
-              <Link href="/profile">
-                <Box
-                  bg="white"
-                  borderRadius="50%"
-                  w="7"
-                  h="7"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  mr="2"
-                  order="1px"
-                  borderColor="gray.300"
-                >
-                  <Image src={user.src} alt="" h="7" />
-                </Box>
-              </Link>
+              <ModalLogin type="card"/>
+              <ModalLogin type="avatar"/>
             </Flex>
           </Flex>
         </Box>
@@ -252,29 +223,7 @@ export default function Home(props) {
             </Flex>
           </Box>
           <Spacer />
-          <Link href="/chat">
-            <Flex
-              textColor="black"
-              h="20px !important"
-              mr="2"
-              borderRadius="xl"
-              bg="white"
-              alignItems="center"
-              mb="8"
-              className="setWidth"
-            >
-              <Image
-                pl="3"
-                borderRadius="50%"
-                src="/img/chat.png"
-                alt=""
-                h="10px"
-              />
-              <Text className="textBody" px="1">
-                แชทร้านค้า
-              </Text>
-            </Flex>
-          </Link>
+          <ModalLogin type="chat"/>
         </Flex>
       </Box>
 
