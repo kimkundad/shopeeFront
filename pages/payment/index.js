@@ -3,7 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { Box, Card, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-function index() {
+function useIndex() {
   const router = useRouter();
   const [queryParams, setQueryParams] = useState({});
 
@@ -160,4 +160,4 @@ function index() {
   );
 }
 
-export default index;
+export default useIndex;

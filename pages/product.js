@@ -24,7 +24,7 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper";
 
 import StarRatings from "react-star-ratings";
-function product() {
+function useProduct() {
   const router = useRouter();
   const data = router.query;
   const [product, setProduct] = useState([]);
@@ -56,8 +56,10 @@ function product() {
   }, [data]);
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
-  async function selectOption1(event) {
+  const [option1Id, setOption1Id] = useState(null);
+  async function selectOption1(event,id) {
     setOption1(event.target.id);
+    setOption1Id(id)
     const slideIndex = product[0]?.allOption1.findIndex(
       (item) => item.op_name == event.target.id
     );
@@ -86,7 +88,8 @@ function product() {
     let user_id = 1;
     const productId = product[0].id;
     const shopId = router.query.shop_id;
-    const productOptionId = option1;
+    const productOptionId = option1Id;
+    
     let productSubOptionId = 0;
     if (product[0].option2 !== null) {
       for (let i = 1; i < product[0].allOption1.length; i++) {
@@ -272,7 +275,7 @@ function product() {
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      onClick={selectOption1}
+                      onClick={(event) => selectOption1(event,item?.id)}
                       id={item?.op_name}
                     >
                       {item?.op_name}
@@ -455,4 +458,4 @@ function product() {
   );
 }
 
-export default product;
+export default useProduct;

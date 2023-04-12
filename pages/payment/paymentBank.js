@@ -17,7 +17,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-function paymentQRcode() {
+function usePaymentQRcode() {
   const router = useRouter();
   const data = router.query;
   return (
@@ -100,4 +100,4 @@ function paymentQRcode() {
   );
 }
 
-export default paymentQRcode;
+export default usePaymentQRcode;

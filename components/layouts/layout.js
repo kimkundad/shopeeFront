@@ -2,7 +2,6 @@ import Header from "./header";
 import React,{ useContext, useEffect, useState } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import ScrollPositionContext from "../checkScroll/ScrollPositionContext";
 export default function Layout({ children }) {
   const router = useRouter();
   const { pathname } = router;

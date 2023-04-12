@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import CartItem from "@/components/CartItem";
 import axios from "axios";
-function chartShop() {
+function useChartShop() {
   const [cartsItem, setCartsItem] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -42,4 +42,4 @@ function chartShop() {
   );
 }
 
-export default chartShop;
+export default useChartShop;

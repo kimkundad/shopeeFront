@@ -29,32 +29,33 @@ import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
-import { useRouter } from "next/router";
+import {useRouter}  from "next/router";
 import { getAllProduct, getShop, getAllCategory } from "@/hooks/allProduct";
 import ModalLogin from "@/components/ModalLogin";
-export default function Home(props) {
+export default function useHome(props) {
   const router = useRouter();
   const shopId = router.query.id;
-  const [scrollTop, setScrollTop] = useState(0)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleScroll = () => {
-        setScrollTop(window.scrollY)
-      }
-
-      window.addEventListener('scroll', handleScroll)
-
-      return () => {
-        window.removeEventListener('scroll', handleScroll)
-      }
-    }
-  }, [])
-  const [categoryAll, setCategoryAll] = useState(null);
-  const [ProductAll, setProductAll] = useState(null);
   const { data: shop } = getShop(shopId);
   const { data: product } = getAllProduct(shop?.shop[0]?.id);
   const { data: category } = getAllCategory();
+  const [scrollTop, setScrollTop] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleScroll = () => {
+        setScrollTop(window.scrollY);
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+  const [categoryAll, setCategoryAll] = useState(null);
+  const [ProductAll, setProductAll] = useState(null);
+  
   useEffect(() => {
     setNameShop(shop);
     setProductAll(product);
@@ -161,7 +162,7 @@ export default function Home(props) {
               <InputLeftElement
                 h="7"
                 pointerEvents="none"
-                children={<FaSearch color="gray.300" />}
+                /* children={<FaSearch color="gray.300" />} */
               />
               <Input
                 h="7"
@@ -172,61 +173,65 @@ export default function Home(props) {
               />
             </InputGroup>
             <Flex justifyContent="flex-end">
-              <ModalLogin type="card"/>
-              <ModalLogin type="avatar"/>
+              <ModalLogin type="card" />
+              <ModalLogin type="avatar" />
             </Flex>
           </Flex>
         </Box>
-        <Flex
-          alignItems="center"
-          px="2"
-          pt="16"
-          pb="28px"
-          backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${nameShop?.shop[0]?.cover_img_shop})`}
-          h="100%"
-        >
-          <Box
-            bg="white"
-            borderRadius="50%"
-            className="wh"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            ml="2"
-          >
-            <Image
-              borderRadius="50%"
-              src={`https://shopee-api.deksilp.com/images/shopee/shop/${nameShop?.shop[0]?.img_shop}`}
-              alt=""
-              className="wh"
-            />
-          </Box>
-          <Box textColor="white" pl="4">
-            <Box bg="black" borderRadius="md">
-              <Text pl="10px" className="textHead">
-                {nameShop?.shop[0]?.name_shop}
-              </Text>
-            </Box>
-
-            <Flex alignItems="center" height="100%" mt="10px">
-              <Center bg="red" borderRadius="md" px="5px">
-                <StarIcon color="yellow.400" className="setIcon" />
-                <Text pl="5px" className="textBody">
-                  4.8/5.0
-                </Text>
-              </Center>
-              <Box bg="red" borderRadius="md" ml="10px">
-                <Text px="5px" className="textBody">
-                  ร้านแนะนำ
-                </Text>
+        {nameShop?.shop.map((item, index) => {
+          return (
+            <Flex
+            key={index}
+              alignItems="center"
+              px="2"
+              pt="16"
+              pb="28px"
+              backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${item.cover_img_shop})`}
+              h="100%"
+            >
+              <Box
+                bg="white"
+                borderRadius="50%"
+                className="wh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                ml="2"
+              >
+                <Image
+                  borderRadius="50%"
+                  src={`https://shopee-api.deksilp.com/images/shopee/shop/${item.img_shop}`}
+                  alt=""
+                  className="wh"
+                />
               </Box>
-            </Flex>
-          </Box>
-          <Spacer />
-          <ModalLogin type="chat"/>
-        </Flex>
-      </Box>
+              <Box textColor="white" pl="4">
+                <Box bg="black" borderRadius="md">
+                  <Text pl="10px" className="textHead">
+                    {item.name_shop}
+                  </Text>
+                </Box>
 
+                <Flex alignItems="center" height="100%" mt="10px">
+                  <Center bg="red" borderRadius="md" px="5px">
+                    <StarIcon color="yellow.400" className="setIcon" />
+                    <Text pl="5px" className="textBody">
+                      4.8/5.0
+                    </Text>
+                  </Center>
+                  <Box bg="red" borderRadius="md" ml="10px">
+                    <Text px="5px" className="textBody">
+                      ร้านแนะนำ
+                    </Text>
+                  </Box>
+                </Flex>
+              </Box>
+              <Spacer />
+              <ModalLogin type="chat" />
+            </Flex>
+          );
+        })}
+      </Box>
       <Flex
         flexWrap="nowrap"
         overflowX="auto"
