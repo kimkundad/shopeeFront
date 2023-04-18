@@ -23,9 +23,9 @@ import { useRouter } from "next/router";
 function Order() {
   const router = useRouter();
   const data = router.query;
-  const { isOpen, onOpen, onClose } = useDisclosure([]);
+  const { isOpen: isOpenSuccess, onOpen: onOpenSucces, onClose: onCloseSucces } = useDisclosure([]);
   const handleModalClick = () => {
-    onOpen();
+    onOpenSucces();
   };
 
   const [sales, setSales] = useState(null);
@@ -34,18 +34,11 @@ function Order() {
   useEffect(() => {
     if (data.price_sales !== 0) {
       setNumPrice(
-        (data.price -
-          (data.price_sales * data.price) / 100) *
-          data.num
+        (data.price - (data.price_sales * data.price) / 100) * data.num
       );
-      setSales(
-        data.price - (data.price_sales * data.price) / 100
-      );
+      setSales(data.price - (data.price_sales * data.price) / 100);
       setTotal(
-        (data.price -
-          (data.price_sales * data.price) / 100) *
-          data.num +
-          40
+        (data.price - (data.price_sales * data.price) / 100) * data.num + 40
       );
     } else {
       setSales(data.price);
@@ -61,6 +54,28 @@ function Order() {
     { label: "โอนเงิน", img: "/img/qr.png" },
     { label: "เก็บเงินปลายทาง", img: "/img/user-interface.png" },
   ];
+
+  const createdOrder = async () => {
+    let discount = null
+    let status = "ที่ต้องชำระ"
+    let user_id = 1
+    const formData = new FormData();
+    formData.append("shop_id", data?.shop_id);
+    formData.append("user_id", user_id);
+    formData.append("discount", discount);
+    formData.append("price_sales", data?.price_sales);
+    formData.append("num", data?.num);
+    formData.append("price", data?.price);
+    formData.append("status", status);
+    formData.append("product_id", data?.product_id);
+    formData.append("option1", data?.option1Id);
+    formData.append("option2", data?.option2Id);
+    const response = await axios.post(
+      "https://shopee-api.deksilp.com/api/createdOrder",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  }
   return (
     <>
       <Head>
@@ -261,19 +276,22 @@ function Order() {
             <GridItem colSpan={1} gridColumn={2}>
               {buttonId === "โอนเงิน" ? (
                 <Link
-                  href={{
-                    pathname: "/payment",
-                    query: {
-                      num_price: numPrice,
-                      delivery_fee: 40,
-                      total: total,
-                    },
-                  }}
-                  as={`/payment`}
+                href={{
+                  pathname: "/payment",
+                  query: {
+                    num_price: numPrice,
+                    delivery_fee: 40,
+                    total: total,
+                  },
+                }}
+              >
+                <Button
+                  w="100%"
+                  bg="red"
+                  borderRadius="xl"
                 >
-                  <Button w="100%" bg="red" borderRadius="xl">
-                    <Text>สั่งสินค้า</Text>
-                  </Button>
+                  <Text>สั่งสินค้า</Text>
+                </Button>
                 </Link>
               ) : buttonId === "เก็บเงินปลายทาง" ? (
                 <Button
@@ -293,14 +311,14 @@ function Order() {
           </Grid>
         </Box>
       </Box>
-      <Modal onClose={onClose} size="xs" isOpen={isOpen}>
+      <Modal onClose={onCloseSucces} size="xs" isOpen={isOpenSuccess}>
         <ModalOverlay />
         <ModalContent alignSelf="center">
           <ModalHeader alignSelf="center">สั่งซื้อสินค้าสำเร็จ</ModalHeader>
           <ModalBody alignSelf="center">
             <Box textAlign="center">
               <Image src="/img/check3.png" alt="" h="100px" mx="auto" />
-              <Text fontWeight="bold" fontSize="xl">
+              <Text pt="15px" fontWeight="bold" fontSize="xl">
                 ขอบคุณสำหรับการสั่งซื้อ
               </Text>
               <Text>

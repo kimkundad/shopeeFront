@@ -180,8 +180,7 @@ export default function CartItem(props) {
                           display="initial"
                           px="7px"
                         >
-                          ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name}
-                          {subItem.option2} {subItem.sub_op_name}
+                          ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name} {subItem.option2} {subItem.sub_op_name}
                         </Text>
                       ) : subItem.option1 !== null ? (
                         <Text

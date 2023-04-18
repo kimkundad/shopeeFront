@@ -83,13 +83,42 @@ function useProduct() {
     setOption2(event.target.id);
   }
 
+  const [option2Id, setOption2Id] = useState(null);
+  function setSubOptionId(event) {
+    let a = 0
+    product[0]?.allOption1.forEach(element => {
+      if(element.op_name == option1){
+        element.allOption2.forEach(e => {
+          if(e.sub_op_name == option2){
+            a = e.id
+            return;
+          }
+        });
+        return;
+      }
+    });
+    return a;
+  }
+
   async function addToCart(event) {
     event.preventDefault();
     let user_id = 1;
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
-    const productSubOptionId = option2Id;
+    let productSubOptionId = 0
+    await product[0]?.allOption1.forEach(element => {
+      if(element.op_name == option1){
+        element.allOption2.forEach(e => {
+          if(e.sub_op_name == option2){
+            productSubOptionId = e.id
+            return;
+          }
+        });
+        return;
+      }
+      productSubOptionId = 0
+    });
 
     const data = {
       user_id,
@@ -104,7 +133,6 @@ function useProduct() {
       data
     );
   }
-  console.log(option2);
   return (
     <>
       <Head>
@@ -248,8 +276,8 @@ function useProduct() {
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      onClick={selectOption1}
-                      outline={`2px solid red`}
+                      onClick={(e) => selectOption1(e,item.id)}
+                      border={`2px solid red`}
                       bg="gray.300"
                       id={item?.op_name}
                       fontWeight="0px"
@@ -282,8 +310,8 @@ function useProduct() {
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      outline={`1px solid gray`}
-                      onClick={selectOption1}
+                      border={`1px solid gray`}
+                      onClick={(e) => selectOption1(e,item.id)}
                       id={item?.op_name}
                       fontWeight="0px"
                       padding="0px"
@@ -328,13 +356,12 @@ function useProduct() {
           >
             {allSubOption?.map((item, index) => {
               return option2 == item?.sub_op_name ? (
-                // eslint-disable-next-line react/jsx-key
                 <Button
                   height="25px"
                   key={index}
                   w="100%"
                   borderRadius="md"
-                  outline={`2px solid red`}
+                  border={`2px solid red`}
                   bg="gray.300"
                   onClick={selectOption2}
                   id={item?.sub_op_name}
@@ -368,7 +395,7 @@ function useProduct() {
                   key={index}
                   w="100%"
                   borderRadius="md"
-                  outline={`1px solid gray`}
+                  border={`1px solid gray`}
                   onClick={selectOption2}
                   id={item?.sub_op_name}
                   fontWeight="0px"
@@ -403,7 +430,7 @@ function useProduct() {
           <Flex alignItems="center" pt="7px">
             <Text fontSize="xl">จำนวน</Text>
             <Spacer />
-            <Box borderRadius="xl" bg="gray.100" px="5px" mr="20px">
+            <Box borderRadius="xl" bg="gray.100" px="5px" mr="20px" w="140px">
               <Flex alignItems="center">
                 <Button h="15px" w="15px" onClick={minusnum} px="0px">
                   <Image
@@ -412,7 +439,7 @@ function useProduct() {
                     objectFit="contain"
                     w="full"
                     h="full"
-                  ></Image>
+                  />
                 </Button>
                 <Text px="20px" fontSize="xl">
                   {num}
@@ -424,7 +451,7 @@ function useProduct() {
                     objectFit="contain"
                     w="full"
                     h="full"
-                  ></Image>
+                  />
                 </Button>
               </Flex>
             </Box>
@@ -458,6 +485,7 @@ function useProduct() {
                     ? {
                         pathname: "/order",
                         query: {
+                          shop_id: data?.shop_id,
                           name_shop: data?.name_shop,
                           product_id: product[0]?.id,
                           name_product: product[0]?.name_product,
@@ -471,12 +499,15 @@ function useProduct() {
                           name_option2: product[0]?.option2,
                           type: product[0]?.type,
                           num: num,
+                          option1Id: option1Id,
+                          option2Id: setSubOptionId(),
                         },
                       }
                     : product[0]?.type == 2 && option1 !== null && num > 0
                     ? {
                         pathname: "/order",
                         query: {
+                          shop_id: data?.shop_id,
                           name_shop: data?.name_shop,
                           product_id: product[0]?.id,
                           name_product: product[0]?.name_product,
@@ -490,6 +521,8 @@ function useProduct() {
                           name_option2: product[0]?.option2,
                           type: product[0]?.type,
                           num: num,
+                          option1Id: option1Id,
+                          option2Id: setSubOptionId(),
                         },
                       }
                     : product[0]?.type == 3 &&
@@ -499,6 +532,7 @@ function useProduct() {
                     ? {
                         pathname: "/order",
                         query: {
+                          shop_id: data?.shop_id,
                           name_shop: data?.name_shop,
                           product_id: product[0]?.id,
                           name_product: product[0]?.name_product,
@@ -512,14 +546,15 @@ function useProduct() {
                           name_option2: product[0]?.option2,
                           type: product[0]?.type,
                           num: num,
+                          option1Id: option1Id,
+                          option2Id: setSubOptionId(),
                         },
                       }
                     : { query: data }
                   : { query: data }
               }
-              /* as={`/order`} */
             >
-              <Button w="100%" bg="red" borderRadius="xl">
+              <Button w="100%" bg="red" borderRadius="xl" >
                 <Text>ซื้อสินค้า</Text>
               </Button>
             </Link>
