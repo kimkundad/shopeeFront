@@ -57,9 +57,9 @@ function useProduct() {
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
   const [option1Id, setOption1Id] = useState(null);
-  async function selectOption1(event,id) {
+  async function selectOption1(event, id) {
     setOption1(event.target.id);
-    setOption1Id(id)
+    setOption1Id(id);
     const slideIndex = product[0]?.allOption1.findIndex(
       (item) => item.op_name == event.target.id
     );
@@ -89,20 +89,7 @@ function useProduct() {
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
-    
-    let productSubOptionId = 0;
-    if (product[0].option2 !== null) {
-      for (let i = 1; i < product[0].allOption1.length; i++) {
-        for (let k = 0; k < product[0].allOption1[i].allOption2.length; k++) {
-          if (
-            product[0].allOption1[i].id == option1 &&
-            product[0].allOption1[i].allOption2[k].sub_op_name == option2
-          ) {
-            productSubOptionId = product[0].allOption1[i].allOption2[k].id;
-          }
-        }
-      }
-    }
+    const productSubOptionId = option2Id;
 
     const data = {
       user_id,
@@ -112,12 +99,12 @@ function useProduct() {
       productSubOptionId,
       num,
     };
-    console.log(data);
     const response = await axios.post(
       "https://shopee-api.deksilp.com/api/addProductToCart",
       data
     );
   }
+  console.log(option2);
   return (
     <>
       <Head>
@@ -248,7 +235,7 @@ function useProduct() {
               {product[0]?.option1}
             </Text>
             <SimpleGrid
-              spacing={4}
+              spacing={3}
               templateColumns="repeat(4, minmax(0px, 1fr))"
               my="15px"
               fontSize="sm"
@@ -256,9 +243,8 @@ function useProduct() {
               {product[0]?.allOption1.map((item, index) => {
                 return index !== 0 ? (
                   option1 == item?.op_name ? (
-                    // eslint-disable-next-line react/jsx-key
                     <Button
-                      height="35px"
+                      height="25px"
                       key={index}
                       w="100%"
                       borderRadius="md"
@@ -266,18 +252,61 @@ function useProduct() {
                       outline={`2px solid red`}
                       bg="gray.300"
                       id={item?.op_name}
+                      fontWeight="0px"
+                      padding="0px"
+                      isDisabled={
+                        option2 !== null
+                          ? !item.allOption2.some(
+                              (element) => element.sub_op_name === option2
+                            )
+                          : false
+                      }
+                      color={ option2 !== null
+                        ? !item.allOption2.some(
+                            (element) => element.sub_op_name === option2
+                          )? "lightgrey":"inherit"
+                        : "inherit"
+                      }
                     >
-                      {item?.op_name}
+                        <Image
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                          alt=""
+                          boxSize="15px"
+                          mr={1}
+                        />
+                        {item?.op_name}
                     </Button>
                   ) : (
                     <Button
-                      height="35px"
+                      height="25px"
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      onClick={(event) => selectOption1(event,item?.id)}
+                      outline={`1px solid gray`}
+                      onClick={selectOption1}
                       id={item?.op_name}
+                      fontWeight="0px"
+                      padding="0px"
+                      isDisabled={
+                        option2 !== null
+                          ? !item.allOption2.some(
+                              (element) => element.sub_op_name === option2
+                            )
+                          : false
+                      }
+                      color={ option2 !== null
+                        ? !item.allOption2.some(
+                            (element) => element.sub_op_name === option2
+                          )? "lightgrey":"inherit"
+                        : "inherit"
+                      }
                     >
+                      <Image
+                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                        alt=""
+                        boxSize="15px"
+                        mr={1}
+                      />
                       {item?.op_name}
                     </Button>
                   )
@@ -292,7 +321,7 @@ function useProduct() {
             {product[0]?.option2}
           </Text>
           <SimpleGrid
-            spacing={4}
+            spacing={3}
             templateColumns="repeat(4, minmax(0px, 1fr))"
             my="15px"
             fontSize="sm"
@@ -301,7 +330,7 @@ function useProduct() {
               return option2 == item?.sub_op_name ? (
                 // eslint-disable-next-line react/jsx-key
                 <Button
-                  height="35px"
+                  height="25px"
                   key={index}
                   w="100%"
                   borderRadius="md"
@@ -309,17 +338,60 @@ function useProduct() {
                   bg="gray.300"
                   onClick={selectOption2}
                   id={item?.sub_op_name}
+                  fontWeight="0px"
+                  isDisabled={product[0]?.allOption1.some((e) => {
+                    if (option1 === e.op_name) {
+                      return !e.allOption2.some(
+                        (element) => element.sub_op_name === item.sub_op_name
+                      );
+                    }
+                    return false;
+                  })}
+                  color={
+                    product[0]?.allOption1.some((e) => {
+                      if (option1 === e.op_name) {
+                        return !e.allOption2.some(
+                          (element) => element.sub_op_name === item.sub_op_name
+                        );
+                      }
+                      return false;
+                    })
+                      ? "lightgrey"
+                      : "inherit"
+                  }
                 >
                   {item?.sub_op_name}
                 </Button>
               ) : (
                 <Button
-                  height="35px"
+                  height="25px"
                   key={index}
                   w="100%"
                   borderRadius="md"
+                  outline={`1px solid gray`}
                   onClick={selectOption2}
                   id={item?.sub_op_name}
+                  fontWeight="0px"
+                  isDisabled={product[0]?.allOption1.some((e) => {
+                    if (option1 === e.op_name) {
+                      return !e.allOption2.some(
+                        (element) => element.sub_op_name === item.sub_op_name
+                      );
+                    }
+                    return false;
+                  })}
+                  color={
+                    product[0]?.allOption1.some((e) => {
+                      if (option1 === e.op_name) {
+                        return !e.allOption2.some(
+                          (element) => element.sub_op_name === item.sub_op_name
+                        );
+                      }
+                      return false;
+                    })
+                      ? "lightgrey"
+                      : "inherit"
+                  }
                 >
                   {item?.sub_op_name}
                 </Button>
