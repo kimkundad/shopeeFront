@@ -20,6 +20,7 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 function Order() {
   const router = useRouter();
   const data = router.query;
@@ -56,7 +57,7 @@ function Order() {
   ];
 
   const createdOrder = async () => {
-    let discount = null
+    let discount = 0.0
     let status = "ที่ต้องชำระ"
     let user_id = 1
     const formData = new FormData();
@@ -66,6 +67,7 @@ function Order() {
     formData.append("price_sales", data?.price_sales);
     formData.append("num", data?.num);
     formData.append("price", data?.price);
+    formData.append("total", total);
     formData.append("status", status);
     formData.append("product_id", data?.product_id);
     formData.append("option1", data?.option1Id);
@@ -289,6 +291,7 @@ function Order() {
                   w="100%"
                   bg="red"
                   borderRadius="xl"
+                  onClick={createdOrder}
                 >
                   <Text>สั่งสินค้า</Text>
                 </Button>
@@ -303,7 +306,7 @@ function Order() {
                   <Text>สั่งสินค้า</Text>
                 </Button>
               ) : (
-                <Button w="100%" bg="red" borderRadius="xl">
+                <Button w="100%" bg="red" borderRadius="xl" onClick={createdOrder}>
                   <Text>สั่งสินค้า</Text>
                 </Button>
               )}

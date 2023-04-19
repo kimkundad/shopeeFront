@@ -86,9 +86,9 @@ function useProduct() {
   const [option2Id, setOption2Id] = useState(null);
   function setSubOptionId(event) {
     let a = 0
-    product[0]?.allOption1.forEach(element => {
+    product[0]?.allOption1?.forEach(element => {
       if(element.op_name == option1){
-        element.allOption2.forEach(e => {
+        element?.allOption2?.forEach(e => {
           if(e.sub_op_name == option2){
             a = e.id
             return;
@@ -107,9 +107,9 @@ function useProduct() {
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
     let productSubOptionId = 0
-    await product[0]?.allOption1.forEach(element => {
+    await product[0]?.allOption1?.forEach(element => {
       if(element.op_name == option1){
-        element.allOption2.forEach(e => {
+        element?.allOption2?.forEach(e => {
           if(e.sub_op_name == option2){
             productSubOptionId = e.id
             return;

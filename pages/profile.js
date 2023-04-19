@@ -1,132 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Head from "next/head";
-import { Box, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Image,
+  Button,
+  Spacer,
+  Input,
+} from "@chakra-ui/react";
 import Statusproduct from "@/components/statusProductProfile";
 import Purchasehistory from "@/components/PurchaseHistory";
+import axios from "axios";
+import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
 function chartShop() {
-  const Product = [
-    {
-      item: [
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-    {
-      item: [
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-    {
-      item: [
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-  ];
+  const [order, setOrder] = useState([]);
+  useEffect(() => {
+    async function fetchdata() {
+      const order = await axios.get(
+        `https://shopee-api.deksilp.com/api/getOrder/?user_id=${1}&shop_id=${2}`
+      );
+      setOrder(order.data.orders);
+    }
+    fetchdata();
+  }, []);
+
+  const userInfo = useSelector((App) => App.userInfo);
+  const [isEditName, setEditName] = useState(false);
+  const [name,setName] = useState(userInfo.data[0].name)
+  const editName = () => {
+    setEditName(!isEditName);
+    if(isEditName){
+      async function fetchdata() {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("user_id", userInfo.data[0].id);
+        const newName = await axios.post(
+          `https://shopee-api.deksilp.com/api/editUser/`,formData
+        );
+      }
+      fetchdata();
+    }
+  };
+
   return (
     <>
       <Head>
@@ -154,28 +72,71 @@ function chartShop() {
             w="70px !important"
           />
         </Box>
-        <Box pl="5px">
-          <Text fontSize="2xl">Username</Text>
-          <Box bg="red" borderRadius="xl" fontSize="xs">
-            <Text px="15px" py="3px">
-              Gold member
+        <Box pl="5px" alignSelf="center">
+          {!isEditName ? (
+            <Text
+              fontSize="xl"
+              display="flex"
+              alignItems="center"
+            >
+              {name}
+              <Image
+                pl="7px"
+                src="/img/edit.png"
+                alt=""
+                h="20px !important"
+                onClick={editName}
+              />
             </Text>
-          </Box>
+          ) : (
+            <Flex alignItems="center">
+              <Input
+                w="100px"
+                h="20px"
+                my="5px"
+                px="1px"
+                fontSize="xl"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Image
+                pl="7px"
+                src="/img/edit.png"
+                alt=""
+                h="20px !important"
+                onClick={editName}
+              />
+            </Flex>
+          )}
+
+          <Text
+            color="white"
+            textAlign="center"
+            bg="red"
+            borderRadius="xl"
+            fontSize="xs"
+            w="80px"
+          >
+            Gold member
+          </Text>
         </Box>
+
         <Spacer />
         <Box alignSelf="center">
           <Link href="/address">
             <Button bg="red" borderRadius="xl" size="md" height="30px">
-              <Text fontSize="xs">แก้ไขที่อยู่</Text>
+              <Text fontSize="xs" color="white">
+                แก้ไขที่อยู่
+              </Text>
             </Button>
           </Link>
         </Box>
       </Flex>
       <Box mt="10px">
-        <Statusproduct data={Product} />
+        <Statusproduct data={order} />
       </Box>
 
-      <Purchasehistory />
+      <Purchasehistory data={order} />
     </>
   );
 }

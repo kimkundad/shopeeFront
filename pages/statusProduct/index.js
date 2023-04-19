@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -12,129 +12,18 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import Statusproduct from "@/components/statusProduct";
+import axios from "axios";
 function statusProduct() {
-  const Product = [
-    {
-      item: [
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY4",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY3",
-          name: "ร้องเท้าฉลาม",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-    {
-      item: [
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY1",
-          name: "ร้องเท้าฉลาม1",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-    {
-      item: [
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY3",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-        {
-          shopname: "SHOPZY2",
-          name: "ร้องเท้าฉลาม2",
-          detail: "น่ารักไม่ไหว ร้องเท้าแฟชั่นเกาหลี",
-          image: "/img/หมาโง่.jpg",
-          select: "สีฟ้า ไซด์ 42",
-          num: "1",
-          price: "290",
-        },
-      ],
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    async function fetchdata() {
+      const order = await axios.get(
+        `https://shopee-api.deksilp.com/api/getOrder/?user_id=${1}&shop_id=${2}`
+      );
+      setOrders(order.data.orders);
+    }
+    fetchdata();
+  }, []);
   return (
     <>
       <Head>
@@ -144,7 +33,7 @@ function statusProduct() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box pt="15px">
-        <Statusproduct data={Product} />
+        <Statusproduct data={orders} />
       </Box>
 
       <></>
