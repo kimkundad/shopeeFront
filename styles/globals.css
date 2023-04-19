@@ -232,3 +232,8 @@ textarea {
   src: local("DBAdmanX"),
     url("../public/fonts/DBAdmanX.ttf") format("truetype");
 }
+
+a:hover {
+  text-decoration: none !important;
+  background: white;
+}

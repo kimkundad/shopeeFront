@@ -12,11 +12,10 @@ import Link from "next/link";
 import style from "./style.module.css";
 import axios from "axios";
 export default function CartItem(props) {
-  const [cartItem,setCartItem] = useState([]);
-
-  useEffect(() =>{
-    setCartItem(props.data.cartItem)
-  },[])
+  const [cartItem, setCartItem] = useState([]);
+  useEffect(() => {
+    setCartItem(props.data.cartItem);
+  }, []);
   const [checkAll, setCheckAll] = useState([]);
   const handleCheckAllChange = (event, index, subIndex) => {
     const newCheckAll = [...checkAll];
@@ -53,22 +52,28 @@ export default function CartItem(props) {
     setCheckAll(newCheckAll);
   };
 
+  const [productId, setProductId] = useState([]);
   const sumPrice = () => {
     const newCheckAll = [...checkAll];
     let newSum = 0;
+    let pro_id = [];
     for (let i = 0; i < newCheckAll.length; i++) {
       for (let k = 0; k < newCheckAll[i].length; k++) {
-        newCheckAll[i][k]
-          ? (newSum =
-              newSum +
-              (cartItem[i].product[k].type_product == 1
-                ? cartItem[i].product[k].price_type_1 * num[i][k]
-                : cartItem[i].product[k].type_product == 2
-                ? cartItem[i].product[k].price_type_1 * num[i][k]
-                : cartItem[i].product[k].price_type_3 * num[i][k]))
-          : false;
+        if (newCheckAll[i][k]) {
+          pro_id.push(cartItem[i].product[k].product_id);
+          newSum =
+            newSum +
+            (cartItem[i].product[k].type_product == 1
+              ? cartItem[i].product[k].price_type_1 * num[i][k]
+              : cartItem[i].product[k].type_product == 2
+              ? cartItem[i].product[k].price_type_1 * num[i][k]
+              : cartItem[i].product[k].price_type_3 * num[i][k]);
+        } else {
+          false;
+        }
       }
     }
+    setProductId(pro_id);
     setSum(newSum);
   };
   const plusnum = (index, subIndex) => {
@@ -92,9 +97,11 @@ export default function CartItem(props) {
   };
 
   const deleteCartItem = async (id) => {
-    const res = await axios.post(`https://shopee-api.deksilp.com/api/deleteCartItem/${id}`)
-    setCartItem(res.data.cartItem)
-  }
+    const res = await axios.post(
+      `https://shopee-api.deksilp.com/api/deleteCartItem/${id}`
+    );
+    setCartItem(res.data.cartItem);
+  };
   return (
     <div>
       {cartItem.map((item, index) => (
@@ -180,7 +187,8 @@ export default function CartItem(props) {
                           display="initial"
                           px="7px"
                         >
-                          ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name} {subItem.option2} {subItem.sub_op_name}
+                          ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name}{" "}
+                          {subItem.option2} {subItem.sub_op_name}
                         </Text>
                       ) : subItem.option1 !== null ? (
                         <Text
@@ -241,8 +249,19 @@ export default function CartItem(props) {
                         </Box>
                       </Flex>
                     </Box>
-                    <Box h="20px" w="30px" bg="white" alignSelf="start" pt="10px">
-                      <Button bg="white" h="20px" w="20px" onClick={() => deleteCartItem(subItem.id)}>
+                    <Box
+                      h="20px"
+                      w="30px"
+                      bg="white"
+                      alignSelf="start"
+                      pt="10px"
+                    >
+                      <Button
+                        bg="white"
+                        h="20px"
+                        w="20px"
+                        onClick={() => deleteCartItem(subItem.id)}
+                      >
                         <Image
                           src="/img/delete.png"
                           alt=""
@@ -273,7 +292,12 @@ export default function CartItem(props) {
             <Spacer />
             <Text>{sum}.-</Text>
             <Spacer />
-            <Link href="/order">
+            <Link href={{
+            pathname: "/order",
+            query: {
+              product: productId
+            },
+          }} >
               <Button bg="red" borderRadius="xl">
                 <Text>ชำระเงิน</Text>
               </Button>

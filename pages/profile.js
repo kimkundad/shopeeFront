@@ -17,19 +17,25 @@ import axios from "axios";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
 function chartShop() {
   const [order, setOrder] = useState([]);
+  const userInfo = useSelector((App) => App.userInfo);
+  const [name, setName] = useState();
   useEffect(() => {
     async function fetchdata() {
       const order = await axios.get(
         `https://shopee-api.deksilp.com/api/getOrder/?user_id=${1}&shop_id=${2}`
       );
+      const formdata = new FormData();
+      formdata.append("user_id",userInfo.data[0].id)
+      const user = await axios.post(
+        `https://shopee-api.deksilp.com/api/getUser`,formdata
+      );
+      setName(user.data.user.name)
       setOrder(order.data.orders);
     }
     fetchdata();
   }, []);
-
-  const userInfo = useSelector((App) => App.userInfo);
   const [isEditName, setEditName] = useState(false);
-  const [name,setName] = useState(userInfo.data[0].name)
+  
   const editName = () => {
     setEditName(!isEditName);
     if(isEditName){

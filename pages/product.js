@@ -32,8 +32,14 @@ function useProduct() {
   useEffect(() => {
     if (data?.product_id !== undefined) {
       async function fetchData() {
-        const res = await axios.get(
-          `https://shopee-api.deksilp.com/api/getProduct/?product_id=${data?.product_id}&shop_id=${data?.shop_id}`
+        const formData = new FormData();
+        let pro_id = [data?.product_id]
+        pro_id.forEach((e,index)=>{
+          formData.append(`product_id[${index}]`, e);
+        });
+        formData.append("shop_id", data?.shop_id);
+        const res = await axios.post(
+          `https://shopee-api.deksilp.com/api/getProduct`,formData
         );
         if (res.data.product[0].type !== 1) {
           if (res.data.product[0].option1 !== null) {
@@ -85,12 +91,12 @@ function useProduct() {
 
   const [option2Id, setOption2Id] = useState(null);
   function setSubOptionId(event) {
-    let a = 0
-    product[0]?.allOption1?.forEach(element => {
-      if(element.op_name == option1){
-        element?.allOption2?.forEach(e => {
-          if(e.sub_op_name == option2){
-            a = e.id
+    let a = 0;
+    product[0]?.allOption1?.forEach((element) => {
+      if (element.op_name == option1) {
+        element?.allOption2?.forEach((e) => {
+          if (e.sub_op_name == option2) {
+            a = e.id;
             return;
           }
         });
@@ -106,18 +112,18 @@ function useProduct() {
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
-    let productSubOptionId = 0
-    await product[0]?.allOption1?.forEach(element => {
-      if(element.op_name == option1){
-        element?.allOption2?.forEach(e => {
-          if(e.sub_op_name == option2){
-            productSubOptionId = e.id
+    let productSubOptionId = 0;
+    await product[0]?.allOption1?.forEach((element) => {
+      if (element.op_name == option1) {
+        element?.allOption2?.forEach((e) => {
+          if (e.sub_op_name == option2) {
+            productSubOptionId = e.id;
             return;
           }
         });
         return;
       }
-      productSubOptionId = 0
+      productSubOptionId = 0;
     });
 
     const data = {
@@ -276,7 +282,7 @@ function useProduct() {
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      onClick={(e) => selectOption1(e,item.id)}
+                      onClick={(e) => selectOption1(e, item.id)}
                       border={`2px solid red`}
                       bg="gray.300"
                       id={item?.op_name}
@@ -289,20 +295,23 @@ function useProduct() {
                             )
                           : false
                       }
-                      color={ option2 !== null
-                        ? !item.allOption2.some(
-                            (element) => element.sub_op_name === option2
-                          )? "lightgrey":"inherit"
-                        : "inherit"
+                      color={
+                        option2 !== null
+                          ? !item.allOption2.some(
+                              (element) => element.sub_op_name === option2
+                            )
+                            ? "lightgrey"
+                            : "inherit"
+                          : "inherit"
                       }
                     >
-                        <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
-                          alt=""
-                          boxSize="15px"
-                          mr={1}
-                        />
-                        {item?.op_name}
+                      <Image
+                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                        alt=""
+                        boxSize="15px"
+                        mr={1}
+                      />
+                      {item?.op_name}
                     </Button>
                   ) : (
                     <Button
@@ -311,7 +320,7 @@ function useProduct() {
                       w="100%"
                       borderRadius="md"
                       border={`1px solid gray`}
-                      onClick={(e) => selectOption1(e,item.id)}
+                      onClick={(e) => selectOption1(e, item.id)}
                       id={item?.op_name}
                       fontWeight="0px"
                       padding="0px"
@@ -322,11 +331,14 @@ function useProduct() {
                             )
                           : false
                       }
-                      color={ option2 !== null
-                        ? !item.allOption2.some(
-                            (element) => element.sub_op_name === option2
-                          )? "lightgrey":"inherit"
-                        : "inherit"
+                      color={
+                        option2 !== null
+                          ? !item.allOption2.some(
+                              (element) => element.sub_op_name === option2
+                            )
+                            ? "lightgrey"
+                            : "inherit"
+                          : "inherit"
                       }
                     >
                       <Image
@@ -554,7 +566,7 @@ function useProduct() {
                   : { query: data }
               }
             >
-              <Button w="100%" bg="red" borderRadius="xl" >
+              <Button w="100%" bg="red" borderRadius="xl">
                 <Text>ซื้อสินค้า</Text>
               </Button>
             </Link>

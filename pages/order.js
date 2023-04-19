@@ -24,10 +24,34 @@ import axios from "axios";
 function Order() {
   const router = useRouter();
   const data = router.query;
-  const { isOpen: isOpenSuccess, onOpen: onOpenSucces, onClose: onCloseSucces } = useDisclosure([]);
+  const {
+    isOpen: isOpenSuccess,
+    onOpen: onOpenSucces,
+    onClose: onCloseSucces,
+  } = useDisclosure([]);
   const handleModalClick = () => {
     onOpenSucces();
   };
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    if (data?.product !== undefined) {
+      console.log(data.product);
+      async function fetchData() {
+        const formData = new FormData();
+        data?.product.forEach((item, index) => {
+          formData.append(`product_id[${index}]`, parseInt(item));
+        });
+        const res = await axios.post(
+          `https://shopee-api.deksilp.com/api/getProduct/`,
+          formData
+        );
+        setProducts(res.data.product);
+      }
+
+      fetchData();
+    }
+  }, []);
 
   const [sales, setSales] = useState(null);
   const [numPrice, setNumPrice] = useState(null);
@@ -57,9 +81,9 @@ function Order() {
   ];
 
   const createdOrder = async () => {
-    let discount = 0.0
-    let status = "ที่ต้องชำระ"
-    let user_id = 1
+    let discount = 0.0;
+    let status = "ที่ต้องชำระ";
+    let user_id = 1;
     const formData = new FormData();
     formData.append("shop_id", data?.shop_id);
     formData.append("user_id", user_id);
@@ -67,7 +91,7 @@ function Order() {
     formData.append("price_sales", data?.price_sales);
     formData.append("num", data?.num);
     formData.append("price", data?.price);
-    formData.append("total", total);
+    formData.append("total", data?.price * data?.num);
     formData.append("status", status);
     formData.append("product_id", data?.product_id);
     formData.append("option1", data?.option1Id);
@@ -77,7 +101,14 @@ function Order() {
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
-  }
+
+    if (buttonId == "โอนเงิน") {
+      router.push({
+        pathname: "/payment",
+        query: { price: response.data.order.price },
+      });
+    }
+  };
   return (
     <>
       <Head>
@@ -138,6 +169,7 @@ function Order() {
           </Box>
         </Flex>
       </Box>
+      {}
       <Box bg="white" py="10px">
         <Flex px="15px">
           <Box pt="10px">
@@ -277,16 +309,6 @@ function Order() {
           >
             <GridItem colSpan={1} gridColumn={2}>
               {buttonId === "โอนเงิน" ? (
-                <Link
-                href={{
-                  pathname: "/payment",
-                  query: {
-                    num_price: numPrice,
-                    delivery_fee: 40,
-                    total: total,
-                  },
-                }}
-              >
                 <Button
                   w="100%"
                   bg="red"
@@ -295,7 +317,6 @@ function Order() {
                 >
                   <Text>สั่งสินค้า</Text>
                 </Button>
-                </Link>
               ) : buttonId === "เก็บเงินปลายทาง" ? (
                 <Button
                   w="100%"
@@ -306,7 +327,12 @@ function Order() {
                   <Text>สั่งสินค้า</Text>
                 </Button>
               ) : (
-                <Button w="100%" bg="red" borderRadius="xl" onClick={createdOrder}>
+                <Button
+                  w="100%"
+                  bg="red"
+                  borderRadius="xl"
+                  onClick={createdOrder}
+                >
                   <Text>สั่งสินค้า</Text>
                 </Button>
               )}
