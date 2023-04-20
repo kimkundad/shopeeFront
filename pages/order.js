@@ -25,7 +25,7 @@ import axios from "axios";
 function Order() {
   const router = useRouter();
   const data = router.query;
-  const userInfo = useSelector((App) => App.userInfo)
+  const userInfo = useSelector((App) => App.userInfo);
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSucces,
@@ -41,18 +41,18 @@ function Order() {
     if (data?.product !== undefined) {
       async function fetchData() {
         const formData = new FormData();
-        if(Array.isArray(data?.product)){
+        if (Array.isArray(data?.product)) {
           data?.product.forEach((item, index) => {
             formData.append(`carts[${index}]`, parseInt(item));
           });
-        }else{
+        } else {
           const arr = [];
-          arr.push(data?.product)
+          arr.push(data?.product);
           arr.forEach((item, index) => {
             formData.append(`carts[${index}]`, parseInt(item));
           });
         }
-        
+
         const res = await axios.post(
           `https://shopee-api.deksilp.com/api/getProduct/`,
           formData
@@ -67,7 +67,7 @@ function Order() {
   const [sales, setSales] = useState(null);
   const [numPrice, setNumPrice] = useState(null);
   const [total, setTotal] = useState(null);
-  const [num,setNum] = useState(null);
+  const [num, setNum] = useState(null);
   useEffect(() => {
     if (data?.product_id) {
       if (data.price_sales !== 0) {
@@ -96,7 +96,7 @@ function Order() {
             } else {
               price = price + Element.price_type_3;
             }
-            num = num+Element.num
+            num = num + Element.num;
           } else {
             if (Element.type_product == 1) {
               price =
@@ -108,13 +108,13 @@ function Order() {
               price =
                 price + (Element.price_type_3 * Element.price_sales) / 100;
             }
-            num = num+Element.num
+            num = num + Element.num;
           }
         });
       });
       setNumPrice(price);
       setNum(num);
-      setTotal(price+40)
+      setTotal(price + 40);
     }
   }, [products]);
   const [buttonId, setButtonId] = useState("");
@@ -130,7 +130,7 @@ function Order() {
     if (data?.product_id) {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = userInfo.data[0].id;
+      let user_id = 1;
       const formData = new FormData();
       formData.append("shop_id", data?.shop_id);
       formData.append("user_id", user_id);
@@ -157,9 +157,9 @@ function Order() {
     } else {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = userInfo.data[0].id;
+      let user_id = 1;
       const formData = new FormData();
-      formData.append('products', JSON.stringify(products));
+      formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);
       formData.append("shop_id", products[0].id);
       formData.append("discount", discount);
@@ -171,6 +171,15 @@ function Order() {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      const formdelete = new FormData();
+      data?.product.forEach((e, index) => [
+        formdelete.append(`cart_id[${index}]`, e),
+      ]);
+
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/deleteCartItem`,
+        formdelete
+      );
       if (buttonId == "โอนเงิน") {
         router.push({
           pathname: "/payment",
@@ -178,8 +187,6 @@ function Order() {
         });
       }
     }
-
-    
   };
   return (
     <>
@@ -475,11 +482,7 @@ function Order() {
                   <Text>สั่งสินค้า</Text>
                 </Button>
               ) : (
-                <Button
-                  w="100%"
-                  bg="red"
-                  borderRadius="xl"
-                >
+                <Button w="100%" bg="red" borderRadius="xl">
                   <Text>สั่งสินค้า</Text>
                 </Button>
               )}

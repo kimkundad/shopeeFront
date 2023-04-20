@@ -98,13 +98,21 @@ export default function CartItem(props) {
   };
 
   const deleteCartItem = async (id) => {
+    let arr = [];
+    arr.push(id)
+    const formdata = new FormData();
+    arr.forEach((e,index) => {
+      formdata.append(`cart_id[${index}]`,e);
+    })
+    
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/deleteCartItem/${id}`
+      `https://shopee-api.deksilp.com/api/deleteCartItem`,formdata
     );
     setCartItem(res.data.cartItem);
   };
   return (
     <div>
+      {cartItem.length == 0? <Box textAlign="center" pt="20%">ไม่มีสินค้าในรถเข็น</Box>:null}
       {cartItem.map((item, index) => (
         <Box bg="white" pt={index === 0 ? "30px" : "15px"} key={index}>
           <Checkbox
@@ -296,7 +304,8 @@ export default function CartItem(props) {
             <Link href={{
             pathname: "/order",
             query: {
-              product: productId
+              product: productId,
+              type: 'cart'
             },
           }} >
               <Button bg="red" borderRadius="xl">

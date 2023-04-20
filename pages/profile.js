@@ -25,7 +25,7 @@ function chartShop() {
         `https://shopee-api.deksilp.com/api/getOrder/?user_id=${1}&shop_id=${2}`
       );
       const formdata = new FormData();
-      formdata.append("user_id",userInfo.data[0].id)
+      formdata.append("user_id",1)
       const user = await axios.post(
         `https://shopee-api.deksilp.com/api/getUser`,formdata
       );
@@ -42,7 +42,7 @@ function chartShop() {
       async function fetchdata() {
         const formData = new FormData();
         formData.append("name", name);
-        formData.append("user_id", userInfo.data[0].id);
+        formData.append("user_id", 1);
         const newName = await axios.post(
           `https://shopee-api.deksilp.com/api/editUser/`,formData
         );

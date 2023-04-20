@@ -18,12 +18,16 @@ import {
 } from "@chakra-ui/react";
 import CartItem from "@/components/CartItem";
 import axios from "axios";
+import { useSelector } from "react-redux";
 function useChartShop() {
   const [cartsItem, setCartsItem] = useState([]);
+  const userInfo = useSelector((App) => App.userInfo);
   useEffect(() => {
     async function fetchData() {
-      const carts = await axios.get(
-        `https://shopee-api.deksilp.com/api/getAllCartItem/1`
+      const formdata = new FormData();
+      formdata.append("user_id",1)
+      const carts = await axios.post(
+        `https://shopee-api.deksilp.com/api/getAllCartItem/`,formdata
       );
       setCartsItem(carts.data);
     }

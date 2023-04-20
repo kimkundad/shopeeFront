@@ -98,7 +98,6 @@ function useProduct() {
       if (element.op_name == option1) {
         element?.allOption2?.forEach((e) => {
           if (e.sub_op_name == event.target.id) {
-            console.log(e.price);
             a = e.price;
             return;
           }
@@ -129,12 +128,12 @@ function useProduct() {
 
   async function addToCart(event) {
     event.preventDefault();
-    let user_id = userInfo.data[0].id;
+    let user_id = 1;
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
     let productSubOptionId = 0;
-    await product[0]?.allOption1?.forEach((element) => {
+    product[0]?.allOption1?.forEach((element) => {
       if (element.op_name == option1) {
         element?.allOption2?.forEach((e) => {
           if (e.sub_op_name == option2) {
@@ -144,7 +143,6 @@ function useProduct() {
         });
         return;
       }
-      productSubOptionId = 0;
     });
 
     const data = {
