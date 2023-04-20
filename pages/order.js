@@ -30,18 +30,27 @@ function Order() {
     onClose: onCloseSucces,
   } = useDisclosure([]);
   const handleModalClick = () => {
+    createdOrder();
     onOpenSucces();
   };
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
     if (data?.product !== undefined) {
-      console.log(data.product);
       async function fetchData() {
         const formData = new FormData();
-        data?.product.forEach((item, index) => {
-          formData.append(`product_id[${index}]`, parseInt(item));
-        });
+        if(Array.isArray(data?.product)){
+          data?.product.forEach((item, index) => {
+            formData.append(`carts[${index}]`, parseInt(item));
+          });
+        }else{
+          const arr = [];
+          arr.push(data?.product)
+          arr.forEach((item, index) => {
+            formData.append(`carts[${index}]`, parseInt(item));
+          });
+        }
+        
         const res = await axios.post(
           `https://shopee-api.deksilp.com/api/getProduct/`,
           formData
@@ -56,21 +65,56 @@ function Order() {
   const [sales, setSales] = useState(null);
   const [numPrice, setNumPrice] = useState(null);
   const [total, setTotal] = useState(null);
+  const [num,setNum] = useState(null);
   useEffect(() => {
-    if (data.price_sales !== 0) {
-      setNumPrice(
-        (data.price - (data.price_sales * data.price) / 100) * data.num
-      );
-      setSales(data.price - (data.price_sales * data.price) / 100);
-      setTotal(
-        (data.price - (data.price_sales * data.price) / 100) * data.num + 40
-      );
+    if (data?.product_id) {
+      if (data.price_sales !== 0) {
+        setNumPrice(
+          (data.price - (data.price_sales * data.price) / 100) * data.num
+        );
+        setSales(data.price - (data.price_sales * data.price) / 100);
+        setTotal(
+          (data.price - (data.price_sales * data.price) / 100) * data.num + 40
+        );
+      } else {
+        setSales(data.price);
+        setNumPrice(data.price * data.num);
+        setTotal(data.price + 40);
+      }
     } else {
-      setSales(data.price);
-      setNumPrice(data.price * data.num);
-      setTotal(data.price + 40);
+      let price = 0;
+      let num = 0;
+      products.forEach((e) => {
+        e.product.forEach((Element) => {
+          if (Element.price_sales == 0) {
+            if (Element.type_product == 1) {
+              price = price + Element.price_type_1;
+            } else if (Element.type_product == 2) {
+              price = price + Element.price_type_2;
+            } else {
+              price = price + Element.price_type_3;
+            }
+            num = num+Element.num
+          } else {
+            if (Element.type_product == 1) {
+              price =
+                price + (Element.price_type_1 * Element.price_sales) / 100;
+            } else if (Element.type_product == 2) {
+              price =
+                price + (Element.price_type_2 * Element.price_sales) / 100;
+            } else {
+              price =
+                price + (Element.price_type_3 * Element.price_sales) / 100;
+            }
+            num = num+Element.num
+          }
+        });
+      });
+      setNumPrice(price);
+      setNum(num);
+      setTotal(price+40)
     }
-  }, [data]);
+  }, [products]);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
@@ -81,33 +125,59 @@ function Order() {
   ];
 
   const createdOrder = async () => {
-    let discount = 0.0;
-    let status = "ที่ต้องชำระ";
-    let user_id = 1;
-    const formData = new FormData();
-    formData.append("shop_id", data?.shop_id);
-    formData.append("user_id", user_id);
-    formData.append("discount", discount);
-    formData.append("price_sales", data?.price_sales);
-    formData.append("num", data?.num);
-    formData.append("price", data?.price);
-    formData.append("total", data?.price * data?.num);
-    formData.append("status", status);
-    formData.append("product_id", data?.product_id);
-    formData.append("option1", data?.option1Id);
-    formData.append("option2", data?.option2Id);
-    const response = await axios.post(
-      "https://shopee-api.deksilp.com/api/createdOrder",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-
-    if (buttonId == "โอนเงิน") {
-      router.push({
-        pathname: "/payment",
-        query: { price: response.data.order.price },
-      });
+    if (data?.product_id) {
+      let discount = 0.0;
+      let status = "ที่ต้องชำระ";
+      let user_id = 1;
+      const formData = new FormData();
+      formData.append("shop_id", data?.shop_id);
+      formData.append("user_id", user_id);
+      formData.append("discount", discount);
+      formData.append("price_sales", data?.price_sales);
+      formData.append("num", data?.num);
+      formData.append("price", data?.price);
+      formData.append("total", data?.price * data?.num);
+      formData.append("status", status);
+      formData.append("product_id", data?.product_id);
+      formData.append("option1", data?.option1Id);
+      formData.append("option2", data?.option2Id);
+      const response = await axios.post(
+        "https://shopee-api.deksilp.com/api/createdOrder",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      if (buttonId == "โอนเงิน") {
+        router.push({
+          pathname: "/payment",
+          query: { price: response.data.order.price },
+        });
+      }
+    } else {
+      let discount = 0.0;
+      let status = "ที่ต้องชำระ";
+      let user_id = 1;
+      const formData = new FormData();
+      formData.append('products', JSON.stringify(products));
+      formData.append("user_id", user_id);
+      formData.append("shop_id", products[0].id);
+      formData.append("discount", discount);
+      formData.append("num", num);
+      formData.append("total", numPrice);
+      formData.append("status", status);
+      const response = await axios.post(
+        "https://shopee-api.deksilp.com/api/createdOrder",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      if (buttonId == "โอนเงิน") {
+        router.push({
+          pathname: "/payment",
+          query: { price: response.data.order.price },
+        });
+      }
     }
+
+    
   };
   return (
     <>
@@ -153,59 +223,135 @@ function Order() {
           </Flex>
         </Box>
       </Box>
-      <Box py="10px" mt="10px" bg="white">
-        <Flex px="15px">
-          <Box
-            px="8px"
-            bg="red"
-            textColor="white"
-            borderRadius="md"
-            textAlign="center"
-          >
-            <Text>ร้านแนะนำ</Text>
-          </Box>
-          <Box pl="8px">
-            <Text>{data.name_shop}</Text>
-          </Box>
-        </Flex>
-      </Box>
-      {}
-      <Box bg="white" py="10px">
-        <Flex px="15px">
-          <Box pt="10px">
-            <Image
-              src={`https://shopee-api.deksilp.com/images/shopee/products/${data.img_product}`}
-              alt=""
-              w="100%"
-              maxHeight="130px"
-            />
-          </Box>
-          <Box pl="15px" width="-webkit-fill-available">
-            <Text fontSize="xl" pt="7px">
-              {data.name_product}
-            </Text>
-            <Text fontSize="sm">{data.detail_product}</Text>
-            {data.type != 1 ? (
-              <Text
-                fontSize="sm"
-                bg="gray.300"
+      {products.map((item, index) => (
+        <Box key={index}>
+          <Box py="10px" mt="10px" bg="white">
+            <Flex px="15px">
+              <Box
+                px="8px"
+                bg="red"
+                textColor="white"
                 borderRadius="md"
-                display="initial"
-                px="7px"
+                textAlign="center"
               >
-                ตัวเลือกสินค้า: {data.name_option1} {data.option1}{" "}
-                {data.name_option2} {data.option2}
-              </Text>
-            ) : null}
-
-            <Flex fontSize="xl">
-              <Text>{sales}.-</Text>
-              <Spacer />
-              <Text>x{data.num}</Text>
+                <Text>ร้านแนะนำ</Text>
+              </Box>
+              <Box pl="8px">
+                <Text>{item.name_shop}</Text>
+              </Box>
             </Flex>
           </Box>
-        </Flex>
-      </Box>
+          {item.product.map((subItem, subIndex) => {
+            return (
+              <Box bg="white" py="10px" key={subIndex}>
+                <Flex px="15px">
+                  <Box pt="10px">
+                    <Image
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem.img_product}`}
+                      alt=""
+                      w="100%"
+                      maxHeight="130px"
+                    />
+                  </Box>
+                  <Box pl="15px" width="-webkit-fill-available">
+                    <Text fontSize="xl" pt="7px">
+                      {subItem.name_product}
+                    </Text>
+                    <Text fontSize="sm">{subItem.detail_product}</Text>
+                    {subItem.type_product != 1 ? (
+                      <Text
+                        fontSize="sm"
+                        bg="gray.300"
+                        borderRadius="md"
+                        display="initial"
+                        px="7px"
+                      >
+                        ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name}{" "}
+                        {subItem.option2} {subItem.sub_op_name}
+                      </Text>
+                    ) : null}
+
+                    <Flex fontSize="xl">
+                      <Text>
+                        {subItem.price_sales == 0
+                          ? subItem.type_product == 1
+                            ? subItem.price_type_1
+                            : subItem.type_product == 2
+                            ? subItem.price_type_2
+                            : subItem.price_type_3
+                          : subItem.type_product == 1
+                          ? (subItem.price_type_1 * subItem.price_sales) / 100
+                          : subItem.type_product == 2
+                          ? (subItem.price_type_2 * subItem.price_sales) / 100
+                          : (subItem.price_type_3 * subItem.price_sales) / 100}
+                        .-
+                      </Text>
+                      <Spacer />
+                      <Text>x{subItem.num}</Text>
+                    </Flex>
+                  </Box>
+                </Flex>
+              </Box>
+            );
+          })}
+        </Box>
+      ))}
+      {data?.product_id ? (
+        <Box>
+          <Box py="10px" mt="10px" bg="white">
+            <Flex px="15px">
+              <Box
+                px="8px"
+                bg="red"
+                textColor="white"
+                borderRadius="md"
+                textAlign="center"
+              >
+                <Text>ร้านแนะนำ</Text>
+              </Box>
+              <Box pl="8px">
+                <Text>{data.name_shop}</Text>
+              </Box>
+            </Flex>
+          </Box>
+          <Box bg="white" py="10px">
+            <Flex px="15px">
+              <Box pt="10px">
+                <Image
+                  src={`https://shopee-api.deksilp.com/images/shopee/products/${data.img_product}`}
+                  alt=""
+                  w="100%"
+                  maxHeight="130px"
+                />
+              </Box>
+              <Box pl="15px" width="-webkit-fill-available">
+                <Text fontSize="xl" pt="7px">
+                  {data.name_product}
+                </Text>
+                <Text fontSize="sm">{data.detail_product}</Text>
+                {data.type != 1 ? (
+                  <Text
+                    fontSize="sm"
+                    bg="gray.300"
+                    borderRadius="md"
+                    display="initial"
+                    px="7px"
+                  >
+                    ตัวเลือกสินค้า: {data.name_option1} {data.option1}{" "}
+                    {data.name_option2} {data.option2}
+                  </Text>
+                ) : null}
+                <Flex fontSize="xl">
+                  <Text>{sales}.-</Text>
+                  <Spacer />
+                  <Text>x{data.num}</Text>
+                </Flex>
+              </Box>
+            </Flex>
+          </Box>
+        </Box>
+      ) : null}
+
       <Box bg="white" py="10px" mt="10px">
         <Flex px="15px">
           <Box pr="15px" alignSelf="center">
@@ -331,7 +477,6 @@ function Order() {
                   w="100%"
                   bg="red"
                   borderRadius="xl"
-                  onClick={createdOrder}
                 >
                   <Text>สั่งสินค้า</Text>
                 </Button>
@@ -357,7 +502,7 @@ function Order() {
             </Box>
           </ModalBody>
           <ModalFooter alignSelf="center">
-            <Link href="/profile" justifySelf="center">
+            <Link href="/profile">
               <Button w="100%" bg="red" borderRadius="xl">
                 <Text color="white">ไปยังหน้าโปรไฟล์</Text>
               </Button>

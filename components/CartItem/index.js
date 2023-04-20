@@ -60,7 +60,8 @@ export default function CartItem(props) {
     for (let i = 0; i < newCheckAll.length; i++) {
       for (let k = 0; k < newCheckAll[i].length; k++) {
         if (newCheckAll[i][k]) {
-          pro_id.push(cartItem[i].product[k].product_id);
+
+          pro_id.push(cartItem[i].product[k].id);
           newSum =
             newSum +
             (cartItem[i].product[k].type_product == 1

@@ -8,9 +8,9 @@ import {
   GridItem,
   Image,
   Button,
-  Link,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import style from "./style.module.css";
 export default function statusProduct(props) {
@@ -76,7 +76,12 @@ export default function statusProduct(props) {
                 </Box>
               </Box>
               {isBorderActive == "ที่ต้องชำระ" ? (
-                <Link href="/order">
+                <Link href={{
+                  pathname: "/payment",
+                  query: {
+                    price: item.price,
+                  },
+                }}>
                   {item?.item?.map((subItem, subIndex) => {
                     return (
                       <Box

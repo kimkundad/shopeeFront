@@ -85,7 +85,7 @@ function chartShop() {
               display="flex"
               alignItems="center"
             >
-              {name}
+              {name?.length > 20 ? name?.slice(0, 10) + "..." : name}
               <Image
                 pl="7px"
                 src="/img/edit.png"

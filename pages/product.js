@@ -29,17 +29,19 @@ function useProduct() {
   const data = router.query;
   const [product, setProduct] = useState([]);
   const [allSubOption, setAllSubOption] = useState([]);
+  const [price, setPrice] = useState();
   useEffect(() => {
     if (data?.product_id !== undefined) {
       async function fetchData() {
         const formData = new FormData();
-        let pro_id = [data?.product_id]
-        pro_id.forEach((e,index)=>{
+        let pro_id = [data?.product_id];
+        pro_id.forEach((e, index) => {
           formData.append(`product_id[${index}]`, e);
         });
         formData.append("shop_id", data?.shop_id);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getProduct`,formData
+          `https://shopee-api.deksilp.com/api/getProduct`,
+          formData
         );
         if (res.data.product[0].type !== 1) {
           if (res.data.product[0].option1 !== null) {
@@ -56,14 +58,18 @@ function useProduct() {
         const getProduct = res.data.product;
         setProduct(getProduct);
         setAllSubOption(subOption);
+        setPrice(res.data.product[0].price)
       }
       fetchData();
     }
   }, [data]);
+
+  
+
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
   const [option1Id, setOption1Id] = useState(null);
-  async function selectOption1(event, id) {
+  function selectOption1(event, id) {
     setOption1(event.target.id);
     setOption1Id(id);
     const slideIndex = product[0]?.allOption1.findIndex(
@@ -87,6 +93,21 @@ function useProduct() {
   const [option2, setOption2] = useState(null);
   function selectOption2(event) {
     setOption2(event.target.id);
+    let a = price;
+    product[0]?.allOption1?.forEach((element) => {
+      if (element.op_name == option1) {
+        element?.allOption2?.forEach((e) => {
+          if (e.sub_op_name == event.target.id) {
+            console.log(e.price);
+            a = e.price;
+            return;
+          }
+        });
+        return;
+      }
+    });
+    setPrice(a);
+
   }
 
   const [option2Id, setOption2Id] = useState(null);
@@ -151,8 +172,8 @@ function useProduct() {
         {product?.map((item, index) => {
           const sales =
             item?.price_sales !== 0
-              ? item?.price - (item?.price_sales * item?.price) / 100
-              : item?.price;
+              ? price - (item?.price_sales * price) / 100
+              : price;
           return (
             <Box key={index}>
               <Swiper
@@ -227,26 +248,29 @@ function useProduct() {
                   </Text>
                 </Box>
                 <Spacer />
-                <Flex alignSelf="center" fontSize="xs">
-                  <Text position="relative">(ราคาปกติ </Text>
-                  <Box ml="7px" display="inline-block" position="relative">
-                    <Text position="relative" display="inline">
-                      {item?.price}
-                    </Text>
-                    <Box
-                      opacity="7"
-                      content=""
-                      position="absolute"
-                      top="45%"
-                      left="0"
-                      w="100%"
-                      h="1px"
-                      bgColor="red"
-                      transform="rotate(-15deg)"
-                    />
-                  </Box>
-                  <Text>.-)</Text>
-                </Flex>
+                {item.price_sales !== 0 ? (
+                  <Flex alignSelf="center" fontSize="xs">
+                    <Text position="relative">(ราคาปกติ </Text>
+                    <Box ml="7px" display="inline-block" position="relative">
+                      <Text position="relative" display="inline">
+                        {item?.price}
+                      </Text>
+                      <Box
+                        opacity="7"
+                        content=""
+                        position="absolute"
+                        top="45%"
+                        left="0"
+                        w="100%"
+                        h="1px"
+                        bgColor="red"
+                        transform="rotate(-15deg)"
+                      />
+                    </Box>
+                    <Text>.-)</Text>
+                  </Flex>
+                ) : null}
+
                 <Box ml="10px" borderRadius="md" bg="red" alignSelf="center">
                   <Text
                     px="10px"
@@ -282,7 +306,7 @@ function useProduct() {
                       key={index}
                       w="100%"
                       borderRadius="md"
-                      onClick={(e) => selectOption1(e, item.id)}
+                      onClick={(e) => {selectOption1(e, item.id);setPrice(product[0].type == 2 ?item.price:price);}}
                       border={`2px solid red`}
                       bg="gray.300"
                       id={item?.op_name}
@@ -320,7 +344,7 @@ function useProduct() {
                       w="100%"
                       borderRadius="md"
                       border={`1px solid gray`}
-                      onClick={(e) => selectOption1(e, item.id)}
+                      onClick={(e) => {selectOption1(e, item.id);setPrice(product[0].type == 2 ?item.price:price);}}
                       id={item?.op_name}
                       fontWeight="0px"
                       padding="0px"
@@ -375,7 +399,7 @@ function useProduct() {
                   borderRadius="md"
                   border={`2px solid red`}
                   bg="gray.300"
-                  onClick={selectOption2}
+                  onClick={(e) => {selectOption2(e)}}
                   id={item?.sub_op_name}
                   fontWeight="0px"
                   isDisabled={product[0]?.allOption1.some((e) => {
@@ -408,7 +432,7 @@ function useProduct() {
                   w="100%"
                   borderRadius="md"
                   border={`1px solid gray`}
-                  onClick={selectOption2}
+                  onClick={(e) => {selectOption2(e)}}
                   id={item?.sub_op_name}
                   fontWeight="0px"
                   isDisabled={product[0]?.allOption1.some((e) => {
@@ -503,7 +527,7 @@ function useProduct() {
                           name_product: product[0]?.name_product,
                           detail_product: product[0]?.detail_product,
                           img_product: product[0]?.img_product,
-                          price: product[0]?.price,
+                          price: price,
                           price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
@@ -525,7 +549,7 @@ function useProduct() {
                           name_product: product[0]?.name_product,
                           detail_product: product[0]?.detail_product,
                           img_product: product[0]?.img_product,
-                          price: product[0]?.price,
+                          price: price,
                           price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
@@ -550,7 +574,7 @@ function useProduct() {
                           name_product: product[0]?.name_product,
                           detail_product: product[0]?.detail_product,
                           img_product: product[0]?.img_product,
-                          price: product[0]?.price,
+                          price: price,
                           price_sales: product[0]?.price_sales,
                           option1: option1,
                           option2: option2,
