@@ -59,7 +59,7 @@ function chartShop() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Flex bg="white" py="25px" px="15px">
+      <Flex bg="white" pb="25px" pt="40px" px="15px">
         <Box
           bg="white"
           borderRadius="50%"
