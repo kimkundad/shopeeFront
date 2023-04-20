@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -17,21 +17,23 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import Checkbox from "@/components/Checkbox";
+import axios from "axios";
 function address() {
-  const item = [
-    {
-      name: "นายต๊อบ เจริญมี",
-      tel: "081-789-7784",
-      address:
-        "อำเภอเมืองชลบุรี 9/84 หมู่บ้านมหานครซอย 19 ตำบลแสนสุขอำเภอเมืองชลบุรี จังหวัดชลบุรี 22130",
-    },
-    {
-      name: "นายต๊อบ เจริญมี",
-      tel: "081-789-7784",
-      address:
-        "อำเภอเมืองชลบุรี 9/84 หมู่บ้านมหานครซอย 19 ตำบลแสนสุขอำเภอเมืองชลบุรี จังหวัดชลบุรี 22130",
-    },
-  ];
+  const [address,setAddress] = useState([]);
+  useEffect(() => {
+    async function fetchdata() {
+      let user_id = 1;
+      const formdata = new FormData();
+      formdata.append("user_id",user_id);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getAddress`,formdata
+      )
+      setAddress(res.data.address);
+    }
+
+    fetchdata();
+  },[])
+  
   return (
     <>
       <Head>
@@ -46,7 +48,7 @@ function address() {
         </Box>
       </Box>
       <Box py="10px" mt="10px" bg="white">
-        <Checkbox data={item} />
+        <Checkbox data={address} />
         <Flex justifyContent="center">
           <Link href="/address/newaddress">
             <Button bg="red">

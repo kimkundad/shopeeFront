@@ -22,23 +22,25 @@ function newaddress() {
   const [province,setProvince] = useState(null);
   const [postcode,setPostcode] = useState(null);
 
+  const [isDefault,setIsDefault] = useState(true);
   async function newAddress() {
     event.preventDefault();
+
     let user_id = 1;
     const formdata = new FormData();
     formdata.append("name",name);
     formdata.append("tel",tel);
     formdata.append("address",address);
-    formdata.append("subDistrict",subDistrict);
-    formdata.append("district",district);
+    formdata.append("subDistrict","ตำบล"+subDistrict);
+    formdata.append("district","อำเภอ"+district);
     formdata.append("province",province);
     formdata.append("postcode",postcode);
-    formdata.append("user_id",user_id)
+    formdata.append("user_id",user_id);
+    formdata.append("default",isDefault);
     
     const res = await axios.post(
       `https://shopee-api.deksilp.com/api/newAddress`,formdata
     )
-    console.log('s');
   }
 
   return (
@@ -87,7 +89,7 @@ function newaddress() {
               </Box>
             </SimpleGrid>
             <Box display="flex" pt="20px">
-              <Switch id="email-alerts" isChecked={true}/>
+              <Switch id="email-alerts" isChecked={isDefault} onChange={(e) => setIsDefault(!isDefault)}/>
               <label htmlFor="email-alerts" mb="0" pl="10px">
                 ตั้งเป็นที่อยู่เริ่มต้นสำหรับการจัดส่ง
               </label>

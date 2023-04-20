@@ -19,9 +19,10 @@ export default function checkbox(props) {
                     stroke: "none !important",
                   },
                 }}
+                isChecked={item.default == 1? true:false}
               >
                 <Flex>
-                  <Box>
+                  <Box w="100%">
                     <Flex>
                       <Text>{item.name}</Text>
                       <Text pl="5px">({item.tel})</Text>
@@ -37,7 +38,7 @@ export default function checkbox(props) {
                         </Box>
                       </Link>
                     </Flex>
-                    <Text>{item.address}</Text>
+                    <Text>{item.address} {item.district} {item.sub_district} {item.province} {item.postcode}</Text>
                   </Box>
                 </Flex>
               </Checkbox>
