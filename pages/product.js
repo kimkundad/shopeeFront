@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from "next/router";
@@ -25,6 +26,7 @@ import { Pagination } from "swiper";
 
 import StarRatings from "react-star-ratings";
 function useProduct() {
+  const userInfo = useSelector((App) => App.userInfo);
   const router = useRouter();
   const data = router.query;
   const [product, setProduct] = useState([]);
@@ -63,8 +65,6 @@ function useProduct() {
       fetchData();
     }
   }, [data]);
-
-  
 
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
@@ -129,7 +129,7 @@ function useProduct() {
 
   async function addToCart(event) {
     event.preventDefault();
-    let user_id = 1;
+    let user_id = userInfo.data[0].id;
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;

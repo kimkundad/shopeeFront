@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -24,6 +25,7 @@ import axios from "axios";
 function Order() {
   const router = useRouter();
   const data = router.query;
+  const userInfo = useSelector((App) => App.userInfo)
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSucces,
@@ -128,7 +130,7 @@ function Order() {
     if (data?.product_id) {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", data?.shop_id);
       formData.append("user_id", user_id);
@@ -155,7 +157,7 @@ function Order() {
     } else {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append('products', JSON.stringify(products));
       formData.append("user_id", user_id);
