@@ -27,6 +27,8 @@ function newaddress() {
     event.preventDefault();
 
     let user_id = 1;
+    let setdefault = isDefault?1:0;
+    console.log(setdefault);
     const formdata = new FormData();
     formdata.append("name",name);
     formdata.append("tel",tel);
@@ -36,7 +38,7 @@ function newaddress() {
     formdata.append("province",province);
     formdata.append("postcode",postcode);
     formdata.append("user_id",user_id);
-    formdata.append("default",isDefault);
+    formdata.append("default",setdefault);
     
     const res = await axios.post(
       `https://shopee-api.deksilp.com/api/newAddress`,formdata
