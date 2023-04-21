@@ -16,7 +16,7 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
-import Checkbox from "@/components/Checkbox";
+import Address from "@/components/Address";
 import axios from "axios";
 function address() {
   const [address,setAddress] = useState([]);
@@ -26,7 +26,7 @@ function address() {
       const formdata = new FormData();
       formdata.append("user_id",user_id);
       const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAddress`,formdata
+        `https://shopee-api.deksilp.com/api/getAllAddress`,formdata
       )
       setAddress(res.data.address);
     }
@@ -42,17 +42,17 @@ function address() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box pt="25px">
+      <Box pt="35px">
         <Box px="35px">
-          <Text fontSize="xl">ที่อยู่</Text>
+          <Text fontSize="xl" fontWeight="bold">ที่อยู่</Text>
         </Box>
       </Box>
       <Box py="10px" mt="10px" bg="white">
-        <Checkbox data={address} />
+        <Address data={address} />
         <Flex justifyContent="center">
           <Link href="/address/newaddress">
-            <Button bg="red">
-              <Text>เพิ่มที่อยู่ใหม่</Text>
+            <Button bg="red" color="white" h="30px" fontWeight="light">
+              เพิ่มที่อยู่ใหม่
             </Button>
           </Link>
         </Flex>

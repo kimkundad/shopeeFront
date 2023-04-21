@@ -21,8 +21,13 @@ function chartShop() {
   const [name, setName] = useState();
   useEffect(() => {
     async function fetchdata() {
-      const order = await axios.get(
-        `https://shopee-api.deksilp.com/api/getOrder/?user_id=${1}&shop_id=${2}`
+      let user_id = 1;
+      let shop_id = 2;
+      const formdataOrder = new FormData();
+      formdataOrder.append("user_id",user_id);
+      formdataOrder.append("shop_id",shop_id);
+      const order = await axios.post(
+        `https://shopee-api.deksilp.com/api/getOrder`,formdataOrder
       );
       const formdata = new FormData();
       formdata.append("user_id",1)

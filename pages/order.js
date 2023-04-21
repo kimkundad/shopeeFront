@@ -36,10 +36,36 @@ function Order() {
     onOpenSucces();
   };
 
+  const [address, setAddress] = useState(null);
   const [products, setProducts] = useState([]);
+  useEffect(() => {
+    if (data !== undefined) {
+      async function fetchData() {
+        let user_id = 1;
+        const formdataAddress = new FormData();
+        formdataAddress.append("user_id", user_id);
+        const dataAddress = await axios.post(
+          `https://shopee-api.deksilp.com/api/getAddress`,
+          formdataAddress
+        );
+        setAddress(dataAddress.data.address);
+      }
+  
+      fetchData();
+    }
+    
+  },[data.product])
   useEffect(() => {
     if (data?.product !== undefined) {
       async function fetchData() {
+        let user_id = 1;
+        const formdataAddress = new FormData();
+        formdataAddress.append("user_id", user_id);
+        const dataAddress = await axios.post(
+          `https://shopee-api.deksilp.com/api/getAddress`,
+          formdataAddress
+        );
+        setAddress(dataAddress.data.address);
         const formData = new FormData();
         if (Array.isArray(data?.product)) {
           data?.product.forEach((item, index) => {
@@ -62,7 +88,7 @@ function Order() {
 
       fetchData();
     }
-  }, []);
+  }, [data?.product]);
 
   const [sales, setSales] = useState(null);
   const [numPrice, setNumPrice] = useState(null);
@@ -116,7 +142,7 @@ function Order() {
       setNum(num);
       setTotal(price + 40);
     }
-  }, [products]);
+  }, [data]);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
@@ -127,6 +153,11 @@ function Order() {
   ];
 
   const createdOrder = async () => {
+    if(address==null){
+      router.push("/address/newaddress");
+      return;
+    
+    }
     if (data?.product_id) {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
@@ -210,12 +241,12 @@ function Order() {
             </Box>
             <Box pl="15px">
               <Text fontWeight="bold">ที่อยู่สำหรับจัดส่ง</Text>
-              <Text>นายต๊อบ เจริญมี (081-789-7784)</Text>
+              <Text>{address?.name} ({address?.tel})</Text>
               <Text>
-                อำเภอเมืองชลบุรี 9/84 หมู่บ้านมหานคร ซอย 19
-                ตำบลแสนสุขอำเภอเมืองชลบุรี จังหวัดชลบุรี 22130
+                {address?.address} อำเภอ{address?.district} ตำบล{address?.sub_district} จังหวัด{address?.province} {address?.postcode}
               </Text>
             </Box>
+            <Spacer/>
             <Box display="flex" alignSelf="center">
               <Link href="/address/">
                 <Box>
@@ -477,7 +508,7 @@ function Order() {
                   w="100%"
                   bg="red"
                   borderRadius="xl"
-                  onClick={() => handleModalClick()}
+                  onClick={address !== null? () => handleModalClick():createdOrder}
                 >
                   <Text>สั่งสินค้า</Text>
                 </Button>

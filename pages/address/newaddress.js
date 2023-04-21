@@ -4,45 +4,88 @@ import Head from "next/head";
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
   Text,
   SimpleGrid,
   Input,
   Switch,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/router";
 function newaddress() {
+  const router = useRouter();
+  const [name, setName] = useState(null);
+  const [tel, setTel] = useState("");
+  const [address, setAddress] = useState(null);
+  const [subDistrict, setSubDistrict] = useState(null);
+  const [district, setDistrict] = useState(null);
+  const [province, setProvince] = useState(null);
+  const [postcode, setPostcode] = useState(null);
 
-  const [name,setName] = useState(null);
-  const [tel,setTel] = useState(null);
-  const [address,setAddress] = useState(null);
-  const [subDistrict,setSubDistrict] = useState(null);
-  const [district,setDistrict] = useState(null);
-  const [province,setProvince] = useState(null);
-  const [postcode,setPostcode] = useState(null);
+  const [warningTel, setWarningTel] = useState(null);
 
-  const [isDefault,setIsDefault] = useState(true);
+  const {
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onClose: onCloseError,
+  } = useDisclosure([]);
+
+  const [isDefault, setIsDefault] = useState(true);
+  const handleTelChange = (e) => {
+    const input = e.target.value.toString();
+    if (input.length <= e.target.maxLength) {
+      if(e.target.maxLength== 10){
+        setTel(input);
+      }else{
+        setPostcode(input);
+      }
+      
+    }
+  };
+  const handleKeyPress = (e) => {
+    const keyCode = e.which ? e.which : e.keyCode;
+    if (keyCode < 48 || keyCode > 57) {
+      e.preventDefault();
+    }
+  };
   async function newAddress() {
     event.preventDefault();
 
+    if (tel.length < 10) {
+      setWarningTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
+      return;
+    } else {
+      setWarningTel(null);
+    }
+
     let user_id = 1;
-    let setdefault = isDefault?1:0;
-    console.log(setdefault);
+    let setdefault = isDefault ? 1 : 0;
     const formdata = new FormData();
-    formdata.append("name",name);
-    formdata.append("tel",tel);
-    formdata.append("address",address);
-    formdata.append("subDistrict","ตำบล"+subDistrict);
-    formdata.append("district","อำเภอ"+district);
-    formdata.append("province",province);
-    formdata.append("postcode",postcode);
-    formdata.append("user_id",user_id);
-    formdata.append("default",setdefault);
-    
+    formdata.append("name", name);
+    formdata.append("tel", tel);
+    formdata.append("address", address);
+    formdata.append("subDistrict", subDistrict);
+    formdata.append("district", district);
+    formdata.append("province", province);
+    formdata.append("postcode", postcode);
+    formdata.append("user_id", user_id);
+    formdata.append("default", setdefault);
+
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/newAddress`,formdata
-    )
+      `https://shopee-api.deksilp.com/api/newAddress`,
+      formdata
+    );
+    if (res.data.status == "success") {
+      router.push("/address");
+    } else {
+      onOpenError();
+    }
   }
 
   return (
@@ -64,34 +107,81 @@ function newaddress() {
             borderBottomColor="gray.100"
           >
             <label>ชื่อ - นามสกุล</label>
-            <Input bg="gray.100" border="0px" onChange={(e) => setName(e.target.value)} isRequired/>
+            <Input
+              bg="gray.100"
+              border="0px"
+              onChange={(e) => setName(e.target.value)}
+              isRequired
+            />
             <label>เบอร์โทรศศัพท์</label>
-            <Input bg="gray.100" border="0px" onChange={(e) => setTel(e.target.value)} isRequired/>
+            <Input
+              bg="gray.100"
+              border="0px"
+              type="tel"
+              value={tel}
+              maxLength={10}
+              onChange={handleTelChange}
+              onKeyPress={handleKeyPress}
+              isRequired
+            />
+            <label>
+              <Text color="red">{warningTel}</Text>
+            </label>
+
             <label>ที่อยู่</label>
-            <Input bg="gray.100" border="0px" onChange={(e) => setAddress(e.target.value)} isRequired/>
+            <Input
+              bg="gray.100"
+              border="0px"
+              onChange={(e) => setAddress(e.target.value)}
+              isRequired
+            />
             <SimpleGrid
               spacing={4}
               templateColumns="repeat(2, minmax(100px, 1fr))"
             >
               <Box>
                 <label>ตำบล</label>
-                <Input bg="gray.100" onChange={(e) => setSubDistrict(e.target.value)} isRequired/>
+                <Input
+                  bg="gray.100"
+                  onChange={(e) => setSubDistrict(e.target.value)}
+                  isRequired
+                />
               </Box>
               <Box>
                 <label>อำเภอ</label>
-                <Input bg="gray.100" onChange={(e) => setDistrict(e.target.value)} isRequired/>
+                <Input
+                  bg="gray.100"
+                  onChange={(e) => setDistrict(e.target.value)}
+                  isRequired
+                />
               </Box>
               <Box>
                 <label>จังหวัด</label>
-                <Input bg="gray.100" onChange={(e) => setProvince(e.target.value)} isRequired/>
+                <Input
+                  bg="gray.100"
+                  onChange={(e) => setProvince(e.target.value)}
+                  isRequired
+                />
               </Box>
               <Box>
                 <label>รหัสไปรษณีย์</label>
-                <Input bg="gray.100" onChange={(e) => setPostcode(e.target.value)} isRequired/>
+                <Input
+                  bg="gray.100"
+                  type="number"
+                  maxLength={5}
+                  value={postcode}
+                  onChange={handleTelChange}
+                  onKeyPress={handleKeyPress}
+                  isRequired
+                />
               </Box>
             </SimpleGrid>
             <Box display="flex" pt="20px">
-              <Switch id="email-alerts" isChecked={isDefault} onChange={(e) => setIsDefault(!isDefault)}/>
+              <Switch
+                id="email-alerts"
+                isChecked={isDefault}
+                onChange={(e) => setIsDefault(!isDefault)}
+              />
               <label htmlFor="email-alerts" mb="0" pl="10px">
                 ตั้งเป็นที่อยู่เริ่มต้นสำหรับการจัดส่ง
               </label>
@@ -104,6 +194,24 @@ function newaddress() {
           </Box>
         </form>
       </Box>
+      <Modal onClose={onCloseError} size="xs" isOpen={isOpenError}>
+        <ModalOverlay />
+        <ModalContent alignSelf="center">
+          <ModalHeader alignSelf="center">เพิ่มที่อยู่ไม่สำเร็จ</ModalHeader>
+          <ModalBody alignSelf="center">
+            <Box textAlign="center">
+              <Text>เพิ่มข้อมูลที่อยู่ไม่สำเร็จ</Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter alignSelf="center">
+            <Link href="/address">
+              <Button w="100%" bg="red" borderRadius="xl">
+                <Text color="white">ไปยังหน้าโปรไฟล์</Text>
+              </Button>
+            </Link>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

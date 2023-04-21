@@ -33,6 +33,8 @@ export default function Header() {
     nameheader = "ทำการสั่งซื้อ";
   } else if (pathname == "/address/newaddress") {
     nameheader = "เพิ่มที่อยู่ใหม่";
+  } else if (pathname == "/address/editaddress") {
+    nameheader = "แก้ไขที่อยู่";
   } else if (pathname == "/payment/confirmPayment") {
     nameheader = "ยืนยันการชำระเงิน";
   } else if (pathname.match("/payment")) {
