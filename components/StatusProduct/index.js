@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react/jsx-no-comment-textnodes */
+
 import {
   Box,
   Grid,
@@ -10,11 +8,11 @@ import {
   GridItem,
   Image,
   Button,
-  Link,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import style from "./style.module.css";
+import Link from "next/link";
 export default function statusProduct(props) {
   const [isBorderActive, setIsBorderActive] = useState("ที่ต้องชำระ");
   const status = [
@@ -62,7 +60,12 @@ export default function statusProduct(props) {
                 </Box>
               </Box>
               {isBorderActive == "ที่ต้องชำระ" ? (
-                <Link href="/order">
+                <Link href={{
+                  pathname: "/payment",
+                  query: {
+                    order: item.id,
+                  },
+                }}>
                   {item?.item?.map((subItem, subIndex) => {
                     return (
                       <Box

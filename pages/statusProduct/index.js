@@ -23,7 +23,7 @@ function statusProduct() {
       formdataOrder.append("user_id",user_id);
       formdataOrder.append("shop_id",shop_id);
       const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,formdataOrder
+        `https://shopee-api.deksilp.com/api/getAllOrder`,formdataOrder
       );
       setOrders(order.data.orders);
     }
@@ -40,8 +40,6 @@ function statusProduct() {
       <Box pt="15px">
         <Statusproduct data={orders} />
       </Box>
-
-      <></>
     </>
   );
 }

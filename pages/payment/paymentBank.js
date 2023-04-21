@@ -17,9 +17,27 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 function usePaymentQRcode() {
   const router = useRouter();
   const data = router.query;
+
+  const [order,setOrder] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let user_id = 1;
+      const formdata = new FormData();
+      formdata.append("order_id",data?.order);
+      formdata.append("user_id",user_id);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getOrder`,
+        formdata
+      )
+      setOrder(res.data.order);
+    }
+
+    fetchData();
+  },[data])
   return (
     <>
       <Head>
@@ -46,17 +64,17 @@ function usePaymentQRcode() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>{data.num_price}.-</Text>
+            <Text>{order?.price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>{data.delivery_fee}.-</Text>
+            <Text>40.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{data.total}.-</Text>
+            <Text>{parseInt(order?.price)+parseInt(40)}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -87,9 +105,10 @@ function usePaymentQRcode() {
         <Link
           href={{
             pathname: "/payment/confirmPayment",
-            query: { total: data.total },
+            query: {
+              order: data?.order
+            },
           }}
-          as={`/payment/confirmPayment`}
         >
           <Button bg="red" borderRadius="xl">
             <Text>ถัดไป</Text>

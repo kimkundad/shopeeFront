@@ -182,7 +182,7 @@ function Order() {
       if (buttonId == "โอนเงิน") {
         router.push({
           pathname: "/payment",
-          query: { price: response.data.order.price },
+          query: { order: response.data.order.id },
         });
       }
     } else {
@@ -214,7 +214,7 @@ function Order() {
       if (buttonId == "โอนเงิน") {
         router.push({
           pathname: "/payment",
-          query: { price: response.data.order.price },
+          query: { order: response.data.order.id },
         });
       }
     }

@@ -3,10 +3,27 @@ import Link from "next/link";
 import Head from "next/head";
 import { Box, Card, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 function useIndex() {
   const router = useRouter();
   const data = router.query
 
+  const [order,setOrder] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let user_id = 1;
+      const formdata = new FormData();
+      formdata.append("order_id",data?.order);
+      formdata.append("user_id",user_id);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getOrder`,
+        formdata
+      )
+      setOrder(res.data.order);
+    }
+
+    fetchData();
+  },[data])
   return (
     <>
       <Head>
@@ -34,17 +51,17 @@ function useIndex() {
           <Flex pl="60px" pr="15px">
             <Text>รวมการสั่งซื้อ</Text>
             <Spacer />
-            <Text>{data?.price}.-</Text>
+            <Text>{order?.price}.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ค่าจัดส่ง</Text>
             <Spacer />
-            <Text>{0}.-</Text>
+            <Text>40.-</Text>
           </Flex>
           <Flex pl="60px" pr="15px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{parseInt(data?.price)+parseInt(0)}.-</Text>
+            <Text>{parseInt(order?.price)+parseInt(40)}.-</Text>
           </Flex>
         </Box>
       </Box>
@@ -116,10 +133,9 @@ function useIndex() {
           href={{
             pathname: "/payment/paymentbank",
             query: {
-              price: data.price
+              order: data?.order
             },
           }}
-          as={`/payment/paymentbank`}
         >
           <Button bg="red" borderRadius="xl">
             <Text>ถัดไป</Text>

@@ -27,7 +27,7 @@ function chartShop() {
       formdataOrder.append("user_id",user_id);
       formdataOrder.append("shop_id",shop_id);
       const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,formdataOrder
+        `https://shopee-api.deksilp.com/api/getAllOrder`,formdataOrder
       );
       const formdata = new FormData();
       formdata.append("user_id",1)

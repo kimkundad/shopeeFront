@@ -166,7 +166,7 @@ export default function Header() {
                 </Button>
               </Flex>
 
-              <Text textAlign="center" fontSize="2xl" fontWeight="bold">{nameheader}</Text>
+              <Text textAlign="center" fontSize="2xl" fontWeight="bold" whiteSpace="nowrap">{nameheader}</Text>
             </Grid>
           </Box>
         </Box>

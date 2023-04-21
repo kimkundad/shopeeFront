@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -20,10 +20,27 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import Upload from "@/components/Dropzone"
+import Upload from "@/components/Dropzone";
+import axios from "axios";
 function ConfirmPayment() {
   const router = useRouter();
   const data = router.query;
+  const [order, setOrder] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let user_id = 1;
+      const formdata = new FormData();
+      formdata.append("order_id", data?.order);
+      formdata.append("user_id", user_id);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getOrder`,
+        formdata
+      );
+      setOrder(res.data.order);
+    }
+
+    fetchData();
+  }, [data]);
   const { isOpen, onOpen, onClose } = useDisclosure([]);
   const handleModalClick = () => {
     onOpen();
@@ -41,7 +58,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{data.total}.-</Text>
+            <Text>{order?.price}.-</Text>
           </Flex>
         </Box>
         <Box px="25px">
@@ -56,7 +73,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>อัพโหลดหลักฐานการชำระเงิน</Text>
           </Flex>
-          <Upload/>
+          <Upload />
         </Box>
       </Box>
       <Box pt="15px">
@@ -103,7 +120,9 @@ function ConfirmPayment() {
           <ModalBody alignSelf="center">
             <Box textAlign="center">
               <Image src="/img/check3.png" alt="" h="100px" mx="auto" />
-              <Text fontWeight="bold" fontSize="xl">ขอบคุณสำหรับการสั่งซื้อ</Text>
+              <Text fontWeight="bold" fontSize="xl">
+                ขอบคุณสำหรับการสั่งซื้อ
+              </Text>
               <Text>
                 ท่านสามารถตรวจสอบสถานะสินค้าที่ท่านสั่งซื้อได้ที่ปุ่มเมนู
                 &quot;ดูสถานะสินค้า&quot; ในหน้าโปรไฟล์ได้เลย

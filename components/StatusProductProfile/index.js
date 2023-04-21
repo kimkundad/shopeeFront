@@ -79,7 +79,7 @@ export default function statusProduct(props) {
                 <Link href={{
                   pathname: "/payment",
                   query: {
-                    price: item.price,
+                    order: item.id,
                   },
                 }}>
                   {item?.item?.map((subItem, subIndex) => {
