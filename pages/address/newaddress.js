@@ -26,9 +26,11 @@ function newaddress() {
   const [subDistrict, setSubDistrict] = useState(null);
   const [district, setDistrict] = useState(null);
   const [province, setProvince] = useState(null);
-  const [postcode, setPostcode] = useState(null);
+  const [postcode, setPostcode] = useState("");
 
-  const [warningTel, setWarningTel] = useState(null);
+  const [validataTel, setValidateTel] = useState(null);
+  const [validateText, setValidateText] = useState(null);
+  const [validatePostcode, setValidatePostcode] = useState(null);
 
   const {
     isOpen: isOpenError,
@@ -40,12 +42,11 @@ function newaddress() {
   const handleTelChange = (e) => {
     const input = e.target.value.toString();
     if (input.length <= e.target.maxLength) {
-      if(e.target.maxLength== 10){
+      if (e.target.maxLength == 10) {
         setTel(input);
-      }else{
+      } else {
         setPostcode(input);
       }
-      
     }
   };
   const handleKeyPress = (e) => {
@@ -57,13 +58,37 @@ function newaddress() {
   async function newAddress() {
     event.preventDefault();
 
-    if (tel.length < 10) {
-      setWarningTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
-      return;
+    let check = 0
+    if (
+      name == null ||
+      address == null ||
+      subDistrict == null ||
+      district == null ||
+      province == null
+    ) {
+      check++
+      setValidateText("กรุณากรอกข้อมูลให้ครบถ้วน");
     } else {
-      setWarningTel(null);
+      setValidateText(null);
+    }
+    if (tel == "" || tel?.length < 10) {
+      check++
+      setValidateTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
+    } else {
+      setValidateTel(null);
     }
 
+    if (postcode == "" || postcode?.length < 5) {
+      check++
+      console.log('s');
+      setValidatePostcode("กรุณารหัสไปษณีย์ให้ถูกต้อง");
+    } else {
+      setValidatePostcode(null);
+    }
+
+    if(check!==0){
+      return;
+    }
     let user_id = 1;
     let setdefault = isDefault ? 1 : 0;
     const formdata = new FormData();
@@ -111,8 +136,10 @@ function newaddress() {
               bg="gray.100"
               border="0px"
               onChange={(e) => setName(e.target.value)}
-              isRequired
             />
+            <label>
+              <Text color="red">{name == null ? validateText : null}</Text>
+            </label>
             <label>เบอร์โทรศศัพท์</label>
             <Input
               bg="gray.100"
@@ -122,10 +149,9 @@ function newaddress() {
               maxLength={10}
               onChange={handleTelChange}
               onKeyPress={handleKeyPress}
-              isRequired
             />
             <label>
-              <Text color="red">{warningTel}</Text>
+              <Text color="red">{tel == "" ? validataTel:tel?.length < 10 ? validataTel:null}</Text>
             </label>
 
             <label>ที่อยู่</label>
@@ -133,8 +159,10 @@ function newaddress() {
               bg="gray.100"
               border="0px"
               onChange={(e) => setAddress(e.target.value)}
-              isRequired
             />
+            <label>
+              <Text color="red">{address == null ? validateText:null}</Text>
+            </label>
             <SimpleGrid
               spacing={4}
               templateColumns="repeat(2, minmax(100px, 1fr))"
@@ -144,24 +172,30 @@ function newaddress() {
                 <Input
                   bg="gray.100"
                   onChange={(e) => setSubDistrict(e.target.value)}
-                  isRequired
                 />
+                <label>
+                  <Text color="red">{subDistrict == null ? validateText:null}</Text>
+                </label>
               </Box>
               <Box>
                 <label>อำเภอ</label>
                 <Input
                   bg="gray.100"
                   onChange={(e) => setDistrict(e.target.value)}
-                  isRequired
                 />
+                <label>
+                  <Text color="red">{district == null ? validateText:null}</Text>
+                </label>
               </Box>
               <Box>
                 <label>จังหวัด</label>
                 <Input
                   bg="gray.100"
                   onChange={(e) => setProvince(e.target.value)}
-                  isRequired
                 />
+                <label>
+                  <Text color="red">{province == null ? validateText:null}</Text>
+                </label>
               </Box>
               <Box>
                 <label>รหัสไปรษณีย์</label>
@@ -172,8 +206,10 @@ function newaddress() {
                   value={postcode}
                   onChange={handleTelChange}
                   onKeyPress={handleKeyPress}
-                  isRequired
                 />
+                <label>
+                  <Text color="red">{postcode == "" ? validatePostcode:postcode.length < 5 ? validatePostcode:null}</Text>
+                </label>
               </Box>
             </SimpleGrid>
             <Box display="flex" pt="20px">
