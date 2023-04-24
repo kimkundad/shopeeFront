@@ -4,10 +4,12 @@ import {
   Text,
   Image,
   Input,
-  FormControl,
+  Button,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Layout({ children }) {
   const message = [
@@ -239,6 +241,45 @@ export default function Layout({ children }) {
     },
   ];
   let date = "";
+
+  const [text,setText] = useState("");
+  /* const [message,setMessage] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const formdata = new FormData();
+      let user_id = 1;
+      let shop_id = 2;
+      formdata.append("user_id", user_id);
+      formdata.append("shop_id", shop_id);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getMessage`,
+        formdata
+      );
+      setMessage(res.data.message)
+    }
+
+    fetchData();
+  }, []);
+
+  
+  const sendMessage = () => {
+    async function sendMessage() {
+      const formdata = new FormData();
+      let user_id = 1;
+      let shop_id = 2;
+      formdata.append("user_id",user_id);
+      formdata.append("shop_id",shop_id);
+      formdata.append("message",text);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/sendMessage`,
+        formdata
+      )
+      setMessage(res.data.message)
+    }
+
+    sendMessage();
+  }
+ */
   return (
     <>
       <Box px="5px" bg="white" pt="10px" pb="60px">
@@ -431,7 +472,7 @@ export default function Layout({ children }) {
           }
         })}
       </Box>
-      <FormControl>
+      <form /* onSubmit={sendMessage} */>
         <Box className="test" bottom={0}>
           <Box
             className="test"
@@ -447,17 +488,22 @@ export default function Layout({ children }) {
               <InputGroup mx="10px">
                 <Input
                   type="text"
+                  value={text}
                   placeholder="พิมข้อความ"
                   borderRadius="3xl"
+                  onChange={(e) => setText(e.target.value)}
                 />
                 <InputRightElement>
                   <Image src="/img/emoji.png" alt="" h="25px" />
                 </InputRightElement>
               </InputGroup>
+              <Button type="submit">
+                send
+              </Button>
             </Flex>
           </Box>
         </Box>
-      </FormControl>
+      </form>
     </>
   );
 }
