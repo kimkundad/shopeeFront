@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -39,6 +39,22 @@ function newaddress() {
   } = useDisclosure([]);
 
   const [isDefault, setIsDefault] = useState(true);
+  const [checkDefault,setCheckDefault] = useState(null);
+  useEffect(() => {
+    async function fetchData() {
+      let user_id = 1;
+      const formdataAddress = new FormData();
+      formdataAddress.append("user_id", user_id);
+      const dataAddress = await axios.post(
+        `https://shopee-api.deksilp.com/api/getAddress`,
+        formdataAddress
+      );
+      setCheckDefault(dataAddress.data.address);
+    }
+
+    fetchData();
+  }, [isDefault]);
+
   const handleTelChange = (e) => {
     const input = e.target.value.toString();
     if (input.length <= e.target.maxLength) {
@@ -58,7 +74,7 @@ function newaddress() {
   async function newAddress() {
     event.preventDefault();
 
-    let check = 0
+    let check = 0;
     if (
       name == null ||
       address == null ||
@@ -66,27 +82,27 @@ function newaddress() {
       district == null ||
       province == null
     ) {
-      check++
+      check++;
       setValidateText("กรุณากรอกข้อมูลให้ครบถ้วน");
     } else {
       setValidateText(null);
     }
     if (tel == "" || tel?.length < 10) {
-      check++
+      check++;
       setValidateTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
     } else {
       setValidateTel(null);
     }
 
     if (postcode == "" || postcode?.length < 5) {
-      check++
-      console.log('s');
+      check++;
+      console.log("s");
       setValidatePostcode("กรุณารหัสไปษณีย์ให้ถูกต้อง");
     } else {
       setValidatePostcode(null);
     }
 
-    if(check!==0){
+    if (check !== 0) {
       return;
     }
     let user_id = 1;
@@ -151,7 +167,13 @@ function newaddress() {
               onKeyPress={handleKeyPress}
             />
             <label>
-              <Text color="red">{tel == "" ? validataTel:tel?.length < 10 ? validataTel:null}</Text>
+              <Text color="red">
+                {tel == ""
+                  ? validataTel
+                  : tel?.length < 10
+                  ? validataTel
+                  : null}
+              </Text>
             </label>
 
             <label>ที่อยู่</label>
@@ -161,7 +183,7 @@ function newaddress() {
               onChange={(e) => setAddress(e.target.value)}
             />
             <label>
-              <Text color="red">{address == null ? validateText:null}</Text>
+              <Text color="red">{address == null ? validateText : null}</Text>
             </label>
             <SimpleGrid
               spacing={4}
@@ -174,7 +196,9 @@ function newaddress() {
                   onChange={(e) => setSubDistrict(e.target.value)}
                 />
                 <label>
-                  <Text color="red">{subDistrict == null ? validateText:null}</Text>
+                  <Text color="red">
+                    {subDistrict == null ? validateText : null}
+                  </Text>
                 </label>
               </Box>
               <Box>
@@ -184,7 +208,9 @@ function newaddress() {
                   onChange={(e) => setDistrict(e.target.value)}
                 />
                 <label>
-                  <Text color="red">{district == null ? validateText:null}</Text>
+                  <Text color="red">
+                    {district == null ? validateText : null}
+                  </Text>
                 </label>
               </Box>
               <Box>
@@ -194,7 +220,9 @@ function newaddress() {
                   onChange={(e) => setProvince(e.target.value)}
                 />
                 <label>
-                  <Text color="red">{province == null ? validateText:null}</Text>
+                  <Text color="red">
+                    {province == null ? validateText : null}
+                  </Text>
                 </label>
               </Box>
               <Box>
@@ -208,7 +236,13 @@ function newaddress() {
                   onKeyPress={handleKeyPress}
                 />
                 <label>
-                  <Text color="red">{postcode == "" ? validatePostcode:postcode.length < 5 ? validatePostcode:null}</Text>
+                  <Text color="red">
+                    {postcode == ""
+                      ? validatePostcode
+                      : postcode.length < 5
+                      ? validatePostcode
+                      : null}
+                  </Text>
                 </label>
               </Box>
             </SimpleGrid>
@@ -216,7 +250,7 @@ function newaddress() {
               <Switch
                 id="email-alerts"
                 isChecked={isDefault}
-                onChange={(e) => setIsDefault(!isDefault)}
+                onChange={(e) => checkDefault !== null ? setIsDefault(!isDefault):false}
               />
               <label htmlFor="email-alerts" mb="0" pl="10px">
                 ตั้งเป็นที่อยู่เริ่มต้นสำหรับการจัดส่ง

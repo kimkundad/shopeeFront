@@ -50,11 +50,10 @@ function Order() {
         );
         setAddress(dataAddress.data.address);
       }
-  
+
       fetchData();
     }
-    
-  },[data.product])
+  }, [data.product]);
   useEffect(() => {
     if (data?.product !== undefined) {
       async function fetchData() {
@@ -153,10 +152,9 @@ function Order() {
   ];
 
   const createdOrder = async () => {
-    if(address==null){
+    if (address == null) {
       router.push("/address/newaddress");
       return;
-    
     }
     if (data?.product_id) {
       let discount = 0.0;
@@ -239,14 +237,25 @@ function Order() {
                 maxWidth="none"
               />
             </Box>
-            <Box pl="15px">
-              <Text fontWeight="bold">ที่อยู่สำหรับจัดส่ง</Text>
-              <Text>{address?.name} ({address?.tel})</Text>
-              <Text>
-                {address?.address} อำเภอ{address?.district} ตำบล{address?.sub_district} จังหวัด{address?.province} {address?.postcode}
-              </Text>
-            </Box>
-            <Spacer/>
+            {address !== null ? (
+              <Box pl="15px">
+                <Text fontWeight="bold">ที่อยู่สำหรับจัดส่ง</Text>
+                <Text>
+                  {address?.name} ({address?.tel})
+                </Text>
+                <Text>
+                  {address?.address} อำเภอ{address?.district} ตำบล
+                  {address?.sub_district} จังหวัด{address?.province}{" "}
+                  {address?.postcode}
+                </Text>
+              </Box>
+            ) : (
+              <Box pl="15px">
+                <Text>ไม่พบที่อยู่สำหรับจัดส่ง</Text>
+              </Box>
+            )}
+
+            <Spacer />
             <Box display="flex" alignSelf="center">
               <Link href="/address/">
                 <Box>
@@ -508,7 +517,9 @@ function Order() {
                   w="100%"
                   bg="red"
                   borderRadius="xl"
-                  onClick={address !== null? () => handleModalClick():createdOrder}
+                  onClick={
+                    address !== null ? () => handleModalClick() : createdOrder
+                  }
                 >
                   <Text>สั่งสินค้า</Text>
                 </Button>
