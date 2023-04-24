@@ -30,14 +30,14 @@ import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
 import {useRouter}  from "next/router";
-import { getAllProduct, getShop, getAllCategory } from "@/hooks/allProduct";
+import { getAllProduct, getShop, getCategory } from "@/hooks/allProduct";
 import ModalLogin from "@/components/ModalLogin";
 export default function useHome(props) {
   const router = useRouter();
-  const shopId = router.query.id;
-  const { data: shop } = getShop(shopId);
+  const shopUrl = router.query.id;
+  const { data: shop } = getShop(shopUrl);
   const { data: product } = getAllProduct(shop?.shop[0]?.id);
-  const { data: category } = getAllCategory();
+  const { data: category } = getCategory(shop?.shop[0]?.id);
   const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(() => {
@@ -59,9 +59,12 @@ export default function useHome(props) {
   useEffect(() => {
     setNameShop(shop);
     setProductAll(product);
-    if (category?.category[0].cat_name !== "สินค้าทั้งหมด") {
-      category?.category.unshift({ cat_name: "สินค้าทั้งหมด" });
+    if(category){
+      if (category?.category[0].cat_name !== "สินค้าทั้งหมด") {
+        category?.category.unshift({ cat_name: "สินค้าทั้งหมด" });
+      }
     }
+    
     setCategoryAll(category);
     setIsBorderActive(
       Array(category?.category.length).fill(false).fill(true, 0, 1)
@@ -422,7 +425,8 @@ export default function useHome(props) {
 
                   <CardHeader
                     className="setPadding"
-                    h="170px"
+                    maxHeight="170px"
+                    maxWidth="170px"
                     alignSelf="center"
                     w="100%"
                   >

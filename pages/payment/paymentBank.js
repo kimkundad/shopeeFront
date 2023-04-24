@@ -18,11 +18,12 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
-function usePaymentQRcode() {
+function usePaymentQRcode(props) {
   const router = useRouter();
   const data = router.query;
 
   const [order,setOrder] = useState([]);
+  const [bank,setBank] = useState([]);
   useEffect(() => {
     async function fetchData() {
       let user_id = 1;
@@ -34,6 +35,14 @@ function usePaymentQRcode() {
         formdata
       )
       setOrder(res.data.order);
+      const formdataBank = new FormData();
+      formdataBank.append("user_id",3);
+      formdataBank.append("id",data?.select);
+      const bank = await axios.post(
+        `https://shopee-api.deksilp.com/api/getBank`,
+        formdataBank
+      )
+      setBank(bank.data.banks);
     }
 
     fetchData();
@@ -79,7 +88,8 @@ function usePaymentQRcode() {
         </Box>
       </Box>
       <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
-        <Image src="/img/QR_code_for_mobile_English_Wikipedia.svg.png" />
+        
+        <Image src={`https://shopee-api.deksilp.com/images/shopee/QR_code/${bank?.QR_code}`} />
       </Box>
       <Box mt="10px" display="flex" justifyContent="center">
         <Button bg="white" borderRadius="xl">
@@ -88,16 +98,16 @@ function usePaymentQRcode() {
       </Box>
       <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
         <Flex alignItems="center" className="set--font" py="10px">
-          <Image src="/img/icon_kbank.png" borderRadius="xl" h="14" mx="15px" />
+          <Image src={`https://shopee-api.deksilp.com/images/shopee/icon_bank/${bank?.icon_bank}`} borderRadius="xl" h="14" mx="15px" />
           <Box pr="5px">
             <Text>ธนาคาร</Text>
             <Text>เลขบัญชี</Text>
             <Text>ชื่อบัญชี</Text>
           </Box>
           <Box>
-            <Text>: กสิกรไทย</Text>
-            <Text>: 123-4-5ุ789-0</Text>
-            <Text>: นางสาวบี นามสมมุติ</Text>
+            <Text>: {bank?.name_bank}</Text>
+            <Text>: {bank?.bankaccount_number}</Text>
+            <Text>: {bank?.bankaccount_name}</Text>
           </Box>
         </Flex>
       </Box>

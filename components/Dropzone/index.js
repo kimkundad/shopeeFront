@@ -84,7 +84,7 @@ function Dropzone(props) {
         <Image src="/img/upload.png" alt="" h="60px" w="60px"/>
         <Text>กดเพื่ออัพโหลดรูป</Text>
       </Box>
-      <aside style={thumbsContainer}>{thumbs}</aside>
+      <aside style={thumbsContainer} h="60px" w="60px">{thumbs}</aside>
     </Box>
   );
 }
