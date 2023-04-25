@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import Statusproduct from "@/components/statusProduct";
 import axios from "axios";
-function statusProduct() {
+function useStatusProduct() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function fetchdata() {
@@ -44,4 +44,4 @@ function statusProduct() {
   );
 }
 
-export default statusProduct;
+export default useStatusProduct;

@@ -29,7 +29,7 @@ import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
-import {useRouter}  from "next/router";
+import { useRouter } from "next/router";
 import { getAllProduct, getShop, getCategory } from "@/hooks/allProduct";
 import ModalLogin from "@/components/ModalLogin";
 export default function useHome(props) {
@@ -55,21 +55,22 @@ export default function useHome(props) {
   }, []);
   const [categoryAll, setCategoryAll] = useState(null);
   const [ProductAll, setProductAll] = useState(null);
-  
+  const [count,setCount] = useState(0);
   useEffect(() => {
     setNameShop(shop);
     setProductAll(product);
-    if(category){
-      if (category?.category[0].cat_name !== "สินค้าทั้งหมด") {
+    setCount(count+1);
+    if (category != undefined && category?.category.length >0) {
+      if (category?.category[0]?.cat_name !== "สินค้าทั้งหมด") {
         category?.category.unshift({ cat_name: "สินค้าทั้งหมด" });
       }
+      setCategoryAll(category);
+      
     }
-    
-    setCategoryAll(category);
     setIsBorderActive(
       Array(category?.category.length).fill(false).fill(true, 0, 1)
     );
-  }, [product]);
+  }, [category,product]);
 
   const [bgColor, setBgColor] = useState("rgba(255,255,255,0)");
 
@@ -184,7 +185,7 @@ export default function useHome(props) {
         {nameShop?.shop.map((item, index) => {
           return (
             <Flex
-            key={index}
+              key={index}
               alignItems="center"
               px="2"
               pt="16"

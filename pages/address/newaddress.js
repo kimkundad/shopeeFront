@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
-function newaddress() {
+function useNewaddress() {
   const router = useRouter();
   const [name, setName] = useState(null);
   const [tel, setTel] = useState("");
@@ -286,4 +286,4 @@ function newaddress() {
   );
 }
 
-export default newaddress;
+export default useNewaddress;

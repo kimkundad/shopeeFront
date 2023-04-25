@@ -1,9 +1,9 @@
 import useSWR from "swr"
 import { fetcher } from "@/services/test"
 
-export function getAllProduct(shop_url) {
+export function getAllProduct(shopId) {
     
-    const { data, error } = useSWR(`https://shopee-api.deksilp.com/api/allProduct/${shop_url}`, fetcher)
+    const { data, error } = useSWR(`https://shopee-api.deksilp.com/api/allProduct/${shopId}`, fetcher)
     
     return {
         data,
@@ -12,9 +12,9 @@ export function getAllProduct(shop_url) {
     }
 }
 
-export function getShop(shopId) {
+export function getShop(shop_url) {
     
-    const { data, error } = useSWR(`https://shopee-api.deksilp.com/api/shop/${shopId}`, fetcher)
+    const { data, error } = useSWR(`https://shopee-api.deksilp.com/api/shop/${shop_url}`, fetcher)
     
     return {
         data,

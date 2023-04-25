@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import Address from "@/components/Address";
 import axios from "axios";
-function address() {
+function useAddress() {
   const [address,setAddress] = useState([]);
   useEffect(() => {
     async function fetchdata() {
@@ -61,4 +61,4 @@ function address() {
   );
 }
 
-export default address;
+export default useAddress;

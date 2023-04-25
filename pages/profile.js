@@ -15,7 +15,7 @@ import Statusproduct from "@/components/statusProductProfile";
 import Purchasehistory from "@/components/PurchaseHistory";
 import axios from "axios";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
-function chartShop() {
+function useProfile() {
   const [order, setOrder] = useState([]);
   const userInfo = useSelector((App) => App.userInfo);
   const [name, setName] = useState();
@@ -152,4 +152,4 @@ function chartShop() {
   );
 }
 
-export default chartShop;
+export default useProfile;

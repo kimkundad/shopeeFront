@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import style from "./style.module.css";
 import Link from "next/link";
-export default function statusProduct(props) {
+export default function useStatusProduct(props) {
   const [isBorderActive, setIsBorderActive] = useState("ที่ต้องชำระ");
   const status = [
     { label: "ที่ต้องชำระ" },

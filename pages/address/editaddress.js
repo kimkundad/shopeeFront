@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
-function editaddress() {
+function useEditaddress() {
   const router = useRouter();
   const data = router.query;
 
@@ -237,4 +237,4 @@ function editaddress() {
   );
 }
 
-export default editaddress;
+export default useEditaddress;

@@ -81,7 +81,7 @@ import {
 
     return (
         <>
-        {authen?.isAuthenticate === false ?
+        {true ?
          (
             <>
             {props?.type === 'avatar' &&

@@ -2,7 +2,7 @@ import { Box, Checkbox, Text, Flex, Spacer, Link,Button } from "@chakra-ui/react
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-export default function checkbox(props) {
+export default function useAddress(props) {
   const router = useRouter();
   const [address,setAddress] = useState([]);
   useEffect(() => {
