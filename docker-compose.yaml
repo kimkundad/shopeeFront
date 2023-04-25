@@ -1,0 +1,7 @@
+version: "1.0"
+services:
+  web:
+    ports:
+      - "3004:3004"
+    build: .
+    image: zonepangcloud/shopee-front:v1

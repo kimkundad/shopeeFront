@@ -12,7 +12,6 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { TiLocationArrow } from "react-icons/Ti";
 
 export default function Layout({ children }) {
   let date = "";
@@ -299,7 +298,6 @@ export default function Layout({ children }) {
                 </InputRightElement>
               </InputGroup>
               <Button type="submit" bg="white" padding="0px" w="35px" h="35px">
-                <TiLocationArrow style={{ height:"35px",width:"35px" }}/>
               </Button>
             </Flex>
           </Box>

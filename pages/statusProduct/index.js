@@ -11,7 +11,7 @@ import {
   Button,
   Spacer,
 } from "@chakra-ui/react";
-import Statusproduct from "@/components/statusProduct";
+import Statusproduct from "@/components/StatusProduct";
 import axios from "axios";
 function useStatusProduct() {
   const [orders, setOrders] = useState([]);

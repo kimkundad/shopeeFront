@@ -11,7 +11,7 @@ import {
   Spacer,
   Input,
 } from "@chakra-ui/react";
-import Statusproduct from "@/components/statusProductProfile";
+import Statusproduct from "@/components/StatusProductProfile";
 import Purchasehistory from "@/components/PurchaseHistory";
 import axios from "axios";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
