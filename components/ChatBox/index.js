@@ -64,6 +64,8 @@ export default function Layout({ children }) {
         );
         setText("");
         setMessage(res.data.message);
+        const newArr = [...messages,res.data.message[0]]
+        setMessage(newArr)
       }
       newMessage();
     }

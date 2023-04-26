@@ -141,7 +141,7 @@ function Order() {
       setNum(num);
       setTotal(price + 40);
     }
-  }, [data]);
+  }, [products]);
   const [buttonId, setButtonId] = useState("");
   function handleClick(event) {
     setButtonId(event.target.id);
