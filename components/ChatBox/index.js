@@ -7,7 +7,6 @@ import {
   Button,
   InputGroup,
   InputRightElement,
-  Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -17,7 +16,31 @@ export default function Layout({ children }) {
   let date = "";
 
   const [text, setText] = useState("");
-  const [messages, setMessage] = useState(null);
+  const [messages, setMessages] = useState(null);
+
+  const [room, setRoom] = useState(1);
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    const newSocket = new WebSocket("ws://192.168.0.86:3000/");
+    setSocket(newSocket);
+    newSocket.addEventListener("open", () => {
+      console.log("WebSocket connection established");
+    });
+    newSocket.addEventListener("message", (event) => {
+      const message = JSON.parse(event.data);
+      setMessages((messages) => {
+        const messageIds = messages.map((m) => m.id);
+        if (!messageIds.includes(message.id)) {
+          return [...messages, message];
+        }
+        return messages;
+      });
+    });
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
   useEffect(() => {
     if (messages == null) {
       async function fetchData() {
@@ -30,11 +53,13 @@ export default function Layout({ children }) {
           `https://shopee-api.deksilp.com/api/getMessage`,
           formdata
         );
-        setMessage(res.data.message);
+        setMessages(res.data.message);
       }
-
       fetchData();
+      
     }
+    const data = { type: "joinRoom", room };
+    socket?.send(JSON.stringify(data));
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
@@ -62,10 +87,9 @@ export default function Layout({ children }) {
           `https://shopee-api.deksilp.com/api/sendMessage`,
           formdata
         );
+        const newMess = { ...res.data.message[0], type: "message", room };
+        socket.send(JSON.stringify(newMess));
         setText("");
-        setMessage(res.data.message);
-        const newArr = [...messages,res.data.message[0]]
-        setMessage(newArr)
       }
       newMessage();
     }
@@ -99,7 +123,7 @@ export default function Layout({ children }) {
                         alignSelf="center"
                       >
                         {item.message !== null ? (
-                          <Text maxWidth="150px">{item.message}</Text>
+                          <Text maxWidth="100px">{item.message}</Text>
                         ) : (
                           false
                         )}
@@ -107,14 +131,14 @@ export default function Layout({ children }) {
                           <Image
                             src={item.img_message}
                             alt=""
-                            maxWidth="150px"
+                            maxWidth="100px"
                             py="5px"
                           />
                         ) : (
                           false
                         )}
                       </Box>
-                      <Box fontSize="10px" alignSelf="flex-end">
+                      <Box fontSize="13px" alignSelf="flex-end">
                         {item.status == 1 ? <Text>อ่านแล้ว</Text> : null}
                         <Text>{timeString} น.</Text>
                       </Box>
@@ -157,7 +181,7 @@ export default function Layout({ children }) {
                         alignSelf="center"
                       >
                         {item.message !== null ? (
-                          <Text maxWidth="150px">{item.message}</Text>
+                          <Text maxWidth="100px">{item.message}</Text>
                         ) : (
                           false
                         )}
@@ -165,14 +189,14 @@ export default function Layout({ children }) {
                           <Image
                             src={item.img_message}
                             alt=""
-                            maxWidth="150px"
+                            maxWidth="100px"
                             py="5px"
                           />
                         ) : (
                           false
                         )}
                       </Box>
-                      <Text alignSelf="end" fontSize="10px">
+                      <Text alignSelf="end" fontSize="13px">
                         {timeString} น.
                       </Text>
                     </Flex>
@@ -192,7 +216,7 @@ export default function Layout({ children }) {
                       alignSelf="center"
                     >
                       {item.message !== null ? (
-                        <Text maxWidth="150px">{item.message}</Text>
+                        <Text maxWidth="100px">{item.message}</Text>
                       ) : (
                         false
                       )}
@@ -200,14 +224,14 @@ export default function Layout({ children }) {
                         <Image
                           src={item.img_message}
                           alt=""
-                          maxWidth="150px"
+                          maxWidth="100px"
                           py="5px"
                         />
                       ) : (
                         false
                       )}
                     </Box>
-                    <Box fontSize="10px" alignSelf="flex-end">
+                    <Box fontSize="13px" alignSelf="flex-end">
                       {item.status == 1 ? <Text>อ่านแล้ว</Text> : null}
                       <Text>{timeString} น.</Text>
                     </Box>
@@ -243,7 +267,7 @@ export default function Layout({ children }) {
                       alignSelf="center"
                     >
                       {item.message !== null ? (
-                        <Text maxWidth="150px">{item.message}</Text>
+                        <Text maxWidth="100px">{item.message}</Text>
                       ) : (
                         false
                       )}
@@ -251,14 +275,14 @@ export default function Layout({ children }) {
                         <Image
                           src={item.img_message}
                           alt=""
-                          maxWidth="150px"
+                          maxWidth="100px"
                           py="5px"
                         />
                       ) : (
                         false
                       )}
                     </Box>
-                    <Text alignSelf="end" fontSize="10px">
+                    <Text alignSelf="end" fontSize="13px">
                       {timeString} น.
                     </Text>
                   </Flex>
@@ -299,8 +323,13 @@ export default function Layout({ children }) {
                   <Image src="/img/emoji.png" alt="" h="25px" />
                 </InputRightElement>
               </InputGroup>
-              <Button type="submit" bg="white" padding="0px" w="35px" h="35px">
-              </Button>
+              <Button
+                type="submit"
+                bg="white"
+                padding="0px"
+                w="35px"
+                h="35px"
+              ></Button>
             </Flex>
           </Box>
         </Box>
