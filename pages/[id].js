@@ -281,7 +281,7 @@ export default function useHome(props) {
         {ProductAll?.product?.map((item, index) => {
           let sales =
             item?.price_sales !== 0
-              ? item?.price - (item?.price_sales * item?.price) / 100
+              ? (item?.price - (item?.price * item?.price_sales) / 100)
               : item?.price;
           if (
             catName == "" ||
@@ -355,7 +355,7 @@ export default function useHome(props) {
                     </Box>
                     <Spacer />
                     <Box>
-                      <Flex className="textFooter">
+                      <Flex className="textFooter" visibility={item.price_sales !== 0? "visible":"hidden"}>
                         <Text position="relative">(ราคาปกติ </Text>
                         <Box
                           ml="7px"
@@ -463,7 +463,7 @@ export default function useHome(props) {
                     </Box>
                     <Spacer />
                     <Box>
-                      <Flex className="textFooter">
+                      <Flex className="textFooter" visibility={item.price_sales !== 0? "visible":"hidden"}>
                         <Text position="relative">(ราคาปกติ </Text>
                         <Box
                           ml="7px"
