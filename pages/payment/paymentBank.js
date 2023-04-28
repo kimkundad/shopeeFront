@@ -18,12 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
-function usePaymentQRcode(props) {
+function usePaymentBank() {
   const router = useRouter();
   const data = router.query;
-
   const [order,setOrder] = useState([]);
   const [bank,setBank] = useState([]);
+
+  
   useEffect(() => {
     async function fetchData() {
       let user_id = 1;
@@ -129,4 +130,4 @@ function usePaymentQRcode(props) {
   );
 }
 
-export default usePaymentQRcode;
+export default usePaymentBank;

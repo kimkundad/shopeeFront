@@ -22,6 +22,7 @@ import {
 import { useRouter } from "next/router";
 import Upload from "@/components/Dropzone";
 import axios from "axios";
+
 function ConfirmPayment() {
   const router = useRouter();
   const data = router.query;
@@ -45,6 +46,24 @@ function ConfirmPayment() {
   const handleModalClick = () => {
     onOpen();
   };
+
+  const [image, setImage] = useState([]);
+  
+  const confirmPayment = () => {
+    async function addData() {
+      const formdata = new FormData();
+      formdata.append("date",date);
+      formdata.append("time",time);
+      formdata.append("order_id",data?.order);
+      const res = await axios.post(
+        `https://shopee-api.deksilp.com/api/getOrder`,
+        formdata
+      )
+      console.log(res.data);
+    }
+    addData()
+;  }
+  console.log(image);
   return (
     <>
       <Head>
@@ -73,7 +92,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>อัพโหลดหลักฐานการชำระเงิน</Text>
           </Flex>
-          <Upload />
+          <Upload setImage={setImage}/>
         </Box>
       </Box>
       <Box pt="15px">

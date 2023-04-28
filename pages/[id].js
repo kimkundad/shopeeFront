@@ -220,7 +220,7 @@ export default function useHome(props) {
                   <Center bg="red" borderRadius="md" px="5px">
                     <StarIcon color="yellow.400" className="setIcon" />
                     <Text pl="5px" className="textBody">
-                      4.8/5.0
+                    {parseFloat(item.ratting).toFixed(1)}/5.0
                     </Text>
                   </Center>
                   <Box bg="red" borderRadius="md" ml="10px">
@@ -348,7 +348,7 @@ export default function useHome(props) {
                           rating={item?.ratting}
                           starDimension="10px"
                           starSpacing="0px"
-                          starRatedColor="yellow"
+                          starRatedColor="orange"
                         />
                       </HStack>
                       <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
