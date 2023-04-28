@@ -104,7 +104,7 @@ function useIndex() {
           >
             <Flex alignItems="center" className="set--font" py="10px">
               <Image
-                src={`https://shopee-api.deksilp.com/images/shopee/icon_bank/${item.icon_bank}`}
+                src={`https://shopee-api.deksilp.com/images/shopee/icon_bank/${item?.icon_bank}`}
                 borderRadius="xl"
                 h="14"
                 mx="15px"

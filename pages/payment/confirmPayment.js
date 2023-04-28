@@ -43,26 +43,31 @@ function ConfirmPayment() {
     fetchData();
   }, [data]);
   const { isOpen, onOpen, onClose } = useDisclosure([]);
-  const handleModalClick = () => {
-    onOpen();
-  };
 
   const [image, setImage] = useState([]);
-  
+  const [date,setDate] = useState(null);
+  const [time,setTime] = useState(null);
   const confirmPayment = () => {
     async function addData() {
       const formdata = new FormData();
       formdata.append("date",date);
       formdata.append("time",time);
       formdata.append("order_id",data?.order);
+      image.forEach((file, index) => {
+        formdata.append(`file[${index}]`, file);
+      });
       const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,
+        `https://shopee-api.deksilp.com/api/confirmPayment`,
         formdata
       )
       console.log(res.data);
+      if(res.data.status == 'success'){
+        onOpen();
+      }
     }
-    addData()
-;  }
+    addData();
+  }
+console.log(date);
   console.log(image);
   return (
     <>
@@ -77,7 +82,7 @@ function ConfirmPayment() {
           <Flex px="25px">
             <Text>ยอดชำระเงินทั้งหมด</Text>
             <Spacer />
-            <Text>{order?.price}.-</Text>
+            <Text>{order?.price+40}.-</Text>
           </Flex>
         </Box>
         <Box px="25px">
@@ -107,6 +112,7 @@ function ConfirmPayment() {
               placeholder="Select Date and Time"
               size="md"
               type="date"
+              onChange={(e) => setDate(e.target.value)}
             />
           </Box>
         </Box>
@@ -121,12 +127,13 @@ function ConfirmPayment() {
               placeholder="Select Date and Time"
               size="md"
               type="time"
+              onChange={(e) => setTime(e.target.value)}
             />
           </Box>
         </Box>
       </Box>
       <Box py="15px" px="30px" display="flex" justifyContent="end">
-        <Button bg="red" borderRadius="xl" onClick={() => handleModalClick()}>
+        <Button bg="red" borderRadius="xl" onClick={() => confirmPayment()}>
           <Text>ถัดไป</Text>
         </Button>
       </Box>

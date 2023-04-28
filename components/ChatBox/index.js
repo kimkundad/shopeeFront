@@ -95,6 +95,7 @@ export default function Layout({ children }) {
     }
   };
 
+  console.log(messages);
   return (
     <>
       <Box px="5px" bg="white" pt="10px" pb="60px">
