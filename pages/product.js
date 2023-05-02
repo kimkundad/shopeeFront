@@ -133,6 +133,9 @@ function useProduct() {
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
     let productSubOptionId = 0;
+    if(product[0]?.allOption1?.length > 0 && option1 == null){
+      return;
+    }
     if(allSubOption.length > 0 && option2 == null){
       return;
     }

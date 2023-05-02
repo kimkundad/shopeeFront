@@ -57,6 +57,7 @@ export default function CartItem(props) {
     const newCheckAll = [...checkAll];
     let newSum = 0;
     let pro_id = [];
+    console.log(cartItem);
     for (let i = 0; i < newCheckAll.length; i++) {
       for (let k = 0; k < newCheckAll[i].length; k++) {
         if (newCheckAll[i][k]) {
@@ -64,10 +65,10 @@ export default function CartItem(props) {
           pro_id.push(cartItem[i].product[k].id);
           newSum =
             newSum +
-            (cartItem[i].product[k].type_product == 1
+            (cartItem[i].product[k].type_product === 1
               ? cartItem[i].product[k].price_type_1 * num[i][k]
-              : cartItem[i].product[k].type_product == 2
-              ? cartItem[i].product[k].price_type_1 * num[i][k]
+              : cartItem[i].product[k].type_product === 2
+              ? cartItem[i].product[k].price_type_2 * num[i][k]
               : cartItem[i].product[k].price_type_3 * num[i][k]);
         } else {
           false;

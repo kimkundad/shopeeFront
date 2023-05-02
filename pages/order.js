@@ -162,7 +162,7 @@ function Order() {
       let user_id = 1;
       const formData = new FormData();
       formData.append("shop_id", data?.shop_id);
-      formData.append("adress_id", address?.id);
+      formData.append("address_id", address?.id);
       formData.append("user_id", user_id);
       formData.append("discount", discount);
       formData.append("price_sales", data?.price_sales);
@@ -191,7 +191,7 @@ function Order() {
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);
-      formData.append("adress_id", address?.id);
+      formData.append("address_id", address?.id);
       formData.append("shop_id", products[0].id);
       formData.append("discount", discount);
       formData.append("num", num);
