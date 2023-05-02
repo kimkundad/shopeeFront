@@ -4,4 +4,4 @@ services:
     ports:
       - "3004:3004"
     build: .
-    image: zonepangcloud/shopee-front:v1
+    image: zonepangcloud/shopee-front:v3
