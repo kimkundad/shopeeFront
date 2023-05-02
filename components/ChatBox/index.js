@@ -18,7 +18,6 @@ export default function Layout({ children }) {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState(null);
 
-  const [room, setRoom] = useState(1);
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     const newSocket = new WebSocket("ws://192.168.0.86:3000/");
@@ -58,6 +57,7 @@ export default function Layout({ children }) {
       fetchData();
       
     }
+    let room = "1"+"2";
     const data = { type: "joinRoom", room };
     socket?.send(JSON.stringify(data));
     window.scrollTo({
@@ -74,6 +74,7 @@ export default function Layout({ children }) {
 
   const sendMessage = () => {
     event.preventDefault();
+    let room = "1"+"2";
     if (text !== "") {
       async function newMessage() {
         const formdata = new FormData();
@@ -94,8 +95,6 @@ export default function Layout({ children }) {
       newMessage();
     }
   };
-
-  console.log(messages);
   return (
     <>
       <Box px="5px" bg="white" pt="10px" pb="60px">
