@@ -30,7 +30,9 @@ function useEditaddress() {
   const [province, setProvince] = useState("");
   const [postcode, setPostcode] = useState("");
 
-  const [warningTel, setWarningTel] = useState("");
+  const [validataTel, setValidateTel] = useState(null);
+  const [validateText, setValidateText] = useState(null);
+  const [validatePostcode, setValidatePostcode] = useState(null);
 
   const {
     isOpen: isOpenError,
@@ -40,9 +42,13 @@ function useEditaddress() {
 
   const [isDefault, setIsDefault] = useState(true);
   const handleTelChange = (e) => {
-    const inputTel = e.target.value.toString();
-    if (inputTel.length <= 10) {
-      setTel(inputTel);
+    const input = e.target.value.toString();
+    if (input.length <= e.target.maxLength) {
+      if (e.target.maxLength == 10) {
+        setTel(input);
+      } else {
+        setPostcode(input);
+      }
     }
   };
   const handleKeyPress = (e) => {
@@ -57,7 +63,8 @@ function useEditaddress() {
         const formdata = new FormData();
         formdata.append("address_id", data?.address_id);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAddress`,formdata
+          `https://shopee-api.deksilp.com/api/getAddress`,
+          formdata
         );
         setName(res.data.address.name);
         setTel(res.data.address.tel);
@@ -70,15 +77,45 @@ function useEditaddress() {
       fetchdata();
     }
   }, [data]);
-
+  console.log(name.length);
   async function editAddress() {
     event.preventDefault();
 
-    if (tel.length < 10) {
-      setWarningTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
-      return;
+    let check = 0;
+    if (
+      name == null ||
+      address == null ||
+      subDistrict == null ||
+      district == null ||
+      province == null ||
+      name.length <= 0||
+      address.length <= 0 ||
+      subDistrict.length <= 0 ||
+      district.length <= 0 ||
+      province.length <= 0
+    ) {
+      check++;
+      setValidateText("กรุณากรอกข้อมูลให้ครบถ้วน");
     } else {
-      setWarningTel(null);
+      setValidateText(null);
+    }
+    if (tel == "" || tel?.length < 10) {
+      check++;
+      setValidateTel("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง");
+    } else {
+      setValidateTel(null);
+    }
+
+    if (postcode == "" || postcode?.length < 5) {
+      check++;
+      console.log("s");
+      setValidatePostcode("กรุณากรอกรหัสไปษณีย์ให้ถูกต้อง");
+    } else {
+      setValidatePostcode(null);
+    }
+
+    if (check !== 0) {
+      return;
     }
 
     let user_id = 1;
@@ -128,9 +165,11 @@ function useEditaddress() {
               bg="gray.100"
               border="0px"
               onChange={(e) => setName(e.target.value)}
-              isRequired
               value={name}
             />
+            <label>
+              <Text color="red">{name.length <= 0 ? validateText : null}</Text>
+            </label>
             <label>เบอร์โทรศศัพท์</label>
             <Input
               bg="gray.100"
@@ -140,10 +179,15 @@ function useEditaddress() {
               maxLength={10}
               onChange={handleTelChange}
               onKeyPress={handleKeyPress}
-              isRequired
             />
             <label>
-              <Text color="red">{warningTel}</Text>
+              <Text color="red">
+                {tel == ""
+                  ? validataTel
+                  : tel?.length < 10
+                  ? validataTel
+                  : null}
+              </Text>
             </label>
 
             <label>ที่อยู่</label>
@@ -151,9 +195,11 @@ function useEditaddress() {
               bg="gray.100"
               border="0px"
               onChange={(e) => setAddress(e.target.value)}
-              isRequired
               value={address}
             />
+            <label>
+              <Text color="red">{address.length <= 0 ? validateText : null}</Text>
+            </label>
             <SimpleGrid
               spacing={4}
               templateColumns="repeat(2, minmax(100px, 1fr))"
@@ -163,27 +209,39 @@ function useEditaddress() {
                 <Input
                   bg="gray.100"
                   onChange={(e) => setSubDistrict(e.target.value)}
-                  isRequired
                   value={subDistrict}
                 />
+                <label>
+                  <Text color="red">
+                    {subDistrict.length <= 0 ? validateText : null}
+                  </Text>
+                </label>
               </Box>
               <Box>
                 <label>อำเภอ</label>
                 <Input
                   bg="gray.100"
                   onChange={(e) => setDistrict(e.target.value)}
-                  isRequired
                   value={district}
                 />
+                <label>
+                  <Text color="red">
+                    {district.length <= 0 ? validateText : null}
+                  </Text>
+                </label>
               </Box>
               <Box>
                 <label>จังหวัด</label>
                 <Input
                   bg="gray.100"
                   onChange={(e) => setProvince(e.target.value)}
-                  isRequired
                   value={province}
                 />
+                <label>
+                  <Text color="red">
+                    {province.length <= 0 ? validateText : null}
+                  </Text>
+                </label>
               </Box>
               <Box>
                 <label>รหัสไปรษณีย์</label>
@@ -191,10 +249,19 @@ function useEditaddress() {
                   bg="gray.100"
                   type="number"
                   maxLength={5}
-                  onChange={(e) => setPostcode(e.target.value)}
-                  isRequired
                   value={postcode}
+                  onChange={handleTelChange}
+                  onKeyPress={handleKeyPress}
                 />
+                <label>
+                  <Text color="red">
+                    {postcode == ""
+                      ? validatePostcode
+                      : postcode.length < 5
+                      ? validatePostcode
+                      : null}
+                  </Text>
+                </label>
               </Box>
             </SimpleGrid>
             <Box display="flex" pt="20px">

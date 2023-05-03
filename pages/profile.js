@@ -10,6 +10,7 @@ import {
   Button,
   Spacer,
   Input,
+  Skeleton,
 } from "@chakra-ui/react";
 import Statusproduct from "@/components/StatusProductProfile";
 import Purchasehistory from "@/components/PurchaseHistory";
@@ -93,6 +94,7 @@ function useProfile() {
       
     },
   });
+
   return (
     <>
       <Head>
@@ -105,8 +107,7 @@ function useProfile() {
         <Box
           bg="white"
           borderRadius="50%"
-          w="70px !important"
-          h="70px !important"
+          h="70px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -114,7 +115,7 @@ function useProfile() {
         >
           <Box {...getRootProps({ className: "dropzone" })} borderRadius="50%">
             <Input {...getInputProps()} />
-            <Image src={avatar !== null ? `https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`:"/img/upload.png"} alt="" h="60px" w="60px" borderRadius="50%"/>
+            {avatar !== null ? avatar == undefined ? <Skeleton circle height={70} width={70} />:<Image src={`https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`} alt="" h="70px" w="70px" borderRadius="50%"/>:null}
           </Box>
         </Box>
         <Box pl="5px" alignSelf="center">

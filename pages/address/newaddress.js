@@ -97,7 +97,7 @@ function useNewaddress() {
     if (postcode == "" || postcode?.length < 5) {
       check++;
       console.log("s");
-      setValidatePostcode("กรุณารหัสไปษณีย์ให้ถูกต้อง");
+      setValidatePostcode("กรุณากรอกรหัสไปษณีย์ให้ถูกต้อง");
     } else {
       setValidatePostcode(null);
     }
@@ -109,7 +109,7 @@ function useNewaddress() {
     let setdefault = isDefault ? 1 : 0;
     const formdata = new FormData();
     formdata.append("name", name);
-    formdata.append("tel", tel);
+    formdata.append("tel", tel.toString());
     formdata.append("address", address);
     formdata.append("subDistrict", subDistrict);
     formdata.append("district", district);

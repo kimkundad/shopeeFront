@@ -11,7 +11,7 @@ import {
   Flex,
   Spacer,
   Button,
-  FormControl,
+  Skeleton,
   InputGroup,
   InputLeftElement,
   SimpleGrid,
@@ -32,9 +32,11 @@ import StarRatings from "react-star-ratings";
 import { useRouter } from "next/router";
 import { getAllProduct, getShop, getCategory } from "@/hooks/allProduct";
 import ModalLogin from "@/components/ModalLogin";
+
 export default function useHome(props) {
   const router = useRouter();
   const shopUrl = router.query.id;
+  const [loadingImg, setLoadingImg] = useState(true);
   const { data: shop } = getShop(shopUrl);
   const { data: product } = getAllProduct(shop?.shop[0]?.id);
   const { data: category } = getCategory(shop?.shop[0]?.id);
@@ -55,22 +57,21 @@ export default function useHome(props) {
   }, []);
   const [categoryAll, setCategoryAll] = useState(null);
   const [ProductAll, setProductAll] = useState(null);
-  const [count,setCount] = useState(0);
+  const [count, setCount] = useState(0);
   useEffect(() => {
     setNameShop(shop);
     setProductAll(product);
-    setCount(count+1);
-    if (category != undefined && category?.category.length >0) {
+    setCount(count + 1);
+    if (category != undefined && category?.category.length > 0) {
       if (category?.category[0]?.cat_name !== "สินค้าทั้งหมด") {
         category?.category.unshift({ cat_name: "สินค้าทั้งหมด" });
       }
       setCategoryAll(category);
-      
     }
     setIsBorderActive(
       Array(category?.category.length).fill(false).fill(true, 0, 1)
     );
-  }, [category,product]);
+  }, [category, product]);
 
   const [bgColor, setBgColor] = useState("rgba(255,255,255,0)");
 
@@ -134,6 +135,7 @@ export default function useHome(props) {
     setIsBorderActive(newArray);
     setCatName(catName);
   };
+
   return (
     <>
       <Head>
@@ -220,7 +222,7 @@ export default function useHome(props) {
                   <Center bg="red" borderRadius="md" px="5px">
                     <StarIcon color="yellow.400" className="setIcon" />
                     <Text pl="5px" className="textBody">
-                    {parseFloat(item.ratting).toFixed(1)}/5.0
+                      {parseFloat(item.ratting).toFixed(1)}/5.0
                     </Text>
                   </Center>
                   <Box bg="red" borderRadius="md" ml="10px">
@@ -272,7 +274,6 @@ export default function useHome(props) {
           );
         })}
       </Flex>
-
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(2, minmax(150px, 1fr))"
@@ -281,7 +282,7 @@ export default function useHome(props) {
         {ProductAll?.product?.map((item, index) => {
           let sales =
             item?.price_sales !== 0
-              ? (item?.price - (item?.price * item?.price_sales) / 100)
+              ? item?.price - (item?.price * item?.price_sales) / 100
               : item?.price;
           if (
             catName == "" ||
@@ -323,13 +324,18 @@ export default function useHome(props) {
                     alignSelf="center"
                     w="100%"
                   >
-                    <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
-                      alt={item?.product_name}
-                      height="100%"
-                      width="100%"
-                      borderRadius="xl"
-                    />
+                      <Skeleton height="140px"
+                        width="140px"
+                        borderRadius="xl" display={loadingImg ? 'block':"none"}/>
+                      <Image
+                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                        alt={item?.product_name}
+                        height="100%"
+                        width="100%"
+                        borderRadius="xl"
+                        display={!loadingImg ? 'block':"none"}
+                        onLoad={() => setLoadingImg(false)}
+                      />
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">
@@ -355,7 +361,12 @@ export default function useHome(props) {
                     </Box>
                     <Spacer />
                     <Box>
-                      <Flex className="textFooter" visibility={item.price_sales !== 0? "visible":"hidden"}>
+                      <Flex
+                        className="textFooter"
+                        visibility={
+                          item.price_sales !== 0 ? "visible" : "hidden"
+                        }
+                      >
                         <Text position="relative">(ราคาปกติ </Text>
                         <Box
                           ml="7px"
@@ -431,13 +442,18 @@ export default function useHome(props) {
                     alignSelf="center"
                     w="100%"
                   >
-                    <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
-                      alt={item?.product_name}
-                      height="100%"
-                      width="100%"
-                      borderRadius="xl"
-                    />
+                    {loadingImg ? (
+                      <Skeleton height="170px" width="170px" />
+                    ) : (
+                      <Image
+                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                        alt={item?.product_name}
+                        height="100%"
+                        width="100%"
+                        borderRadius="xl"
+                        onLoad={() => setLoadingImg(false)}
+                      />
+                    )}
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">
@@ -463,7 +479,12 @@ export default function useHome(props) {
                     </Box>
                     <Spacer />
                     <Box>
-                      <Flex className="textFooter" visibility={item.price_sales !== 0? "visible":"hidden"}>
+                      <Flex
+                        className="textFooter"
+                        visibility={
+                          item.price_sales !== 0 ? "visible" : "hidden"
+                        }
+                      >
                         <Text position="relative">(ราคาปกติ </Text>
                         <Box
                           ml="7px"
