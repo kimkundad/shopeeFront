@@ -10,6 +10,7 @@ import {
   Card,
   CardHeader,
 } from "@chakra-ui/react";
+import style from "./style.module.css";
 const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
@@ -95,7 +96,7 @@ function Dropzone({ setImage }) {
   return (
     <Box className="container" mx="50px" mt="10px">
       {files.length == 0 ? (
-        <Box {...getRootProps({ className: "dropzone" })} borderRadius="xl">
+        <Box {...getRootProps({ className: style.dropzone })} borderRadius="xl">
           <Input {...getInputProps()} />
           <Image src="/img/upload.png" alt="" h="60px" w="60px" />
           <Text>กดเพื่ออัพโหลดรูป</Text>

@@ -15,47 +15,84 @@ import Statusproduct from "@/components/StatusProductProfile";
 import Purchasehistory from "@/components/PurchaseHistory";
 import axios from "axios";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
+import { useDropzone } from "react-dropzone";
 function useProfile() {
   const [order, setOrder] = useState([]);
   const userInfo = useSelector((App) => App.userInfo);
   const [name, setName] = useState();
+  const [avatar, setAvatar] = useState();
   useEffect(() => {
     async function fetchdata() {
       let user_id = 1;
       let shop_id = 2;
       const formdataOrder = new FormData();
-      formdataOrder.append("user_id",user_id);
-      formdataOrder.append("shop_id",shop_id);
+      formdataOrder.append("user_id", user_id);
+      formdataOrder.append("shop_id", shop_id);
       const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllOrder`,formdataOrder
+        `https://shopee-api.deksilp.com/api/getAllOrder`,
+        formdataOrder
       );
       const formdata = new FormData();
-      formdata.append("user_id",1)
+      formdata.append("user_id", 1);
       const user = await axios.post(
-        `https://shopee-api.deksilp.com/api/getUser`,formdata
+        `https://shopee-api.deksilp.com/api/getUser`,
+        formdata
       );
-      setName(user.data.user.name)
+      setName(user.data.user.name);
       setOrder(order.data.orders);
+      setAvatar(user.data.user.avatar);
     }
     fetchdata();
   }, []);
   const [isEditName, setEditName] = useState(false);
-  
+
   const editName = () => {
     setEditName(!isEditName);
-    if(isEditName){
+    if (isEditName) {
       async function fetchdata() {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("user_id", 1);
         const newName = await axios.post(
-          `https://shopee-api.deksilp.com/api/editUser/`,formData
+          `https://shopee-api.deksilp.com/api/editUser/`,
+          formData
         );
       }
       fetchdata();
     }
   };
 
+  const [file, setFile] = useState([]);
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/*": [],
+    },
+    maxFiles: 1,
+    multiple: false,
+    onDrop: (acceptedFiles) => {
+      setFile(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+      async function update() {
+        let userId = 1;
+        const formdata = new FormData();
+        formdata.append("user_id",userId);
+        formdata.append("avatar",acceptedFiles[0]);
+        const res = await axios.post(
+          `https://shopee-api.deksilp.com/api/editAvatar/`,
+          formdata
+        );
+        setName(res.data.user.name);
+      setAvatar(res.data.user.avatar);
+      }
+      update();
+      
+    },
+  });
   return (
     <>
       <Head>
@@ -75,21 +112,14 @@ function useProfile() {
           justifyContent="center"
           ml="2"
         >
-          <Image
-            borderRadius="50%"
-            src="/img/icon/user copy.png"
-            alt=""
-            h="70px !important"
-            w="70px !important"
-          />
+          <Box {...getRootProps({ className: "dropzone" })} borderRadius="50%">
+            <Input {...getInputProps()} />
+            <Image src={avatar !== null ? `https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`:"/img/upload.png"} alt="" h="60px" w="60px" borderRadius="50%"/>
+          </Box>
         </Box>
         <Box pl="5px" alignSelf="center">
           {!isEditName ? (
-            <Text
-              fontSize="xl"
-              display="flex"
-              alignItems="center"
-            >
+            <Text fontSize="xl" display="flex" alignItems="center">
               {name?.length > 10 ? name?.slice(0, 10) + "..." : name}
               <Image
                 pl="7px"
