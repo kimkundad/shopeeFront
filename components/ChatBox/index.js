@@ -48,6 +48,7 @@ export default function Layout({ children }) {
         let shop_id = 2;
         formdata.append("user_id", user_id);
         formdata.append("shop_id", shop_id);
+        formdata.append("type",'customer');
         const res = await axios.post(
           `https://shopee-api.deksilp.com/api/getMessage`,
           formdata

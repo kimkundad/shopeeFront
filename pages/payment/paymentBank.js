@@ -18,12 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { saveAs } from "file-saver";
 function usePaymentBank() {
   const router = useRouter();
   const data = router.query;
   const [order, setOrder] = useState(null);
   const [bank, setBank] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function fetchData() {
       let user_id = 1;
@@ -47,6 +48,33 @@ function usePaymentBank() {
 
     fetchData();
   }, [data]);
+
+  const handleDownload = async () => {
+    event.preventDefault();
+    let url = `https://shopee-api.deksilp.com/images/shopee/QR_code/${bank?.QR_code}`;
+    fetch(url, {
+      mode: "no-cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        let blobUrl = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.download = url.replace(/^.*[\\\/]/, "");
+        a.href = blobUrl;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+  };
+
+  async function downloadImage() {
+    const image = await fetch(
+      `https://zonepang.sgp1.digitaloceanspaces.com/shopee/QR_code/${bank?.QR_code}`
+    );
+    const imageBlog = await image.blob();
+    console.log(image);
+    saveAs(imageBlog, bank?.QR_code);
+  }
   if (bank !== null || order !== null) {
     return (
       <>
@@ -94,7 +122,7 @@ function usePaymentBank() {
           />
         </Box>
         <Box mt="10px" display="flex" justifyContent="center">
-          <Button bg="white" borderRadius="xl">
+          <Button bg="white" borderRadius="xl" onClick={downloadImage}>
             <Text fontSize="xs">บันทึก QR CODE</Text>
           </Button>
         </Box>
