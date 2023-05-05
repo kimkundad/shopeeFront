@@ -171,7 +171,6 @@ function Order() {
         `https://shopee-api.deksilp.com/api/countOrder`,
         formdataDate
       );
-      console.log(endDateTimestamp);
       const invoiceNumber = `${year}${month}${day}${(
         "0000" +
         (count.data.count + 1)
