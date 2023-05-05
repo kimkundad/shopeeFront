@@ -152,6 +152,33 @@ function Order() {
   ];
 
   const createdOrder = async () => {
+    let invoiceId = 0;
+    async function fetchData() {
+      const startDate = new Date();
+      const endDate = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23,59,59,999);
+      const startDateTimestamp = startDate.getTime();
+      const endDateTimestamp = endDate.getTime();
+      const year = startDate.getFullYear();
+      const month = ("0" + (startDate.getMonth() + 1)).slice(-2);
+      const day = ("0" + startDate.getDate()).slice(-2);
+      const formdataDate = new FormData();
+      formdataDate.append('startDate',startDateTimestamp)
+      formdataDate.append('endDate',endDateTimestamp)
+
+      const count = await axios.post(
+        `https://shopee-api.deksilp.com/api/countOrder`,
+        formdataDate
+      );
+      console.log(endDateTimestamp);
+      const invoiceNumber = `${year}${month}${day}${(
+        "0000" +
+        (count.data.count + 1)
+      ).slice(-4)}`;
+      invoiceId = invoiceNumber
+    }
+    await fetchData();
     if (address == null) {
       router.push("/address/newaddress");
       return;
@@ -173,6 +200,7 @@ function Order() {
       formData.append("product_id", data?.product_id);
       formData.append("option1", data?.option1Id);
       formData.append("option2", data?.option2Id);
+      formData.append("invoice_id", invoiceId);
       const response = await axios.post(
         "https://shopee-api.deksilp.com/api/createdOrder",
         formData,
@@ -197,6 +225,7 @@ function Order() {
       formData.append("num", num);
       formData.append("total", numPrice);
       formData.append("status", status);
+      formData.append("invoice_id", invoiceId);
       const response = await axios.post(
         "https://shopee-api.deksilp.com/api/createdOrder",
         formData,
