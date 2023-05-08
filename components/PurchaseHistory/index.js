@@ -10,7 +10,7 @@ export default function purchaseHistory(props) {
           ประวัติการสั่งซื้อ
         </Text>
         <Box>
-          {props.data.map((item, index) => item.status == "สำเร็จแล้ว" ? (
+          {props.data.map((item, index) => item.status == "ส่งสำเร็จ" ? (
             <Box bg="white" key={index}>
               <Box pt="10px" px="15px">
                 <Text className={style.textHead}>{item.name_shop}</Text>

@@ -41,7 +41,7 @@ function Order() {
   useEffect(() => {
     if (data !== undefined) {
       async function fetchData() {
-        let user_id = 1;
+        let user_id = userInfo.data[0].id;
         const formdataAddress = new FormData();
         formdataAddress.append("user_id", user_id);
         const dataAddress = await axios.post(
@@ -57,7 +57,7 @@ function Order() {
   useEffect(() => {
     if (data?.product !== undefined) {
       async function fetchData() {
-        let user_id = 1;
+        let user_id = userInfo.data[0].id;
         const formdataAddress = new FormData();
         formdataAddress.append("user_id", user_id);
         const dataAddress = await axios.post(
@@ -185,7 +185,7 @@ function Order() {
     if (data?.product_id) {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", data?.shop_id);
       formData.append("address_id", address?.id);
@@ -214,7 +214,7 @@ function Order() {
     } else {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);

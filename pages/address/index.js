@@ -18,11 +18,13 @@ import {
 } from "@chakra-ui/react";
 import Address from "@/components/Address";
 import axios from "axios";
+import { connect, useDispatch, useSelector } from "react-redux";
 function useAddress() {
   const [address,setAddress] = useState([]);
+  const userInfo = useSelector((App) => App.userInfo);
   useEffect(() => {
     async function fetchdata() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formdata = new FormData();
       formdata.append("user_id",user_id);
       const res = await axios.post(

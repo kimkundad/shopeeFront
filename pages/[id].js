@@ -25,8 +25,6 @@ import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import Link from "next/link";
-import cart from "@/public/img/icon/cart.png";
-import user from "@/public/img/icon/user copy.png";
 import { StarIcon } from "@chakra-ui/icons";
 import StarRatings from "react-star-ratings";
 import { useRouter } from "next/router";
@@ -42,6 +40,7 @@ export default function useHome(props) {
   const { data: category } = getCategory(shop?.shop[0]?.id);
   const [scrollTop, setScrollTop] = useState(0);
 
+  console.log(shop);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleScroll = () => {

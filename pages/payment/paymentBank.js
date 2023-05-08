@@ -19,15 +19,20 @@ import {
 import { useRouter } from "next/router";
 import axios from "axios";
 import { saveAs } from "file-saver";
+import { connect, useDispatch, useSelector } from "react-redux";
 function usePaymentBank() {
   const router = useRouter();
   const data = router.query;
+  const userInfo = useSelector((App) => App.userInfo);
   const [order, setOrder] = useState(null);
   const [bank, setBank] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    if (Object.keys(data).length === 0) {
+      router.back();
+    }
     async function fetchData() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formdata = new FormData();
       formdata.append("order_id", data?.order);
       formdata.append("user_id", user_id);
@@ -45,7 +50,6 @@ function usePaymentBank() {
       );
       setBank(bank.data.banks);
     }
-
     fetchData();
   }, [data]);
 
@@ -152,8 +156,10 @@ function usePaymentBank() {
               pathname: "/payment/confirmPayment",
               query: {
                 order: data?.order,
+                select: data?.select,
               },
             }}
+            as="/payment/confirmPayment"
           >
             <Button bg="red" borderRadius="xl">
               <Text>ถัดไป</Text>

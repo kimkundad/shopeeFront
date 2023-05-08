@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { connect, useDispatch, useSelector } from "react-redux";
 function useNewaddress() {
   const router = useRouter();
   const [name, setName] = useState(null);
@@ -27,6 +28,7 @@ function useNewaddress() {
   const [district, setDistrict] = useState(null);
   const [province, setProvince] = useState(null);
   const [postcode, setPostcode] = useState("");
+  const userInfo = useSelector((App) => App.userInfo);
 
   const [validataTel, setValidateTel] = useState(null);
   const [validateText, setValidateText] = useState(null);
@@ -42,7 +44,7 @@ function useNewaddress() {
   const [checkDefault,setCheckDefault] = useState(null);
   useEffect(() => {
     async function fetchData() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formdataAddress = new FormData();
       formdataAddress.append("user_id", user_id);
       const dataAddress = await axios.post(
@@ -105,7 +107,7 @@ function useNewaddress() {
     if (check !== 0) {
       return;
     }
-    let user_id = 1;
+    let user_id = userInfo.data[0].id;
     let setdefault = isDefault ? 1 : 0;
     const formdata = new FormData();
     formdata.append("name", name);
@@ -123,7 +125,7 @@ function useNewaddress() {
       formdata
     );
     if (res.data.status == "success") {
-      router.push("/address");
+      router.back();
     } else {
       onOpenError();
     }

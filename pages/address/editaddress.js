@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -21,6 +22,7 @@ import axios from "axios";
 function useEditaddress() {
   const router = useRouter();
   const data = router.query;
+  const userInfo = useSelector((App) => App.userInfo);
 
   const [name, setName] = useState("");
   const [tel, setTel] = useState("");
@@ -118,7 +120,7 @@ function useEditaddress() {
       return;
     }
 
-    let user_id = 1;
+    let user_id = userInfo.data[0].id;
     let setdefault = isDefault ? 1 : 0;
     const formdata = new FormData();
     formdata.append("address_id", data?.address_id);
@@ -137,7 +139,7 @@ function useEditaddress() {
       formdata
     );
     if (res.data.status == "success") {
-      router.push("/address");
+      router.back();
     } else {
       onOpenError();
     }

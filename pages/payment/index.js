@@ -4,17 +4,18 @@ import Head from "next/head";
 import { Box, Card, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { connect, useDispatch, useSelector } from "react-redux";
 function useIndex() {
   const router = useRouter();
   const data = router.query;
-
+  const userInfo = useSelector((App) => App.userInfo);
   const [order, setOrder] = useState(null);
   const [banks, setBanks] = useState(null);
 
   const [select, setSelect] = useState(null);
   useEffect(() => {
     async function fetchData() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formdata = new FormData();
       formdata.append("order_id", data?.order);
       formdata.append("user_id", user_id);
@@ -138,6 +139,7 @@ function useIndex() {
                   select: select,
                 },
               }}
+              as="/payment/paymentbank"
             >
               <Button bg="red" borderRadius="xl">
                 <Text>ถัดไป</Text>

@@ -22,15 +22,19 @@ import {
 import { useRouter } from "next/router";
 import Upload from "@/components/Dropzone";
 import axios from "axios";
-
+import { connect, useDispatch, useSelector } from "react-redux";
 function ConfirmPayment() {
   const router = useRouter();
   const data = router.query;
+  const userInfo = useSelector((App) => App.userInfo);
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    if (Object.keys(data).length === 0) {
+      router.back();
+    }
     async function fetchData() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       const formdata = new FormData();
       formdata.append("order_id", data?.order);
       formdata.append("user_id", user_id);
@@ -79,6 +83,7 @@ function ConfirmPayment() {
       formdata.append("date", date);
       formdata.append("time", time);
       formdata.append("order_id", data?.order);
+      formdata.append("bankaccount_id", data?.select);
       image.forEach((file, index) => {
         formdata.append(`file[${index}]`, file);
       });

@@ -24,7 +24,7 @@ function useProfile() {
   const [avatar, setAvatar] = useState();
   useEffect(() => {
     async function fetchdata() {
-      let user_id = 1;
+      let user_id = userInfo.data[0].id;
       let shop_id = 2;
       const formdataOrder = new FormData();
       formdataOrder.append("user_id", user_id);
@@ -34,7 +34,7 @@ function useProfile() {
         formdataOrder
       );
       const formdata = new FormData();
-      formdata.append("user_id", 1);
+      formdata.append("user_id", user_id);
       const user = await axios.post(
         `https://shopee-api.deksilp.com/api/getUser`,
         formdata
@@ -79,19 +79,18 @@ function useProfile() {
         )
       );
       async function update() {
-        let userId = 1;
+        let userId = userInfo.data[0].id;
         const formdata = new FormData();
-        formdata.append("user_id",userId);
-        formdata.append("avatar",acceptedFiles[0]);
+        formdata.append("user_id", userId);
+        formdata.append("avatar", acceptedFiles[0]);
         const res = await axios.post(
           `https://shopee-api.deksilp.com/api/editAvatar/`,
           formdata
         );
         setName(res.data.user.name);
-      setAvatar(res.data.user.avatar);
+        setAvatar(res.data.user.avatar);
       }
       update();
-      
     },
   });
 
@@ -115,7 +114,27 @@ function useProfile() {
         >
           <Box {...getRootProps({ className: "dropzone" })} borderRadius="50%">
             <Input {...getInputProps()} />
-            {avatar !== null ? avatar == undefined ? <Skeleton circle height={70} width={70} />:<Image src={`https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`} alt="" h="70px" w="70px" borderRadius="50%"/>:null}
+            {avatar !== null ? (
+              avatar == undefined ? (
+                <Skeleton circle="true" height={70} width={70} />
+              ) : (
+                <Image
+                  src={`https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`}
+                  alt=""
+                  h="70px"
+                  w="70px"
+                  borderRadius="50%"
+                />
+              )
+            ) : (
+              <Image
+                borderRadius="50%"
+                src="/img/icon/user copy.png"
+                alt=""
+                h="70px !important"
+                w="70px !important"
+              />
+            )}
           </Box>
         </Box>
         <Box pl="5px" alignSelf="center">
