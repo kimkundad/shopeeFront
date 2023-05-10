@@ -46,17 +46,21 @@ function useProduct() {
           `https://shopee-api.deksilp.com/api/getProduct`,
           formData
         );
-        if (res.data.product[0].type !== 1) {
-          if (res.data.product[0].option1 !== null) {
+        if (res.data.product[0].type !== 1 &&res.data.product[0].option1 !== null) {
             for (let i = res.data.product[0].allImage.length - 1; i >= 0; i--) {
-              res.data.product[0].allOption1.unshift({
-                img_name: res.data.product[0].allImage[i].image,
-              });
+              let getIndex = res.data.product[0]?.allOption1.findIndex(
+                (item) => item.img_name == res.data.product[0].allImage[i].image
+              );
+              if(getIndex == -1){
+                res.data.product[0].allOption1.unshift({
+                  img_name: res.data.product[0].allImage[i].image,
+                });
+              }
+              
             }
             res.data.product[0].allOption1.unshift({
               img_name: res.data.product[0].img_product,
             });
-          }
         } else {
           res.data.product[0].allImage.unshift({
             image: res.data.product[0].img_product,
