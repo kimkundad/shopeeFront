@@ -23,27 +23,29 @@ function useProfile() {
   const [name, setName] = useState();
   const [avatar, setAvatar] = useState();
   useEffect(() => {
-    async function fetchdata() {
-      let user_id = userInfo.data[0].id;
-      let shop_id = 2;
-      const formdataOrder = new FormData();
-      formdataOrder.append("user_id", user_id);
-      formdataOrder.append("shop_id", shop_id);
-      const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllOrder`,
-        formdataOrder
-      );
-      const formdata = new FormData();
-      formdata.append("user_id", user_id);
-      const user = await axios.post(
-        `https://shopee-api.deksilp.com/api/getUser`,
-        formdata
-      );
-      setName(user.data.user.name);
-      setOrder(order.data.orders);
-      setAvatar(user.data.user.avatar);
+    if (userInfo) {
+      async function fetchdata() {
+        let user_id = userInfo.data[0].id;
+        let shop_id = 2;
+        const formdataOrder = new FormData();
+        formdataOrder.append("user_id", user_id);
+        formdataOrder.append("shop_id", shop_id);
+        const order = await axios.post(
+          `https://shopee-api.deksilp.com/api/getAllOrder`,
+          formdataOrder
+        );
+        const formdata = new FormData();
+        formdata.append("user_id", user_id);
+        const user = await axios.post(
+          `https://shopee-api.deksilp.com/api/getUser`,
+          formdata
+        );
+        setName(user.data.user.name);
+        setOrder(order.data.orders);
+        setAvatar(user.data.user.avatar);
+      }
+      fetchdata();
     }
-    fetchdata();
   }, []);
   const [isEditName, setEditName] = useState(false);
 

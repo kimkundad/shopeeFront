@@ -200,6 +200,7 @@ function Order() {
       formData.append("option1", data?.option1Id);
       formData.append("option2", data?.option2Id);
       formData.append("invoice_id", invoiceId);
+      formData.append("type_payment", buttonId);
       const response = await axios.post(
         "https://shopee-api.deksilp.com/api/createdOrder",
         formData,
@@ -225,6 +226,7 @@ function Order() {
       formData.append("total", numPrice);
       formData.append("status", status);
       formData.append("invoice_id", invoiceId);
+      formData.append("type_payment", buttonId);
       const response = await axios.post(
         "https://shopee-api.deksilp.com/api/createdOrder",
         formData,

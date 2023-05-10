@@ -48,6 +48,11 @@ function useProduct() {
         );
         if (res.data.product[0].type !== 1) {
           if (res.data.product[0].option1 !== null) {
+            for (let i = res.data.product[0].allImage.length - 1; i >= 0; i--) {
+              res.data.product[0].allOption1.unshift({
+                img_name: res.data.product[0].allImage[i].image,
+              });
+            }
             res.data.product[0].allOption1.unshift({
               img_name: res.data.product[0].img_product,
             });
@@ -71,7 +76,7 @@ function useProduct() {
     if (product !== null && price !== null) {
       setIsLoading(false);
     }
-  }, [product,price]);
+  }, [product, price]);
 
   const swiperRef = useRef(null);
   const [option1, setOption1] = useState(null);
@@ -310,7 +315,7 @@ function useProduct() {
                 fontSize="sm"
               >
                 {product[0]?.allOption1.map((item, index) => {
-                  return index !== 0 ? (
+                  return item.op_name ? (
                     option1 == item?.op_name ? (
                       <Button
                         height="25px"
