@@ -317,24 +317,28 @@ export default function useHome(props) {
                   ) : null}
 
                   <CardHeader
+                    h="100%"
                     className="setPadding"
                     maxHeight="170px"
                     maxWidth="170px"
                     alignSelf="center"
                     w="100%"
                   >
-                      <Skeleton height="140px"
-                        width="140px"
-                        borderRadius="xl" display={loadingImg ? 'block':"none"}/>
-                      <Image
-                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
-                        alt={item?.product_name}
-                        height="100%"
-                        width="100%"
-                        borderRadius="xl"
-                        display={!loadingImg ? 'block':"none"}
-                        onLoad={() => setLoadingImg(false)}
-                      />
+                    <Skeleton
+                      height="140px"
+                      width="140px"
+                      borderRadius="xl"
+                      display={loadingImg ? "block" : "none"}
+                    />
+                    <Image
+                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                      alt={item?.product_name}
+                      height="100%"
+                      width="100%"
+                      borderRadius="xl"
+                      display={!loadingImg ? "block" : "none"}
+                      onLoad={() => setLoadingImg(false)}
+                    />
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">
@@ -356,7 +360,7 @@ export default function useHome(props) {
                           starRatedColor="orange"
                         />
                       </HStack>
-                      <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
+                      <Text className="textFooter">ขายไปแล้ว {item.total_sales !== null ? item.total_sales.toLocaleString():0} ชิ้น</Text>
                     </Box>
                     <Spacer />
                     <Box>
@@ -397,7 +401,7 @@ export default function useHome(props) {
                           className="textHead"
                           textAlign="center"
                         >
-                          {sales}
+                          {sales.toFixed(2).toLocaleString()}
                         </Text>
                       </Box>
                     </Box>
@@ -435,6 +439,7 @@ export default function useHome(props) {
                   ) : null}
 
                   <CardHeader
+                    h="100%"
                     className="setPadding"
                     maxHeight="170px"
                     maxWidth="170px"
@@ -474,7 +479,7 @@ export default function useHome(props) {
                           starRatedColor="yellow"
                         />
                       </HStack>
-                      <Text className="textFooter">ขายไปแล้ว 100 ชิ้น</Text>
+                      <Text className="textFooter">ขายไปแล้ว {item.total_sales !== null ? item.total_sales.toLocaleString():0} ชิ้น</Text>
                     </Box>
                     <Spacer />
                     <Box>
@@ -515,7 +520,7 @@ export default function useHome(props) {
                           className="textHead"
                           textAlign="center"
                         >
-                          {sales}
+                          {sales.toFixed(2).toLocaleString()}
                         </Text>
                       </Box>
                     </Box>

@@ -20,7 +20,7 @@ export default function Layout({ children }) {
 
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    const newSocket = new WebSocket("ws://192.168.0.86:3000/");
+    const newSocket = new WebSocket("ws://192.168.0.86:3004/");
     setSocket(newSocket);
     newSocket.addEventListener("open", () => {
       console.log("WebSocket connection established");

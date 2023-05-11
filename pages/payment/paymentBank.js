@@ -22,36 +22,29 @@ import { saveAs } from "file-saver";
 import { connect, useDispatch, useSelector } from "react-redux";
 function usePaymentBank() {
   const router = useRouter();
-  const data = router.query;
   const userInfo = useSelector((App) => App.userInfo);
-  const [order, setOrder] = useState(null);
+  const storedOrder = localStorage.getItem("order");
+  const order = storedOrder ? JSON.parse(storedOrder) : [];
   const [bank, setBank] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (Object.keys(data).length === 0) {
+    if (Object.keys(order).length === 0) {
       router.back();
     }
-    async function fetchData() {
-      let user_id = userInfo.data[0].id;
-      const formdata = new FormData();
-      formdata.append("order_id", data?.order);
-      formdata.append("user_id", user_id);
-      const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,
-        formdata
-      );
-      setOrder(res.data.order);
-      const formdataBank = new FormData();
-      formdataBank.append("user_id", 3);
-      formdataBank.append("id", data?.select);
-      const bank = await axios.post(
-        `https://shopee-api.deksilp.com/api/getBank`,
-        formdataBank
-      );
-      setBank(bank.data.banks);
+    if (bank == null) {
+      async function fetchData() {
+        const formdataBank = new FormData();
+        formdataBank.append("user_id", 3);
+        formdataBank.append("id", order?.select);
+        const bank = await axios.post(
+          `https://shopee-api.deksilp.com/api/getBank`,
+          formdataBank
+        );
+        setBank(bank.data.banks);
+      }
+      fetchData();
     }
-    fetchData();
-  }, [data]);
+  }, [order]);
 
   const handleDownload = async () => {
     event.preventDefault();
@@ -106,7 +99,7 @@ function usePaymentBank() {
             <Flex pl="60px" pr="15px">
               <Text>รวมการสั่งซื้อ</Text>
               <Spacer />
-              <Text>{order?.price}.-</Text>
+              <Text>{order?.numPrice}.-</Text>
             </Flex>
             <Flex pl="60px" pr="15px">
               <Text>ค่าจัดส่ง</Text>
@@ -116,7 +109,9 @@ function usePaymentBank() {
             <Flex pl="60px" pr="15px">
               <Text>ยอดชำระเงินทั้งหมด</Text>
               <Spacer />
-              <Text>{parseInt(order?.price) + parseInt(40)}.-</Text>
+              <Text>
+                {parseInt(order?.numPrice) + parseInt(40)}.-
+              </Text>
             </Flex>
           </Box>
         </Box>
@@ -154,10 +149,6 @@ function usePaymentBank() {
           <Link
             href={{
               pathname: "/payment/confirmPayment",
-              query: {
-                order: data?.order,
-                select: data?.select,
-              },
             }}
             as="/payment/confirmPayment"
           >

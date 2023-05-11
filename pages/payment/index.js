@@ -7,39 +7,39 @@ import axios from "axios";
 import { connect, useDispatch, useSelector } from "react-redux";
 function useIndex() {
   const router = useRouter();
-  const data = router.query;
   const userInfo = useSelector((App) => App.userInfo);
-  const [order, setOrder] = useState(null);
+  const storedOrder = localStorage.getItem("order");
+  const order = storedOrder ? JSON.parse(storedOrder) : [];
   const [banks, setBanks] = useState(null);
 
   const [select, setSelect] = useState(null);
   useEffect(() => {
-    async function fetchData() {
-      let user_id = userInfo.data[0].id;
-      const formdata = new FormData();
-      formdata.append("order_id", data?.order);
-      formdata.append("user_id", user_id);
-      const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,
-        formdata
-      );
-      setOrder(res.data.order);
-      const formdataBank = new FormData();
-      formdataBank.append("user_id", 3);
-      const bank = await axios.post(
-        `https://shopee-api.deksilp.com/api/getBank`,
-        formdataBank
-      );
-      setBanks(bank.data.banks);
-    }
+    if (banks == null) {
+      async function fetchData() {
+        const formdataBank = new FormData();
+        formdataBank.append("user_id", 3);
+        const bank = await axios.post(
+          `https://shopee-api.deksilp.com/api/getBank`,
+          formdataBank
+        );
+        setBanks(bank.data.banks);
+      }
 
-    fetchData();
-  }, [data]);
+      fetchData();
+    }
+  }, [order]);
 
   const [validataSelect, setValidateSelect] = useState(null);
 
   const checkSelect = () => {
     setValidateSelect("กรุณาเลือกบัญชี");
+  };
+
+  const setLocal = () => {
+    const newArr = { ...order, select };
+    localStorage.setItem("order", JSON.stringify(newArr));
+
+    router.push("/payment/paymentbank");
   };
 
   if (banks != null || order != null) {
@@ -70,7 +70,7 @@ function useIndex() {
             <Flex pl="60px" pr="15px">
               <Text>รวมการสั่งซื้อ</Text>
               <Spacer />
-              <Text>{order?.price}.-</Text>
+              <Text>{order?.numPrice}.-</Text>
             </Flex>
             <Flex pl="60px" pr="15px">
               <Text>ค่าจัดส่ง</Text>
@@ -80,7 +80,9 @@ function useIndex() {
             <Flex pl="60px" pr="15px">
               <Text>ยอดชำระเงินทั้งหมด</Text>
               <Spacer />
-              <Text>{parseInt(order?.price) + parseInt(40)}.-</Text>
+              <Text>
+                {parseInt(order?.numPrice) + parseInt(40)}.-
+              </Text>
             </Flex>
           </Box>
         </Box>
@@ -131,20 +133,9 @@ function useIndex() {
               <Text>ถัดไป</Text>
             </Button>
           ) : (
-            <Link
-              href={{
-                pathname: "/payment/paymentbank",
-                query: {
-                  order: data?.order,
-                  select: select,
-                },
-              }}
-              as="/payment/paymentbank"
-            >
-              <Button bg="red" borderRadius="xl">
-                <Text>ถัดไป</Text>
-              </Button>
-            </Link>
+            <Button bg="red" borderRadius="xl" onClick={setLocal}>
+              <Text>ถัดไป</Text>
+            </Button>
           )}
         </Box>
       </>

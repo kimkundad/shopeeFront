@@ -13,19 +13,25 @@ import {
   Spacer,
   SimpleGrid,
   Button,
-  IconButton,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import axios, { all } from "axios";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
+import Login from "@/components/ModalLogin/login";
 // import required modules
 import { Pagination } from "swiper";
-
 import StarRatings from "react-star-ratings";
 function useProduct() {
+  const authen = useSelector((App) => App.authen);
   const userInfo = useSelector((App) => App.userInfo);
   const router = useRouter();
   const data = router.query;
@@ -46,21 +52,23 @@ function useProduct() {
           `https://shopee-api.deksilp.com/api/getProduct`,
           formData
         );
-        if (res.data.product[0].type !== 1 &&res.data.product[0].option1 !== null) {
-            for (let i = res.data.product[0].allImage.length - 1; i >= 0; i--) {
-              let getIndex = res.data.product[0]?.allOption1.findIndex(
-                (item) => item.img_name == res.data.product[0].allImage[i].image
-              );
-              if(getIndex == -1){
-                res.data.product[0].allOption1.unshift({
-                  img_name: res.data.product[0].allImage[i].image,
-                });
-              }
-              
+        if (
+          res.data.product[0].type !== 1 &&
+          res.data.product[0].option1 !== null
+        ) {
+          for (let i = res.data.product[0].allImage.length - 1; i >= 0; i--) {
+            let getIndex = res.data.product[0]?.allOption1.findIndex(
+              (item) => item.img_name == res.data.product[0].allImage[i].image
+            );
+            if (getIndex == -1) {
+              res.data.product[0].allOption1.unshift({
+                img_name: res.data.product[0].allImage[i].image,
+              });
             }
-            res.data.product[0].allOption1.unshift({
-              img_name: res.data.product[0].img_product,
-            });
+          }
+          res.data.product[0].allOption1.unshift({
+            img_name: res.data.product[0].img_product,
+          });
         } else {
           res.data.product[0].allImage.unshift({
             image: res.data.product[0].img_product,
@@ -83,6 +91,7 @@ function useProduct() {
   }, [product, price]);
 
   const swiperRef = useRef(null);
+  const [option2, setOption2] = useState(null);
   const [option1, setOption1] = useState(null);
   const [option1Id, setOption1Id] = useState(null);
   function selectOption1(event, id) {
@@ -106,7 +115,6 @@ function useProduct() {
     }
   }
 
-  const [option2, setOption2] = useState(null);
   function selectOption2(event) {
     setOption2(event.target.id);
     let a = price;
@@ -179,6 +187,67 @@ function useProduct() {
       data
     );
   }
+
+  function setLocal() {
+    const newArr = {
+      shop_id: data?.shop_id,
+      name_shop: data?.name_shop,
+      product_id: product[0]?.id,
+      name_product: product[0]?.name_product,
+      detail_product: product[0]?.detail_product,
+      img_product: product[0]?.img_product,
+      price: price,
+      price_sales: product[0]?.price_sales,
+      option1: option1,
+      option2: option2,
+      name_option1: product[0]?.option1,
+      name_option2: product[0]?.option2,
+      type: product[0]?.type,
+      num: num,
+      option1Id: option1Id !== null ? option1Id: 0,
+      option2Id: setSubOptionId(),
+    };
+    if(product[0]?.type == 1 && num > 0){
+      localStorage.setItem("order", JSON.stringify(newArr));
+    }else if(product[0]?.type == 2 && option1 !== null && num > 0){
+      localStorage.setItem("order", JSON.stringify(newArr));
+    }else if(product[0]?.type == 3 &&
+      option1 !== null &&
+      option2 !== null &&
+      num > 0){
+      localStorage.setItem("order", JSON.stringify(newArr));
+    }else{
+      return;
+    }
+    
+    router.push({
+      pathname: "/order",
+    });
+  };
+  ///////////////////
+  const [showLogin, setShowLogin] = useState(false);
+
+  const {
+    isOpen: isOpenForm1,
+    onOpen: onOpenForm1,
+    onClose: onCloseForm1,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenForm2,
+    onOpen: onOpenForm2,
+    onClose: onCloseForm2,
+  } = useDisclosure();
+
+  const handleClick = () => {
+    onCloseForm1();
+    onCloseForm2();
+    console.log("--->handleClick");
+  };
+
+  const loginClick = () => {
+    setShowLogin(true);
+    onCloseForm1();
+  };
   if (!isLoading) {
     return (
       <>
@@ -264,7 +333,7 @@ function useProduct() {
                       />
                     </HStack>
                     <Text pt="4px" fontSize="xs">
-                      ขายไปแล้ว 1000 ชิ้น
+                      ขายไปแล้ว {item?.total_sales} ชิ้น
                     </Text>
                   </Box>
                   <Spacer />
@@ -273,7 +342,7 @@ function useProduct() {
                       <Text position="relative">(ราคาปกติ </Text>
                       <Box ml="7px" display="inline-block" position="relative">
                         <Text position="relative" display="inline">
-                          {item?.price}
+                          {item?.price.toFixed(2)}
                         </Text>
                         <Box
                           opacity="7"
@@ -298,7 +367,7 @@ function useProduct() {
                       fontSize="2xl"
                       fontWeight="bold"
                     >
-                      {sales}.-
+                      {sales.toFixed(2)}.-
                     </Text>
                   </Box>
                 </Flex>
@@ -357,6 +426,10 @@ function useProduct() {
                           alt=""
                           boxSize="15px"
                           mr={1}
+                          onClick={(e) => {
+                            selectOption1(e, item.id);
+                            setPrice(product[0].type == 2 ? item.price : price);
+                          }}
                         />
                         {item?.op_name}
                       </Button>
@@ -396,6 +469,10 @@ function useProduct() {
                           alt=""
                           boxSize="15px"
                           mr={1}
+                          onClick={(e) => {
+                            selectOption1(e, item.id);
+                            setPrice(product[0].type == 2 ? item.price : price);
+                          }}
                         />
                         {item?.op_name}
                       </Button>
@@ -528,107 +605,116 @@ function useProduct() {
         </Box>
 
         <Box className="test" bottom={0}>
-          <Box
-            className="test"
-            px="15px"
-            mt="10px"
-            py="8px"
-            bg="white"
-            pos="fixed"
-            bottom={0}
-          >
-            <SimpleGrid
-              spacing={4}
-              templateColumns="repeat(2, minmax(30px, 1fr))"
-              my="15px"
-              fontSize="sm"
+          {authen?.isAuthenticate === true ? (
+            <Box
+              className="test"
+              px="15px"
+              mt="10px"
+              py="8px"
+              bg="white"
+              pos="fixed"
+              bottom={0}
             >
-              <Button w="100%" borderRadius="xl" onClick={addToCart}>
-                <Text>เพิ่มไปยังรถเข็น</Text>
-              </Button>
-              <Link
-                href={
-                  product.length !== 0
-                    ? product[0]?.type == 1 && num > 0
-                      ? {
-                          pathname: "/order",
-                          query: {
-                            shop_id: data?.shop_id,
-                            name_shop: data?.name_shop,
-                            product_id: product[0]?.id,
-                            name_product: product[0]?.name_product,
-                            detail_product: product[0]?.detail_product,
-                            img_product: product[0]?.img_product,
-                            price: price,
-                            price_sales: product[0]?.price_sales,
-                            option1: option1,
-                            option2: option2,
-                            name_option1: product[0]?.option1,
-                            name_option2: product[0]?.option2,
-                            type: product[0]?.type,
-                            num: num,
-                            option1Id: option1Id,
-                            option2Id: setSubOptionId(),
-                          },
-                        }
-                      : product[0]?.type == 2 && option1 !== null && num > 0
-                      ? {
-                          pathname: "/order",
-                          query: {
-                            shop_id: data?.shop_id,
-                            name_shop: data?.name_shop,
-                            product_id: product[0]?.id,
-                            name_product: product[0]?.name_product,
-                            detail_product: product[0]?.detail_product,
-                            img_product: product[0]?.img_product,
-                            price: price,
-                            price_sales: product[0]?.price_sales,
-                            option1: option1,
-                            option2: option2,
-                            name_option1: product[0]?.option1,
-                            name_option2: product[0]?.option2,
-                            type: product[0]?.type,
-                            num: num,
-                            option1Id: option1Id,
-                            option2Id: setSubOptionId(),
-                          },
-                        }
-                      : product[0]?.type == 3 &&
-                        option1 !== null &&
-                        option2 !== null &&
-                        num > 0
-                      ? {
-                          pathname: "/order",
-                          query: {
-                            shop_id: data?.shop_id,
-                            name_shop: data?.name_shop,
-                            product_id: product[0]?.id,
-                            name_product: product[0]?.name_product,
-                            detail_product: product[0]?.detail_product,
-                            img_product: product[0]?.img_product,
-                            price: price,
-                            price_sales: product[0]?.price_sales,
-                            option1: option1,
-                            option2: option2,
-                            name_option1: product[0]?.option1,
-                            name_option2: product[0]?.option2,
-                            type: product[0]?.type,
-                            num: num,
-                            option1Id: option1Id,
-                            option2Id: setSubOptionId(),
-                          },
-                        }
-                      : { query: data }
-                    : { query: data }
-                }
+              <SimpleGrid
+                spacing={4}
+                templateColumns="repeat(2, minmax(30px, 1fr))"
+                my="15px"
+                fontSize="sm"
               >
-                <Button w="100%" bg="red" borderRadius="xl">
+                <Button w="100%" borderRadius="xl" onClick={addToCart}>
+                  <Text>เพิ่มไปยังรถเข็น</Text>
+                </Button>
+                  <Button
+                    w="100%"
+                    bg="red"
+                    borderRadius="xl"
+                    onClick={
+                     setLocal
+                    }
+                  >
+                    <Text>ซื้อสินค้า</Text>
+                  </Button>
+              </SimpleGrid>
+            </Box>
+          ) : (
+            <Box
+              className="test"
+              px="15px"
+              mt="10px"
+              py="8px"
+              bg="white"
+              pos="fixed"
+              bottom={0}
+            >
+              <SimpleGrid
+                spacing={4}
+                templateColumns="repeat(2, minmax(30px, 1fr))"
+                my="15px"
+                fontSize="sm"
+              >
+                <Button w="100%" borderRadius="xl" onClick={onOpenForm1}>
+                  <Text>เพิ่มไปยังรถเข็น</Text>
+                </Button>
+                <Button
+                  w="100%"
+                  bg="red"
+                  borderRadius="xl"
+                  onClick={onOpenForm1}
+                >
                   <Text>ซื้อสินค้า</Text>
                 </Button>
-              </Link>
-            </SimpleGrid>
-          </Box>
+              </SimpleGrid>
+            </Box>
+          )}
         </Box>
+        <Modal onClose={onCloseForm1} size="xs" isOpen={isOpenForm1} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader alignSelf="flex-end" pr="10px" pt="10px">
+              <Image
+                src="/img/cancel.png"
+                alt=""
+                h="25px"
+                w="25px"
+                onClick={() => handleClick()}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Box px="5px">
+                <Text
+                  bg="red"
+                  textAlign="center"
+                  borderRadius="xl"
+                  fontSize="25px"
+                  color="white"
+                  fontWeight="bold"
+                  onClick={() => loginClick()}
+                >
+                  ลงชื่อเข้าใช้ด้วยโทรศัพท์
+                </Text>
+                <Text color="gray.400" textAlign="center">
+                  ระบบจะจดจำที่อยู่ในการส่งสินค้าเมื่อใช้งานในครั้งต่อไป
+                </Text>
+                <Text
+                  mt="15px"
+                  bg="gray.100"
+                  textAlign="center"
+                  borderRadius="xl"
+                  fontSize="25px"
+                  fontWeight="bold"
+                  onClick={() => handleClick()}
+                >
+                  สั่งตอนนี้
+                </Text>
+                <Text color="gray.400" textAlign="center">
+                  ต้องกรอกที่อยู่ในการจัดส่งทุกครั้งที่เข้้าใช้งานใหม่
+                </Text>
+              </Box>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+        <Login onOpen={showLogin} onClose={() => setShowLogin(false)} />
       </>
     );
   }

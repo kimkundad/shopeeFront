@@ -25,33 +25,21 @@ import axios from "axios";
 import { connect, useDispatch, useSelector } from "react-redux";
 function ConfirmPayment() {
   const router = useRouter();
-  const data = router.query;
   const userInfo = useSelector((App) => App.userInfo);
-  const [order, setOrder] = useState(null);
+  const storedOrder = localStorage.getItem("order");
+  const order = storedOrder ? JSON.parse(storedOrder) : [];
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (Object.keys(data).length === 0) {
+    if (Object.keys(order).length === 0) {
       router.back();
     }
-    async function fetchData() {
-      let user_id = userInfo.data[0].id;
-      const formdata = new FormData();
-      formdata.append("order_id", data?.order);
-      formdata.append("user_id", user_id);
-      const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getOrder`,
-        formdata
-      );
-      setOrder(res.data.order);
-    }
-    fetchData();
-  }, [data]);
+  }, []);
 
   useEffect(() => {
-    if(order !== null){
+    if (order !== null) {
       setIsLoading(false);
     }
-  },[order])
+  }, [order]);
   const { isOpen, onOpen, onClose } = useDisclosure([]);
 
   const [image, setImage] = useState(null);
@@ -79,17 +67,61 @@ function ConfirmPayment() {
       return;
     }
     async function addData() {
-      const formdata = new FormData();
-      formdata.append("date", date);
-      formdata.append("time", time);
-      formdata.append("order_id", data?.order);
-      formdata.append("bankaccount_id", data?.select);
+      const startDate = new Date();
+      const endDate = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+      const startDateTimestamp = startDate.getTime();
+      const endDateTimestamp = endDate.getTime();
+      const year = startDate.getFullYear();
+      const month = ("0" + (startDate.getMonth() + 1)).slice(-2);
+      const day = ("0" + startDate.getDate()).slice(-2);
+      const formdataDate = new FormData();
+      formdataDate.append("startDate", startDateTimestamp);
+      formdataDate.append("endDate", endDateTimestamp);
+
+      const count = await axios.post(
+        `https://shopee-api.deksilp.com/api/countOrder`,
+        formdataDate
+      );
+      const invoiceNumber = `${year}${month}${day}${(
+        "0000" +
+        (count.data.count + 1)
+      ).slice(-4)}`;
+      let discount = 0.0;
+      let status = "กำลังตรวจสอบหลักฐานการโอนเงิน";
+      let user_id = userInfo.data[0].id;
+      const formData = new FormData();
+      formData.append("shop_id", order?.shop_id);
+      formData.append("address_id", order?.address_id);
+      formData.append("user_id", user_id);
+      formData.append("discount", discount);
+      formData.append("price_sales", order?.price_sales);
+      formData.append("num", order?.num);
+      formData.append("price", order?.price);
+      formData.append("total", order?.numPrice);
+      formData.append("status", status);
+      formData.append("product_id", order?.product_id);
+      formData.append("option1", order?.option1Id);
+      formData.append("option2", order?.option2Id);
+      formData.append("invoice_id", invoiceNumber);
+      formData.append("type_payment", "โอนเงิน");
+      const response = await axios.post(
+        "https://shopee-api.deksilp.com/api/createdOrder",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      const formdataTran = new FormData();
+      formdataTran.append("date", date);
+      formdataTran.append("time", time);
+      formdataTran.append("order_id", response?.data?.order?.id);
+      formdataTran.append("bankaccount_id", order?.select);
       image.forEach((file, index) => {
-        formdata.append(`file[${index}]`, file);
+        formdataTran.append(`file[${index}]`, file);
       });
       const res = await axios.post(
         `https://shopee-api.deksilp.com/api/confirmPayment`,
-        formdata
+        formdataTran
       );
       console.log(res.data);
       if (res.data.status == "success") {
@@ -113,7 +145,7 @@ function ConfirmPayment() {
             <Flex px="25px">
               <Text>ยอดชำระเงินทั้งหมด</Text>
               <Spacer />
-              <Text>{order?.price + 40}.-</Text>
+              <Text>{parseInt(order?.numPrice) + parseInt(40)}.-</Text>
             </Flex>
           </Box>
           <Box px="25px">
@@ -202,7 +234,7 @@ function ConfirmPayment() {
               </Box>
             </ModalBody>
             <ModalFooter alignSelf="center">
-              <Link href="/profile" justifySelf="center">
+              <Link href="/profile">
                 <Button w="100%" bg="red" borderRadius="xl">
                   <Text color="white">ไปยังหน้าโปรไฟล์</Text>
                 </Button>

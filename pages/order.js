@@ -26,6 +26,8 @@ function Order() {
   const router = useRouter();
   const data = router.query;
   const userInfo = useSelector((App) => App.userInfo);
+  const storedOrder = localStorage.getItem("order");
+  const order = storedOrder ? JSON.parse(storedOrder) : [];
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSucces,
@@ -37,9 +39,9 @@ function Order() {
   };
 
   const [address, setAddress] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   useEffect(() => {
-    if (data !== undefined) {
+    if (data !== undefined || address == null) {
       async function fetchData() {
         let user_id = userInfo.data[0].id;
         const formdataAddress = new FormData();
@@ -55,7 +57,7 @@ function Order() {
     }
   }, [data.product]);
   useEffect(() => {
-    if (data?.product !== undefined) {
+    if (data?.type == 'cart') {
       async function fetchData() {
         let user_id = userInfo.data[0].id;
         const formdataAddress = new FormData();
@@ -84,7 +86,6 @@ function Order() {
         );
         setProducts(res.data.product);
       }
-
       fetchData();
     }
   }, [data?.product]);
@@ -94,19 +95,19 @@ function Order() {
   const [total, setTotal] = useState(null);
   const [num, setNum] = useState(null);
   useEffect(() => {
-    if (data?.product_id) {
-      if (data.price_sales !== 0) {
+    if (order?.product_id) {
+      if (order.price_sales !== 0) {
         setNumPrice(
-          (data.price - (data.price_sales * data.price) / 100) * data.num
+          (order.price - (order.price_sales * order.price) / 100) * order.num
         );
-        setSales(data.price - (data.price_sales * data.price) / 100);
+        setSales(order.price - (order.price_sales * order.price) / 100);
         setTotal(
-          (data.price - (data.price_sales * data.price) / 100) * data.num + 40
+          (order.price - (order.price_sales * order.price) / 100) * order.num + 40
         );
       } else {
-        setSales(data.price);
-        setNumPrice(data.price * data.num);
-        setTotal(data.price + 40);
+        setSales(order.price);
+        setNumPrice(order.price * order.num);
+        setTotal(order.price + 40);
       }
     } else {
       let price = 0;
@@ -182,23 +183,32 @@ function Order() {
       router.push("/address/newaddress");
       return;
     }
-    if (data?.product_id) {
+    if (buttonId == "โอนเงิน") {
+      let address_id = address.id;
+      const newArr = { ...order, numPrice, address_id};
+      localStorage.setItem("order", JSON.stringify(newArr));
+      router.push({
+        pathname: "/payment",
+      });
+      return;
+    }
+    if (data?.product_id !== null) {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
-      formData.append("shop_id", data?.shop_id);
+      formData.append("shop_id", order?.shop_id);
       formData.append("address_id", address?.id);
       formData.append("user_id", user_id);
       formData.append("discount", discount);
-      formData.append("price_sales", data?.price_sales);
-      formData.append("num", data?.num);
-      formData.append("price", data?.price);
-      formData.append("total", data?.price * data?.num);
+      formData.append("price_sales", order?.price_sales);
+      formData.append("num", order?.num);
+      formData.append("price", order?.price);
+      formData.append("total", order?.price * order?.num);
       formData.append("status", status);
-      formData.append("product_id", data?.product_id);
-      formData.append("option1", data?.option1Id);
-      formData.append("option2", data?.option2Id);
+      formData.append("product_id", order?.product_id);
+      formData.append("option1", order?.option1Id);
+      formData.append("option2", order?.option2Id);
       formData.append("invoice_id", invoiceId);
       formData.append("type_payment", buttonId);
       const response = await axios.post(
@@ -206,12 +216,6 @@ function Order() {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      if (buttonId == "โอนเงิน") {
-        router.push({
-          pathname: "/payment",
-          query: { order: response.data.order.id },
-        });
-      }
     } else {
       let discount = 0.0;
       let status = "ที่ต้องชำระ";
@@ -241,12 +245,6 @@ function Order() {
         `https://shopee-api.deksilp.com/api/deleteCartItem`,
         formdelete
       );
-      if (buttonId == "โอนเงิน") {
-        router.push({
-          pathname: "/payment",
-          query: { order: response.data.order.id },
-        });
-      }
     }
   };
   return (
@@ -304,7 +302,7 @@ function Order() {
           </Flex>
         </Box>
       </Box>
-      {products.map((item, index) => (
+      {products?.map((item, index) => (
         <Box key={index}>
           <Box py="10px" mt="10px" bg="white">
             <Flex px="15px">
@@ -377,7 +375,7 @@ function Order() {
           })}
         </Box>
       ))}
-      {data?.product_id ? (
+      {order?.product_id ? (
         <Box>
           <Box py="10px" mt="10px" bg="white">
             <Flex px="15px">
@@ -391,7 +389,7 @@ function Order() {
                 <Text>ร้านแนะนำ</Text>
               </Box>
               <Box pl="8px">
-                <Text>{data.name_shop}</Text>
+                <Text>{order.name_shop}</Text>
               </Box>
             </Flex>
           </Box>
@@ -399,7 +397,7 @@ function Order() {
             <Flex px="15px">
               <Box pt="10px">
                 <Image
-                  src={`https://shopee-api.deksilp.com/images/shopee/products/${data.img_product}`}
+                  src={`https://shopee-api.deksilp.com/images/shopee/products/${order.img_product}`}
                   alt=""
                   w="100%"
                   maxHeight="130px"
@@ -407,10 +405,10 @@ function Order() {
               </Box>
               <Box pl="15px" width="-webkit-fill-available">
                 <Text fontSize="xl" pt="7px">
-                  {data.name_product}
+                  {order.name_product}
                 </Text>
-                <Text fontSize="sm">{data.detail_product}</Text>
-                {data.type != 1 ? (
+                <Text fontSize="sm">{order.detail_product}</Text>
+                {order.type != 1 ? (
                   <Text
                     fontSize="sm"
                     bg="gray.300"
@@ -418,14 +416,14 @@ function Order() {
                     display="initial"
                     px="7px"
                   >
-                    ตัวเลือกสินค้า: {data.name_option1} {data.option1}{" "}
-                    {data.name_option2} {data.option2}
+                    ตัวเลือกสินค้า: {order.name_option1} {order.option1}{" "}
+                    {order.name_option2} {order.option2}
                   </Text>
                 ) : null}
                 <Flex fontSize="xl">
                   <Text>{sales}.-</Text>
                   <Spacer />
-                  <Text>x{data.num}</Text>
+                  <Text>x{order.num}</Text>
                 </Flex>
               </Box>
             </Flex>
@@ -515,7 +513,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>ยอดชำระเงินทั้งหมด</Text>
           <Spacer />
-          <Text>{total}.-</Text>
+          <Text>{parseInt(numPrice) + parseInt(40)}.-</Text>
         </Flex>
       </Box>
       <Box className="test" bottom={0}>
