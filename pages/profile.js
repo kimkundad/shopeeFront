@@ -30,7 +30,7 @@ function useProfile() {
         let user_id = userInfo.data[0].id;
         const formdataOrder = new FormData();
         formdataOrder.append("user_id", user_id);
-        formdataOrder.append("OwnerShopId.owner_shop_id", OwnerShopId.owner_shop_id);
+        formdataOrder.append("owner_shop_id", OwnerShopId.owner_shop_id);
         const order = await axios.post(
           `https://shopee-api.deksilp.com/api/getAllOrder`,
           formdataOrder

@@ -87,6 +87,7 @@ function Order() {
           formData
         );
         setProducts(res.data.product);
+
       }
       fetchData();
     }
@@ -140,7 +141,6 @@ function Order() {
           }
         });
       });
-      console.log(num);
       setNumPrice(price);
       setNum(num);
       setTotal(price + 40);
@@ -186,9 +186,18 @@ function Order() {
       router.push("/address/newaddress");
       return;
     }
-    if (buttonId == "โอนเงิน") {
+    let type = data?.type;
+    if (buttonId == "โอนเงิน" && data?.type !== "cart") {
       let address_id = address.id;
-      const newArr = { ...order, numPrice, address_id};
+      const newArr = { ...order, numPrice, address_id ,buttonId};
+      localStorage.setItem("order", JSON.stringify(newArr));
+      router.push({
+        pathname: "/payment",
+      });
+      return;
+    }else if(buttonId == "โอนเงิน" && data?.type == "cart"){
+      let address_id = address.id;
+      const newArr = { products, numPrice, address_id,type,buttonId,num};
       localStorage.setItem("order", JSON.stringify(newArr));
       router.push({
         pathname: "/payment",
@@ -197,7 +206,7 @@ function Order() {
     }
     if (data?.type !== "cart") {
       let discount = 0.0;
-      let status = "กำลังแพ็ค";
+      let status = "ตรวจสอบคำสั่งซื้อ";
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", order?.shop_id);
@@ -223,7 +232,7 @@ function Order() {
       localStorage.removeItem('order');
     } else {
       let discount = 0.0;
-      let status = "กำลังแพ็ค";
+      let status = "ตรวจสอบคำสั่งซื้อ";
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));

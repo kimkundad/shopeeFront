@@ -28,6 +28,8 @@ function ConfirmPayment() {
   const userInfo = useSelector((App) => App.userInfo);
   const storedOrder = localStorage.getItem("order");
   const order = storedOrder ? JSON.parse(storedOrder) : [];
+  const storedOwner = localStorage.getItem("owner_shop_id");
+  const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (Object.keys(order).length === 0) {
@@ -88,44 +90,76 @@ function ConfirmPayment() {
         "0000" +
         (count.data.count + 1)
       ).slice(-4)}`;
-      let discount = 0.0;
-      let status = "กำลังตรวจสอบหลักฐานการโอนเงิน";
-      let user_id = userInfo.data[0].id;
-      const formData = new FormData();
-      formData.append("shop_id", order?.shop_id);
-      formData.append("address_id", order?.address_id);
-      formData.append("user_id", user_id);
-      formData.append("discount", discount);
-      formData.append("price_sales", order?.price_sales);
-      formData.append("num", order?.num);
-      formData.append("price", order?.price);
-      formData.append("total", order?.numPrice);
-      formData.append("status", status);
-      formData.append("product_id", order?.product_id);
-      formData.append("option1", order?.option1Id);
-      formData.append("option2", order?.option2Id);
-      formData.append("invoice_id", invoiceNumber);
-      formData.append("type_payment", "โอนเงิน");
-      const response = await axios.post(
-        "https://shopee-api.deksilp.com/api/createdOrder",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      const formdataTran = new FormData();
-      formdataTran.append("date", date);
-      formdataTran.append("time", time);
-      formdataTran.append("order_id", response?.data?.order?.id);
-      formdataTran.append("bankaccount_id", order?.select);
-      image.forEach((file, index) => {
-        formdataTran.append(`file[${index}]`, file);
-      });
-      const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/confirmPayment`,
-        formdataTran
-      );
-      console.log(res.data);
+      if (order.type == 'cart') {
+        let discount = 0.0;
+        let status = "ตรวจสอบคำสั่งซื้อ";
+        let user_id = userInfo.data[0].id;
+        const formData = new FormData();
+        formData.append("products", JSON.stringify(order?.products));
+        formData.append("user_id", user_id);
+        formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
+        formData.append("address_id", order?.address_id);
+        formData.append("discount", discount);
+        formData.append("num", order?.num);
+        formData.append("total", order?.numPrice);
+        formData.append("status", status);
+        formData.append("invoice_id", invoiceNumber);
+        formData.append("type_payment", "โอนเงิน");
+        const response = await axios.post(
+          "https://shopee-api.deksilp.com/api/createdOrder",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        const formdelete = new FormData();
+        data?.product.forEach((e, index) => [
+          formdelete.append(`cart_id[${index}]`, e),
+        ]);
+
+        const res = await axios.post(
+          `https://shopee-api.deksilp.com/api/deleteCartItem`,
+          formdelete
+        );
+      } else {
+        let discount = 0.0;
+        let status = "ตรวจสอบคำสั่งซื้อ";
+        let user_id = userInfo.data[0].id;
+        const formData = new FormData();
+        formData.append("shop_id", order?.shop_id);
+        formData.append("address_id", order?.address_id);
+        formData.append("user_id", user_id);
+        formData.append("discount", discount);
+        formData.append("price_sales", order?.price_sales);
+        formData.append("num", order?.num);
+        formData.append("price", order?.price);
+        formData.append("total", order?.numPrice);
+        formData.append("status", status);
+        formData.append("product_id", order?.product_id);
+        formData.append("option1", order?.option1Id);
+        formData.append("option2", order?.option2Id);
+        formData.append("invoice_id", invoiceNumber);
+        formData.append("type_payment", "โอนเงิน");
+        const response = await axios.post(
+          "https://shopee-api.deksilp.com/api/createdOrder",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        const formdataTran = new FormData();
+        formdataTran.append("date", date);
+        formdataTran.append("time", time);
+        formdataTran.append("order_id", response?.data?.order?.id);
+        formdataTran.append("bankaccount_id", order?.select);
+        image.forEach((file, index) => {
+          formdataTran.append(`file[${index}]`, file);
+        });
+        const res = await axios.post(
+          `https://shopee-api.deksilp.com/api/confirmPayment`,
+          formdataTran
+        );
+        console.log(res.data);
+      }
+
       if (res.data.status == "success") {
-        localStorage.removeItem('order');
+        localStorage.removeItem("order");
         onOpen();
       }
     }
