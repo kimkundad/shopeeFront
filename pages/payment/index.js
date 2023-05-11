@@ -14,6 +14,9 @@ function useIndex() {
 
   const [select, setSelect] = useState(null);
   useEffect(() => {
+    if (Object.keys(order).length === 0) {
+      router.back();
+    }
     if (banks == null) {
       async function fetchData() {
         const formdataBank = new FormData();

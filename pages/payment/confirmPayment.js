@@ -125,6 +125,7 @@ function ConfirmPayment() {
       );
       console.log(res.data);
       if (res.data.status == "success") {
+        localStorage.removeItem('order');
         onOpen();
       }
     }

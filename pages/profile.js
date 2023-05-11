@@ -22,14 +22,15 @@ function useProfile() {
   const userInfo = useSelector((App) => App.userInfo);
   const [name, setName] = useState();
   const [avatar, setAvatar] = useState();
+  const storedOwner = localStorage.getItem("owner_shop_id");
+  const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   useEffect(() => {
     if (userInfo) {
       async function fetchdata() {
         let user_id = userInfo.data[0].id;
-        let shop_id = 2;
         const formdataOrder = new FormData();
         formdataOrder.append("user_id", user_id);
-        formdataOrder.append("shop_id", shop_id);
+        formdataOrder.append("OwnerShopId.owner_shop_id", OwnerShopId.owner_shop_id);
         const order = await axios.post(
           `https://shopee-api.deksilp.com/api/getAllOrder`,
           formdataOrder

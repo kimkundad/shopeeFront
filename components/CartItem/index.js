@@ -214,11 +214,11 @@ export default function CartItem(props) {
 
                       <Flex className={style.textHead} pt="5px">
                         {subItem.type_product == 1 ? (
-                          <Text>{subItem.price_type_1}.-</Text>
+                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_1:subItem.price_type_1-(subItem.price_type_1*subItem.price_sales)/100}.-</Text>
                         ) : subItem.type_product == 2 ? (
-                          <Text>{subItem.price_type_2}.-</Text>
+                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_2:subItem.price_type_2-(subItem.price_type_2*subItem.price_sales)/100}.-</Text>
                         ) : (
-                          <Text>{subItem.price_type_3}.-</Text>
+                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_3:subItem.price_type_3-(subItem.price_type_3*subItem.price_sales)/100}.-</Text>
                         )}
 
                         <Spacer />

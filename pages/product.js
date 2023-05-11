@@ -93,7 +93,7 @@ function useProduct() {
   const swiperRef = useRef(null);
   const [option2, setOption2] = useState(null);
   const [option1, setOption1] = useState(null);
-  const [option1Id, setOption1Id] = useState(null);
+  const [option1Id, setOption1Id] = useState(0);
   function selectOption1(event, id) {
     setOption1(event.target.id);
     setOption1Id(id);

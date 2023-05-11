@@ -40,7 +40,6 @@ export default function useHome(props) {
   const { data: category } = getCategory(shop?.shop[0]?.id);
   const [scrollTop, setScrollTop] = useState(0);
 
-  console.log(shop);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleScroll = () => {
@@ -58,6 +57,8 @@ export default function useHome(props) {
   const [ProductAll, setProductAll] = useState(null);
   const [count, setCount] = useState(0);
   useEffect(() => {
+    const newArr = { owner_shop_id: shop?.shop[0]?.user_id };
+    localStorage.setItem("owner_shop_id", JSON.stringify(newArr));
     setNameShop(shop);
     setProductAll(product);
     setCount(count + 1);
@@ -360,7 +361,13 @@ export default function useHome(props) {
                           starRatedColor="orange"
                         />
                       </HStack>
-                      <Text className="textFooter">ขายไปแล้ว {item.total_sales !== null ? item.total_sales.toLocaleString():0} ชิ้น</Text>
+                      <Text className="textFooter">
+                        ขายไปแล้ว{" "}
+                        {item.total_sales !== null
+                          ? item.total_sales.toLocaleString()
+                          : 0}{" "}
+                        ชิ้น
+                      </Text>
                     </Box>
                     <Spacer />
                     <Box>
@@ -479,7 +486,13 @@ export default function useHome(props) {
                           starRatedColor="yellow"
                         />
                       </HStack>
-                      <Text className="textFooter">ขายไปแล้ว {item.total_sales !== null ? item.total_sales.toLocaleString():0} ชิ้น</Text>
+                      <Text className="textFooter">
+                        ขายไปแล้ว{" "}
+                        {item.total_sales !== null
+                          ? item.total_sales.toLocaleString()
+                          : 0}{" "}
+                        ชิ้น
+                      </Text>
                     </Box>
                     <Spacer />
                     <Box>

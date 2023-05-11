@@ -28,6 +28,8 @@ function Order() {
   const userInfo = useSelector((App) => App.userInfo);
   const storedOrder = localStorage.getItem("order");
   const order = storedOrder ? JSON.parse(storedOrder) : [];
+  const storedOwner = localStorage.getItem("owner_shop_id");
+  const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSucces,
@@ -112,7 +114,7 @@ function Order() {
     } else {
       let price = 0;
       let num = 0;
-      products.forEach((e) => {
+      products?.forEach((e) => {
         e.product.forEach((Element) => {
           if (Element.price_sales == 0) {
             if (Element.type_product == 1) {
@@ -138,6 +140,7 @@ function Order() {
           }
         });
       });
+      console.log(num);
       setNumPrice(price);
       setNum(num);
       setTotal(price + 40);
@@ -192,12 +195,13 @@ function Order() {
       });
       return;
     }
-    if (data?.product_id !== null) {
+    if (data?.type !== "cart") {
       let discount = 0.0;
-      let status = "ที่ต้องชำระ";
+      let status = "กำลังแพ็ค";
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", order?.shop_id);
+      formData.append("owner_shop_id", OwnerShopId.owner_shop_id)
       formData.append("address_id", address?.id);
       formData.append("user_id", user_id);
       formData.append("discount", discount);
@@ -216,13 +220,15 @@ function Order() {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      localStorage.removeItem('order');
     } else {
       let discount = 0.0;
-      let status = "ที่ต้องชำระ";
+      let status = "กำลังแพ็ค";
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);
+      formData.append("owner_shop_id", OwnerShopId.owner_shop_id)
       formData.append("address_id", address?.id);
       formData.append("shop_id", products[0].id);
       formData.append("discount", discount);
@@ -359,10 +365,10 @@ function Order() {
                             ? subItem.price_type_2
                             : subItem.price_type_3
                           : subItem.type_product == 1
-                          ? (subItem.price_type_1 * subItem.price_sales) / 100
+                          ? subItem.price_type_1-(subItem.price_type_1 * subItem.price_sales) / 100
                           : subItem.type_product == 2
-                          ? (subItem.price_type_2 * subItem.price_sales) / 100
-                          : (subItem.price_type_3 * subItem.price_sales) / 100}
+                          ? subItem.price_type_2-(subItem.price_type_2 * subItem.price_sales) / 100
+                          : subItem.price_type_3-(subItem.price_type_3 * subItem.price_sales) / 100}
                         .-
                       </Text>
                       <Spacer />
