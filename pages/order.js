@@ -187,6 +187,7 @@ function Order() {
       return;
     }
     let type = data?.type;
+    let pro_id = data?.product;
     if (buttonId == "โอนเงิน" && data?.type !== "cart") {
       let address_id = address.id;
       const newArr = { ...order, numPrice, address_id ,buttonId};
@@ -197,7 +198,7 @@ function Order() {
       return;
     }else if(buttonId == "โอนเงิน" && data?.type == "cart"){
       let address_id = address.id;
-      const newArr = { products, numPrice, address_id,type,buttonId,num};
+      const newArr = { products, numPrice, address_id,type,buttonId,num,pro_id};
       localStorage.setItem("order", JSON.stringify(newArr));
       router.push({
         pathname: "/payment",

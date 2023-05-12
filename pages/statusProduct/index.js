@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -19,6 +19,7 @@ function useStatusProduct() {
   const userInfo = useSelector((App) => App.userInfo);
   const storedOwner = localStorage.getItem("owner_shop_id");
   const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
+  const [cartsItem, setCartsItem] = useState([]);
   useEffect(() => {
     async function fetchdata() {
       let user_id = userInfo.data[0].id;
@@ -26,9 +27,17 @@ function useStatusProduct() {
       formdataOrder.append("user_id", user_id);
       formdataOrder.append("owner_shop_id", OwnerShopId.owner_shop_id);
       const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllOrder`,formdataOrder
+        `https://shopee-api.deksilp.com/api/getAllOrder`,
+        formdataOrder
       );
       setOrders(order.data.orders);
+      const formdataCart = new FormData();
+      formdataCart.append("user_id", userInfo.data[0].id);
+      const carts = await axios.post(
+        `https://shopee-api.deksilp.com/api/getAllCartItem/`,
+        formdataCart
+      );
+      setCartsItem(carts.data);
     }
     fetchdata();
   }, []);
@@ -41,7 +50,7 @@ function useStatusProduct() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box pt="15px">
-        <Statusproduct data={orders} />
+        <Statusproduct data={orders} carts={cartsItem}/>
       </Box>
     </>
   );

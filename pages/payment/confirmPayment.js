@@ -111,7 +111,7 @@ function ConfirmPayment() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
         const formdelete = new FormData();
-        data?.product.forEach((e, index) => [
+        order?.pro_id.forEach((e, index) => [
           formdelete.append(`cart_id[${index}]`, e),
         ]);
 
@@ -119,6 +119,20 @@ function ConfirmPayment() {
           `https://shopee-api.deksilp.com/api/deleteCartItem`,
           formdelete
         );
+        const formdataTran = new FormData();
+        formdataTran.append("date", date);
+        formdataTran.append("time", time);
+        formdataTran.append("order_id", response?.data?.order?.id);
+        formdataTran.append("bankaccount_id", order?.select);
+        image.forEach((file, index) => {
+          formdataTran.append(`file[${index}]`, file);
+        });
+        const resTran = await axios.post(
+          `https://shopee-api.deksilp.com/api/confirmPayment`,
+          formdataTran
+        );
+        localStorage.removeItem("order");
+        onOpen();
       } else {
         let discount = 0.0;
         let status = "ตรวจสอบคำสั่งซื้อ";
@@ -126,6 +140,7 @@ function ConfirmPayment() {
         const formData = new FormData();
         formData.append("shop_id", order?.shop_id);
         formData.append("address_id", order?.address_id);
+        formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
         formData.append("user_id", user_id);
         formData.append("discount", discount);
         formData.append("price_sales", order?.price_sales);
@@ -155,13 +170,10 @@ function ConfirmPayment() {
           `https://shopee-api.deksilp.com/api/confirmPayment`,
           formdataTran
         );
-        console.log(res.data);
-      }
-
-      if (res.data.status == "success") {
         localStorage.removeItem("order");
         onOpen();
       }
+
     }
     addData();
   };

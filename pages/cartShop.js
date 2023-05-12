@@ -25,7 +25,7 @@ function useChartShop() {
   useEffect(() => {
     async function fetchData() {
       const formdata = new FormData();
-      formdata.append("user_id",1)
+      formdata.append("user_id",userInfo.data[0].id)
       const carts = await axios.post(
         `https://shopee-api.deksilp.com/api/getAllCartItem/`,formdata
       );

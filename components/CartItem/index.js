@@ -61,15 +61,32 @@ export default function CartItem(props) {
     for (let i = 0; i < newCheckAll.length; i++) {
       for (let k = 0; k < newCheckAll[i].length; k++) {
         if (newCheckAll[i][k]) {
-
           pro_id.push(cartItem[i].product[k].id);
           newSum =
             newSum +
-            (cartItem[i].product[k].type_product === 1
-              ? cartItem[i].product[k].price_type_1 * num[i][k]
+            (cartItem[i].product[k].price_sales == 0
+              ? cartItem[i].product[k].type_product === 1
+                ? cartItem[i].product[k].price_type_1 * num[i][k]
+                : cartItem[i].product[k].type_product === 2
+                ? cartItem[i].product[k].price_type_2 * num[i][k]
+                : cartItem[i].product[k].price_type_3 * num[i][k]
+              : cartItem[i].product[k].type_product === 1
+              ? cartItem[i].product[k].price_type_1 -
+                ((cartItem[i].product[k].price_type_1 *
+                  cartItem[i].product[k].price_sales) /
+                  100) *
+                  num[i][k]
               : cartItem[i].product[k].type_product === 2
-              ? cartItem[i].product[k].price_type_2 * num[i][k]
-              : cartItem[i].product[k].price_type_3 * num[i][k]);
+              ? cartItem[i].product[k].price_type_2 -
+                ((cartItem[i].product[k].price_type_2 *
+                  cartItem[i].product[k].price_sales) /
+                  100) *
+                  num[i][k]
+              : cartItem[i].product[k].price_type_3 -
+                ((cartItem[i].product[k].price_type_3 *
+                  cartItem[i].product[k].price_sales) /
+                  100) *
+                  num[i][k]);
         } else {
           false;
         }
@@ -100,22 +117,32 @@ export default function CartItem(props) {
 
   const deleteCartItem = async (id) => {
     let arr = [];
-    arr.push(id)
+    arr.push(id);
     const formdata = new FormData();
-    arr.forEach((e,index) => {
-      formdata.append(`cart_id[${index}]`,e);
-    })
-    
+    arr.forEach((e, index) => {
+      formdata.append(`cart_id[${index}]`, e);
+    });
+
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/deleteCartItem`,formdata
+      `https://shopee-api.deksilp.com/api/deleteCartItem`,
+      formdata
     );
     setCartItem(res.data.cartItem);
   };
   return (
     <div>
-      {cartItem.length == 0? <Box textAlign="center" pt="20%">ไม่มีสินค้าในรถเข็น</Box>:null}
+      {cartItem.length == 0 ? (
+        <Box textAlign="center" pt="20%">
+          ไม่มีสินค้าในรถเข็น
+        </Box>
+      ) : null}
       {cartItem.map((item, index) => (
-        <Box bg="white" pt={index === 0 ? "30px" : "15px"} key={index}>
+        <Box
+          bg="white"
+          pt={index === 0 ? "30px" : "15px"}
+          mt={index === 0 ? "0px" : "15px"}
+          key={index}
+        >
           <Checkbox
             px="15px"
             isChecked={
@@ -136,6 +163,24 @@ export default function CartItem(props) {
           </Checkbox>
           <p>{item.product.name}</p>
           {item.product.map((subItem, subIndex) => {
+            let price =
+              subItem.price_sales == 0
+                ? subItem.type_product == 1
+                  ? subItem.price_type_1 * subItem.num
+                  : subItem.type_product == 2
+                  ? subItem.price_type_2 * subItem.num
+                  : subItem.price_type_3 * subItem.num
+                : subItem.type_product == 1
+                ? subItem.price_type_1 -
+                  ((subItem.price_type_1 * subItem.price_sales) / 100) *
+                    subItem.num
+                : subItem.type_product == 2
+                ? subItem.price_type_2 -
+                  ((subItem.price_type_2 * subItem.price_sales) / 100) *
+                    subItem.num
+                : subItem.price_type_3 -
+                  ((subItem.price_type_3 * subItem.price_sales) / 100) *
+                    subItem.num;
             return (
               <div key={subIndex}>
                 <Checkbox
@@ -170,8 +215,8 @@ export default function CartItem(props) {
                     handleCheckAllChange(event, index, subIndex)
                   }
                 >
-                  <Flex pl="15px" alignItems="center">
-                    <Box pt="10px">
+                  <Flex pl="5px" alignItems="center">
+                    <Box>
                       <Image
                         src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem.img_product}`}
                         alt=""
@@ -212,17 +257,13 @@ export default function CartItem(props) {
                         </Text>
                       ) : null}
 
-                      <Flex className={style.textHead} pt="5px">
-                        {subItem.type_product == 1 ? (
-                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_1:subItem.price_type_1-(subItem.price_type_1*subItem.price_sales)/100}.-</Text>
-                        ) : subItem.type_product == 2 ? (
-                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_2:subItem.price_type_2-(subItem.price_type_2*subItem.price_sales)/100}.-</Text>
-                        ) : (
-                          <Text fontSize="21px" fontWeight="bold" color="red">{subItem.price_sales == 0 ? subItem.price_type_3:subItem.price_type_3-(subItem.price_type_3*subItem.price_sales)/100}.-</Text>
-                        )}
+                      <Flex pt="5px">
+                        <Text className={style.textHead} fontWeight="bold" color="red">
+                          {price.toFixed(2)}.-
+                        </Text>
 
                         <Spacer />
-                        <Box borderRadius="xl" bg="gray.100">
+                        <Box borderRadius="xl" bg="gray.100" alignSelf="center">
                           <Flex alignItems="center">
                             <Button
                               h="15px"
@@ -302,13 +343,15 @@ export default function CartItem(props) {
             <Spacer />
             <Text>{sum}.-</Text>
             <Spacer />
-            <Link href={{
-            pathname: "/order",
-            query: {
-              product: productId,
-              type: 'cart'
-            },
-          }} >
+            <Link
+              href={{
+                pathname: "/order",
+                query: {
+                  product: productId,
+                  type: "cart",
+                },
+              }}
+            >
               <Button bg="red" borderRadius="xl">
                 <Text>ชำระเงิน</Text>
               </Button>

@@ -1,4 +1,3 @@
-
 import {
   Box,
   Grid,
@@ -21,7 +20,46 @@ export default function useStatusProduct(props) {
     { label: "จัดส่งสำเร็จ" },
   ];
 
-  let name = "";
+  const [orders, setOrders] = useState([]);
+  const [count, setCount] = useState(0);
+  const [carts, setCarts] = useState([]);
+  useEffect(() => {
+    const newArr = [];
+    props.data.map((item) => {
+      if (item.status == isBorderActive) {
+        newArr.push(item);
+      }
+    });
+    setOrders(newArr);
+    let num = 0;
+    const newCarts = [];
+    props?.carts?.cartItem?.map((item, index) => {
+      if (num == 3) {
+        return;
+      }
+      const product = [];
+      item.product.map((subItem, subIndex) => {
+        if (num == 3) {
+          return;
+        }
+        num++;
+        product.push(subItem);
+      });
+      newCarts.push({ name_shop: item.name_shop, product: product });
+    });
+    setCount(num);
+    setCarts(newCarts);
+  }, [props.data, props.carts]);
+  useEffect(() => {
+    const newArr = [];
+    props.data.map((item) => {
+      if (item.status == isBorderActive) {
+        newArr.push(item);
+      }
+    });
+    setOrders(newArr);
+  }, [isBorderActive]);
+
   const router = useRouter();
   const { pathname } = router;
   return (
@@ -47,10 +85,14 @@ export default function useStatusProduct(props) {
           })}
         </Grid>
       </Box>
-
-      {props.data.map((item, index) => {
-        return item.status == isBorderActive ? (
-          <Box bg="white" key={index} pt="10px">
+      {carts?.map((item, index) => {
+        return isBorderActive == "ที่ต้องชำระ" ? (
+          <Box
+            bg="white"
+            key={index}
+            pt={index == 0 ? "0px":"10px"}
+            mt={index == 0 ? "0px" : "10px"}
+          >
             <Box>
               <Box bg="white">
                 <Box>
@@ -59,170 +101,332 @@ export default function useStatusProduct(props) {
                   </Text>
                 </Box>
               </Box>
-              {isBorderActive == "ที่ต้องชำระ" ? (
-                <Link href={{
-                  pathname: "/payment",
-                  query: {
-                    order: item.id,
-                  },
-                }}>
-                  {item?.item?.map((subItem, subIndex) => {
-                    return (
-                      <Box
-                        key={subIndex}
-                        py="10px"
-                        mx="15px"
-                        borderBottom="1px"
-                        borderColor="gray.300"
-                      >
-                        <Flex alignItems="center">
-                          <Box>
-                            <Image
-                              src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
-                              alt=""
-                              className={style.wh}
-                            />
-                          </Box>
-                          <Box
-                            pl="15px"
-                            width="-webkit-fill-available"
-                            wordBreak="break-all"
-                          >
-                            <Text className={style.textHead}>
-                              {subItem.name_product}
-                            </Text>
-                            <Text className={style.textBody}>
-                              {subItem.detail_product}
-                            </Text>
-                            <Flex alignItems="center">
-                              <Text
-                                className={style.textBody}
-                                bg="gray.300"
-                                borderRadius="md"
-                                display="initial"
-                                px="7px"
-                              >
-                                ตัวเลือกสินค้า: {subItem.option1}{" "}
-                                {subItem.op_name} {subItem.option2}{" "}
-                                {subItem.sub_op_name}
-                              </Text>
-                              <Text pl="15px" className={style.textHead}>
-                                x{subItem.num}
-                              </Text>
-                            </Flex>
+            </Box>
 
-                            <Flex alignItems="center">
-                              <Text className={style.textHead}>
-                                {subItem.type == 1
-                                  ? subItem.price * subItem.num
-                                  : subItem.type == 2
-                                  ? subItem.op_price * subItem.num
-                                  : subItem.sub_op_price * subItem.num}
-                                .-
-                              </Text>
-                              <Spacer />
-                              <Text
-                                bg={
-                                  isBorderActive == "ที่ต้องชำระ" ? "red" : ""
-                                }
-                                borderRadius="xl"
-                                className={style.textBody}
-                                px="10px"
-                                color={"white"}
-                              >
-                                {isBorderActive}
-                              </Text>
-                            </Flex>
-                          </Box>
+            <Link
+              href={{
+                pathname: "/cartShop",
+              }}
+            >
+              {item?.product?.map((subItem, subIndex) => {
+                return (
+                  <Box
+                    key={subIndex}
+                    pb="10px"
+                    mx="15px"
+                    /* borderBottom="1px"
+                    borderColor="gray.300" */
+                  >
+                    <Flex alignItems="center">
+                      <Box>
+                        <Image
+                          src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                          alt=""
+                          className={style.wh}
+                        />
+                      </Box>
+                      <Box
+                        pl="15px"
+                        width="-webkit-fill-available"
+                        wordBreak="break-all"
+                      >
+                        <Text className={style.textHead}>
+                          {subItem.name_product}
+                        </Text>
+                        <Text className={style.textBody}>
+                          {subItem.detail_product}
+                        </Text>
+                        <Flex alignItems="center">
+                          <Text
+                            className={style.textBody}
+                            bg="gray.300"
+                            borderRadius="md"
+                            display="initial"
+                            px="7px"
+                          >
+                            ตัวเลือกสินค้า: {subItem.option1} {subItem.op_name}{" "}
+                            {subItem.option2} {subItem.sub_op_name}
+                          </Text>
+                          <Text pl="15px" className={style.textHead}>
+                            x{subItem.num}
+                          </Text>
+                        </Flex>
+
+                        <Flex alignItems="center">
+                          <Text className={style.textHead}>
+                            {subItem.price_sales == 0
+                              ? subItem.type_product == 1
+                                ? subItem.price_type_1 * subItem.num
+                                : subItem.type_product == 2
+                                ? subItem.price_type_2 * subItem.num
+                                : subItem.price_type_3 * subItem.num
+                              : subItem.type_product == 1
+                              ? subItem.price_type_1 -
+                                ((subItem.price_type_1 * subItem.price_sales) /
+                                  100) *
+                                  subItem.num
+                              : subItem.type_product == 2
+                              ? subItem.price_type_2 -
+                                ((subItem.price_type_2 * subItem.price_sales) /
+                                  100) *
+                                  subItem.num
+                              : subItem.price_type_3 -
+                                ((subItem.price_type_3 * subItem.price_sales) /
+                                  100) *
+                                  subItem.num}
+                            .-
+                          </Text>
+                          <Spacer />
+                          <Text
+                            bg={isBorderActive == "ที่ต้องชำระ" ? "red" : ""}
+                            borderRadius="xl"
+                            className={style.textBody}
+                            px="10px"
+                            color={"white"}
+                          >
+                            {isBorderActive}
+                          </Text>
                         </Flex>
                       </Box>
-                    );
-                  })}
-                </Link>
-              ) : (
-                item?.item?.map((subItem, subIndex) => {
-                  return (
-                    <Box
-                      key={subIndex}
-                      py="10px"
-                      mx="15px"
-                      borderBottom="1px"
-                      borderColor="gray.300"
-                    >
-                      <Flex alignItems="center">
-                        <Box>
-                          <Image
-                            src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
-                            alt=""
-                            className={style.wh}
-                          />
-                        </Box>
-                        <Box
-                          pl="15px"
-                          width="-webkit-fill-available"
-                          wordBreak="break-all"
-                        >
-                          <Text className={style.textHead}>
-                            {subItem.name_product}
-                          </Text>
-                          <Text className={style.textBody}>
-                            {subItem.detail_product}
-                          </Text>
-                          <Flex alignItems="center">
-                            <Text
-                              className={style.textBody}
-                              bg="gray.300"
-                              borderRadius="md"
-                              display="initial"
-                              px="7px"
-                            >
-                              ตัวเลือกสินค้า: {subItem.option1}{" "}
-                              {subItem.op_name} {subItem.option2}{" "}
-                              {subItem.sub_op_name}
-                            </Text>
-                            <Text pl="15px" className={style.textHead}>
-                              x{subItem.num}
-                            </Text>
-                          </Flex>
-
-                          <Flex alignItems="center">
-                            <Text className={style.textHead}>
-                              {subItem.type == 1
-                                ? subItem.price * subItem.num
-                                : subItem.type == 2
-                                ? subItem.op_price * subItem.num
-                                : subItem.sub_op_price * subItem.num}
-                              .-
-                            </Text>
-                            <Spacer />
-                            <Text
-                              bg={isBorderActive == "ที่ต้องชำระ" ? "red" : ""}
-                              borderRadius="xl"
-                              className={style.textBody}
-                              px="10px"
-                              color={
-                                isBorderActive == "ที่ต้องชำระ"
-                                  ? "white"
-                                  : isBorderActive == "กำลังจัดส่ง"
-                                  ? "orange"
-                                  : "blue"
-                              }
-                            >
-                              {isBorderActive == "กำลังจัดส่ง"
-                                ? "จะได้รับสินค้าภายใน date"
-                                : isBorderActive == "จัดส่งสำเร็จ"
-                                ? "พัสดุจัดส่งเรียบร้อย: address"
-                                : isBorderActive}
-                            </Text>
-                          </Flex>
-                        </Box>
-                      </Flex>
-                    </Box>
-                  );
-                })
-              )}
-            </Box>
+                    </Flex>
+                  </Box>
+                );
+              })}
+            </Link>
           </Box>
+        ) : null;
+      })}
+      {orders?.map((item, index) => {
+        return item.status == isBorderActive ? (
+          <>
+            {item?.shops.map((subItem, subIndex) => {
+              return (
+                <Box
+                  bg="white"
+                  key={index}
+                  mt={index == 0 ? "0px" : "10px"}
+                  py="10px"
+                  pt={index == 0 ? "0px":"10px"}
+                  display={isBorderActive == "ที่ต้องชำระ" ? "none" : "block"}
+                >
+                  <Box>
+                    <Box bg="white">
+                      <Box>
+                        <Text px="15px" className={style.textHead}>
+                          {subItem.name_shop}
+                        </Text>
+                      </Box>
+                    </Box>
+                    {isBorderActive == "ที่ต้องชำระ" ? (
+                      <Link
+                        href={{
+                          pathname: "/payment",
+                          query: {
+                            order: item.id,
+                          },
+                        }}
+                      >
+                        {/* {subItem?.products?.map((subItem, subIndex) => {
+                          return (
+                            <Box
+                              key={subIndex}
+                              py="10px"
+                              mx="15px"
+                              borderBottom="1px"
+                              borderColor="gray.300"
+                            >
+                              <Flex alignItems="center">
+                                <Box>
+                                  <Image
+                                    src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                                    alt=""
+                                    className={style.wh}
+                                  />
+                                </Box>
+                                <Box
+                                  pl="15px"
+                                  width="-webkit-fill-available"
+                                  wordBreak="break-all"
+                                >
+                                  <Text className={style.textHead}>
+                                    {subItem.name_product}
+                                  </Text>
+                                  <Text className={style.textBody}>
+                                    {subItem.detail_product}
+                                  </Text>
+                                  <Flex alignItems="center">
+                                    <Text
+                                      className={style.textBody}
+                                      bg="gray.300"
+                                      borderRadius="md"
+                                      display="initial"
+                                      px="7px"
+                                    >
+                                      ตัวเลือกสินค้า: {subItem.option1}{" "}
+                                      {subItem.op_name} {subItem.option2}{" "}
+                                      {subItem.sub_op_name}
+                                    </Text>
+                                    <Text pl="15px" className={style.textHead}>
+                                      x{subItem.num}
+                                    </Text>
+                                  </Flex>
+
+                                  <Flex alignItems="center">
+                                    <Text className={style.textHead}>
+                                      {subItem.price_sales == 0
+                                        ? subItem.type == 1
+                                          ? subItem.price * subItem.num
+                                          : subItem.type == 2
+                                          ? subItem.op_price * subItem.num
+                                          : subItem.sub_op_price * subItem.num
+                                        : subItem.type == 1
+                                        ? subItem.price -
+                                          ((subItem.price *
+                                            subItem.price_sales) /
+                                            100) *
+                                            subItem.num
+                                        : subItem.type == 2
+                                        ? subItem.op_price -
+                                          ((subItem.op_price *
+                                            subItem.price_sales) /
+                                            100) *
+                                            subItem.num
+                                        : subItem.sub_op_price -
+                                          ((subItem.sub_op_price *
+                                            subItem.price_sales) /
+                                            100) *
+                                            subItem.num}
+                                      .-
+                                    </Text>
+                                    <Spacer />
+                                    <Text
+                                      bg={
+                                        isBorderActive == "ที่ต้องชำระ"
+                                          ? "red"
+                                          : ""
+                                      }
+                                      borderRadius="xl"
+                                      className={style.textBody}
+                                      px="10px"
+                                      color={"white"}
+                                    >
+                                      {isBorderActive}
+                                    </Text>
+                                  </Flex>
+                                </Box>
+                              </Flex>
+                            </Box>
+                          );
+                        })} */}
+                      </Link>
+                    ) : (
+                      subItem?.products?.map((subItem, subIndex) => {
+                        return (
+                          <Box
+                            key={subIndex}
+                            pb="10px"
+                            mx="15px"
+                            /* borderBottom="1px"
+                            borderColor="gray.300" */
+                          >
+                            <Flex alignItems="center">
+                              <Box>
+                                <Image
+                                  src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                                  alt=""
+                                  className={style.wh}
+                                />
+                              </Box>
+                              <Box
+                                pl="15px"
+                                width="-webkit-fill-available"
+                                wordBreak="break-all"
+                              >
+                                <Text className={style.textHead}>
+                                  {subItem.name_product}
+                                </Text>
+                                <Text className={style.textBody}>
+                                  {subItem.detail_product}
+                                </Text>
+                                <Flex alignItems="center">
+                                  <Text
+                                    className={style.textBody}
+                                    bg="gray.300"
+                                    borderRadius="md"
+                                    display="initial"
+                                    px="7px"
+                                  >
+                                    ตัวเลือกสินค้า: {subItem.option1}{" "}
+                                    {subItem.op_name} {subItem.option2}{" "}
+                                    {subItem.sub_op_name}
+                                  </Text>
+                                  <Text pl="15px" className={style.textHead}>
+                                    x{subItem.num}
+                                  </Text>
+                                </Flex>
+
+                                <Flex alignItems="center">
+                                  <Text className={style.textHead}>
+                                    {subItem.price_sales == 0
+                                      ? subItem.type == 1
+                                        ? subItem.price * subItem.num
+                                        : subItem.type == 2
+                                        ? subItem.op_price * subItem.num
+                                        : subItem.sub_op_price * subItem.num
+                                      : subItem.type == 1
+                                      ? subItem.price -
+                                        ((subItem.price * subItem.price_sales) /
+                                          100) *
+                                          subItem.num
+                                      : subItem.type == 2
+                                      ? subItem.op_price -
+                                        ((subItem.op_price *
+                                          subItem.price_sales) /
+                                          100) *
+                                          subItem.num
+                                      : subItem.sub_op_price -
+                                        ((subItem.sub_op_price *
+                                          subItem.price_sales) /
+                                          100) *
+                                          subItem.num}
+                                    .-
+                                  </Text>
+                                  <Spacer />
+                                  <Text
+                                    bg={
+                                      isBorderActive == "ที่ต้องชำระ"
+                                        ? "red"
+                                        : ""
+                                    }
+                                    borderRadius="xl"
+                                    className={style.textBody}
+                                    px="10px"
+                                    color={
+                                      isBorderActive == "ที่ต้องชำระ"
+                                        ? "white"
+                                        : isBorderActive == "กำลังจัดส่ง"
+                                        ? "orange"
+                                        : "blue"
+                                    }
+                                  >
+                                    {isBorderActive == "กำลังจัดส่ง"
+                                      ? "จะได้รับสินค้าภายใน date"
+                                      : isBorderActive == "จัดส่งสำเร็จ"
+                                      ? "พัสดุจัดส่งเรียบร้อย: address"
+                                      : isBorderActive}
+                                  </Text>
+                                </Flex>
+                              </Box>
+                            </Flex>
+                          </Box>
+                        );
+                      })
+                    )}
+                  </Box>
+                </Box>
+              );
+            })}
+          </>
         ) : null;
       })}
     </div>

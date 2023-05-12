@@ -24,6 +24,7 @@ function useProfile() {
   const [avatar, setAvatar] = useState();
   const storedOwner = localStorage.getItem("owner_shop_id");
   const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
+  const [cartsItem, setCartsItem] = useState([]);
   useEffect(() => {
     if (userInfo) {
       async function fetchdata() {
@@ -41,6 +42,13 @@ function useProfile() {
           `https://shopee-api.deksilp.com/api/getUser`,
           formdata
         );
+        const formdataCart = new FormData();
+        formdataCart.append("user_id", userInfo.data[0].id);
+        const carts = await axios.post(
+          `https://shopee-api.deksilp.com/api/getAllCartItem/`,
+          formdataCart
+        );
+        setCartsItem(carts.data);
         setName(user.data.user.name);
         setOrder(order.data.orders);
         setAvatar(user.data.user.avatar);
@@ -197,7 +205,7 @@ function useProfile() {
         </Box>
       </Flex>
       <Box mt="10px">
-        <Statusproduct data={order} />
+        <Statusproduct data={order} carts={cartsItem} />
       </Box>
 
       <Purchasehistory data={order} />

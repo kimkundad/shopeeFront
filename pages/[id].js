@@ -363,8 +363,8 @@ export default function useHome(props) {
                       </HStack>
                       <Text className="textFooter">
                         ขายไปแล้ว{" "}
-                        {item.total_sales !== null
-                          ? item.total_sales.toLocaleString()
+                        {item?.total_sales !== null
+                          ? item?.total_sales?.toLocaleString()
                           : 0}{" "}
                         ชิ้น
                       </Text>

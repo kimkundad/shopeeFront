@@ -151,7 +151,7 @@ function useProduct() {
 
   async function addToCart(event) {
     event.preventDefault();
-    let user_id = 1;
+    let user_id = userInfo.data[0].id;
     const productId = product[0].id;
     const shopId = router.query.shop_id;
     const productOptionId = option1Id;
@@ -614,6 +614,7 @@ function useProduct() {
               bg="white"
               pos="fixed"
               bottom={0}
+              zIndex="100"
             >
               <SimpleGrid
                 spacing={4}

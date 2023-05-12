@@ -12,7 +12,6 @@ export default function Layout({ children }) {
         h={pathname == "/[id]"? "100vh":""} */
         bg={
           pathname == "/address/newaddress" ||
-          pathname == "/statusProduct" ||
           pathname == "/chat"
             ? "white"
             : "gray.100"
@@ -33,7 +32,7 @@ export default function Layout({ children }) {
               : "0px"
           }
           bg={
-            pathname == "/address/newaddress" || pathname == "/statusProduct"
+            pathname == "/address/newaddress"
               ? "white"
               : "gray.100"
           }
