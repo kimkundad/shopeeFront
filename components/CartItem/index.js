@@ -159,7 +159,7 @@ export default function CartItem(props) {
               },
             }}
           >
-            <Text pl="15px">{item.name_shop}</Text>
+            <Text className={style.textHead} pl="15px" fontWeight="bold">{item.name_shop}</Text>
           </Checkbox>
           <p>{item.product.name}</p>
           {item.product.map((subItem, subIndex) => {
@@ -228,10 +228,10 @@ export default function CartItem(props) {
                       wordBreak="break-all"
                       width="-webkit-fill-available"
                     >
-                      <Text className={style.textHead} pt="7px">
+                      <Text className={style.textHead,style.oneLines} pt="7px" fontWeight="bold">
                         {subItem.name_product}
                       </Text>
-                      <Text className={style.textBody}>
+                      <Text className={style.textBody,style.twoLines}>
                         {subItem.detail_product}
                       </Text>
                       {subItem.option1 !== null && subItem.option2 !== null ? (

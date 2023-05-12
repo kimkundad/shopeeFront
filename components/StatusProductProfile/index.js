@@ -63,7 +63,7 @@ export default function useStatusProductProfile(props) {
   return (
     <div>
       <Box bg="white" pt="10px">
-        {pathname === "/profile" ? <Text px="25px">สถานะสินค้า</Text> : false}
+        {pathname === "/profile" ? <Text className={style.textHead} px="25px" fontWeight="bold">สถานะสินค้า</Text> : false}
         <Grid templateColumns="repeat(3, 1fr)" fontSize="xs" width="100%">
           {status.map((item, index) => {
             return (
@@ -89,7 +89,7 @@ export default function useStatusProductProfile(props) {
             <Box>
               <Box bg="white">
                 <Box>
-                  <Text px="15px" className={style.textHead}>
+                  <Text px="15px" className={style.textHead} fontWeight="bold">
                     {item.name_shop}
                   </Text>
                 </Box>
@@ -122,10 +122,10 @@ export default function useStatusProductProfile(props) {
                         width="-webkit-fill-available"
                         wordBreak="break-all"
                       >
-                        <Text className={style.textHead}>
+                        <Text className={style.textHead,style.oneLines} fontWeight="bold">
                           {subItem.name_product}
                         </Text>
-                        <Text className={style.textBody}>
+                        <Text className={style.textBody,style.twoLines}>
                           {subItem.detail_product}
                         </Text>
                         <Flex alignItems="center">
@@ -218,7 +218,7 @@ export default function useStatusProductProfile(props) {
                   <Box>
                     <Box bg="white">
                       <Box>
-                        <Text px="15px" className={style.textHead}>
+                        <Text px="15px" className={style.textHead} fontWeight="bold">
                           {subItem.name_shop}
                         </Text>
                       </Box>
@@ -348,10 +348,10 @@ export default function useStatusProductProfile(props) {
                                 width="-webkit-fill-available"
                                 wordBreak="break-all"
                               >
-                                <Text className={style.textHead}>
+                                <Text className={style.textHead,style.oneLines} fontWeight="bold">
                                   {subItem.name_product}
                                 </Text>
-                                <Text className={style.textBody}>
+                                <Text className={style.textBody,style.twoLines}>
                                   {subItem.detail_product}
                                 </Text>
                                 <Flex alignItems="center">

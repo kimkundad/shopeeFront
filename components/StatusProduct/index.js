@@ -96,7 +96,7 @@ export default function useStatusProduct(props) {
             <Box>
               <Box bg="white">
                 <Box>
-                  <Text px="15px" className={style.textHead}>
+                  <Text px="15px" className={style.textHead} fontWeight="bold">
                     {item.name_shop}
                   </Text>
                 </Box>
@@ -130,10 +130,10 @@ export default function useStatusProduct(props) {
                         width="-webkit-fill-available"
                         wordBreak="break-all"
                       >
-                        <Text className={style.textHead}>
+                        <Text className={style.textHead,style.oneLines} fontWeight="bold">
                           {subItem.name_product}
                         </Text>
-                        <Text className={style.textBody}>
+                        <Text className={style.textBody,style.twoLines}>
                           {subItem.detail_product}
                         </Text>
                         <Flex alignItems="center">
@@ -342,10 +342,10 @@ export default function useStatusProduct(props) {
                                 width="-webkit-fill-available"
                                 wordBreak="break-all"
                               >
-                                <Text className={style.textHead}>
+                                <Text className={style.textHead,style.oneLines} fontWeight="bold">
                                   {subItem.name_product}
                                 </Text>
-                                <Text className={style.textBody}>
+                                <Text className={style.textBody,style.twoLines}>
                                   {subItem.detail_product}
                                 </Text>
                                 <Flex alignItems="center">
