@@ -49,7 +49,7 @@ function useProduct() {
         });
         formData.append("shop_id", data?.shop_id);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getProduct`,
+          `https://api.sellpang.com/api/getProduct`,
           formData
         );
         if (
@@ -183,7 +183,7 @@ function useProduct() {
       num,
     };
     const response = await axios.post(
-      "https://shopee-api.deksilp.com/api/addProductToCart",
+      "https://api.sellpang.com/api/addProductToCart",
       data
     );
   }
@@ -279,7 +279,7 @@ function useProduct() {
                         return (
                           <SwiperSlide key={index}>
                             <Image
-                              src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.image}`}
+                              src={`https://api.sellpang.com/images/shopee/products/${item?.image}`}
                               alt=""
                               h="100%"
                               w="100%"
@@ -294,7 +294,7 @@ function useProduct() {
                       return (
                         <SwiperSlide key={index}>
                           <Image
-                            src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_name}`}
+                            src={`https://api.sellpang.com/images/shopee/products/${item?.img_name}`}
                             alt=""
                             h="100%"
                             w="100%"
@@ -306,7 +306,7 @@ function useProduct() {
                   ) : (
                     <SwiperSlide key={index}>
                       <Image
-                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                        src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
                         alt=""
                         h="100%"
                         w="100%"
@@ -422,7 +422,7 @@ function useProduct() {
                         }
                       >
                         <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                          src={`https://api.sellpang.com/images/shopee/products/${item.img_name}`}
                           alt=""
                           boxSize="15px"
                           mr={1}
@@ -465,7 +465,7 @@ function useProduct() {
                         }
                       >
                         <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${item.img_name}`}
+                          src={`https://api.sellpang.com/images/shopee/products/${item.img_name}`}
                           alt=""
                           boxSize="15px"
                           mr={1}

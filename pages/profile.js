@@ -33,19 +33,19 @@ function useProfile() {
         formdataOrder.append("user_id", user_id);
         formdataOrder.append("owner_shop_id", OwnerShopId.owner_shop_id);
         const order = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAllOrder`,
+          `https://api.sellpang.com/api/getAllOrder`,
           formdataOrder
         );
         const formdata = new FormData();
         formdata.append("user_id", user_id);
         const user = await axios.post(
-          `https://shopee-api.deksilp.com/api/getUser`,
+          `https://api.sellpang.com/api/getUser`,
           formdata
         );
         const formdataCart = new FormData();
         formdataCart.append("user_id", userInfo.data[0].id);
         const carts = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAllCartItem/`,
+          `https://api.sellpang.com/api/getAllCartItem/`,
           formdataCart
         );
         setCartsItem(carts.data);
@@ -66,7 +66,7 @@ function useProfile() {
         formData.append("name", name);
         formData.append("user_id", 1);
         const newName = await axios.post(
-          `https://shopee-api.deksilp.com/api/editUser/`,
+          `https://api.sellpang.com/api/editUser/`,
           formData
         );
       }
@@ -95,7 +95,7 @@ function useProfile() {
         formdata.append("user_id", userId);
         formdata.append("avatar", acceptedFiles[0]);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/editAvatar/`,
+          `https://api.sellpang.com/api/editAvatar/`,
           formdata
         );
         setName(res.data.user.name);
@@ -130,7 +130,7 @@ function useProfile() {
                 <Skeleton circle="true" height={70} width={70} />
               ) : (
                 <Image
-                  src={`https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`}
+                  src={`https://api.sellpang.com/images/shopee/avatar/${avatar}`}
                   alt=""
                   h="70px"
                   w="70px"

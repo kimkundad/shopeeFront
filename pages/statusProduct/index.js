@@ -27,14 +27,14 @@ function useStatusProduct() {
       formdataOrder.append("user_id", user_id);
       formdataOrder.append("owner_shop_id", OwnerShopId.owner_shop_id);
       const order = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllOrder`,
+        `https://api.sellpang.com/api/getAllOrder`,
         formdataOrder
       );
       setOrders(order.data.orders);
       const formdataCart = new FormData();
       formdataCart.append("user_id", userInfo.data[0].id);
       const carts = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllCartItem/`,
+        `https://api.sellpang.com/api/getAllCartItem/`,
         formdataCart
       );
       setCartsItem(carts.data);

@@ -29,7 +29,7 @@ export default function purchaseHistory(props) {
                             <Flex alignItems="center" pb="10px">
                               <Box>
                                 <Image
-                                  src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                                  src={`https://api.sellpang.com/images/shopee/products/${subItem?.img_product}`}
                                   alt=""
                                   className={style.wh}
                                 />

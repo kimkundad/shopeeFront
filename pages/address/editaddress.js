@@ -65,7 +65,7 @@ function useEditaddress() {
         const formdata = new FormData();
         formdata.append("address_id", data?.address_id);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAddress`,
+          `https://api.sellpang.com/api/getAddress`,
           formdata
         );
         setName(res.data.address.name);
@@ -135,7 +135,7 @@ function useEditaddress() {
     formdata.append("default", setdefault);
 
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/editAddress`,
+      `https://api.sellpang.com/api/editAddress`,
       formdata
     );
     if (res.data.status == "success") {

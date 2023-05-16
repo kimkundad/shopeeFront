@@ -37,7 +37,7 @@ function usePaymentBank() {
         formdataBank.append("user_id", 3);
         formdataBank.append("id", order?.select);
         const bank = await axios.post(
-          `https://shopee-api.deksilp.com/api/getBank`,
+          `https://api.sellpang.com/api/getBank`,
           formdataBank
         );
         setBank(bank.data.banks);
@@ -48,7 +48,7 @@ function usePaymentBank() {
 
   const handleDownload = async () => {
     event.preventDefault();
-    let url = `https://shopee-api.deksilp.com/images/shopee/QR_code/${bank?.QR_code}`;
+    let url = `https://api.sellpang.com/images/shopee/QR_code/${bank?.QR_code}`;
     fetch(url, {
       mode: "no-cors",
     })
@@ -117,7 +117,7 @@ function usePaymentBank() {
         </Box>
         <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
           <Image
-            src={`https://shopee-api.deksilp.com/images/shopee/QR_code/${bank?.QR_code}`}
+            src={`https://api.sellpang.com/images/shopee/QR_code/${bank?.QR_code}`}
           />
         </Box>
         <Box mt="10px" display="flex" justifyContent="center">
@@ -128,7 +128,7 @@ function usePaymentBank() {
         <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
           <Flex alignItems="center" className="set--font" py="10px">
             <Image
-              src={`https://shopee-api.deksilp.com/images/shopee/icon_bank/${bank?.icon_bank}`}
+              src={`https://api.sellpang.com/images/shopee/icon_bank/${bank?.icon_bank}`}
               borderRadius="xl"
               h="14"
               mx="15px"

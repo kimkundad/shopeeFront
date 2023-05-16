@@ -124,7 +124,7 @@ export default function CartItem(props) {
     });
 
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/deleteCartItem`,
+      `https://api.sellpang.com/api/deleteCartItem`,
       formdata
     );
     setCartItem(res.data.cartItem);
@@ -218,7 +218,7 @@ export default function CartItem(props) {
                   <Flex pl="5px" alignItems="center">
                     <Box>
                       <Image
-                        src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem.img_product}`}
+                        src={`https://api.sellpang.com/images/shopee/products/${subItem.img_product}`}
                         alt=""
                         className={style.wh}
                       ></Image>

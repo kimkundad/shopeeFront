@@ -22,7 +22,7 @@ function useIndex() {
         const formdataBank = new FormData();
         formdataBank.append("user_id", 3);
         const bank = await axios.post(
-          `https://shopee-api.deksilp.com/api/getBank`,
+          `https://api.sellpang.com/api/getBank`,
           formdataBank
         );
         setBanks(bank.data.banks);
@@ -111,7 +111,7 @@ function useIndex() {
             >
               <Flex alignItems="center" className="set--font" py="10px">
                 <Image
-                  src={`https://shopee-api.deksilp.com/images/shopee/icon_bank/${item?.icon_bank}`}
+                  src={`https://api.sellpang.com/images/shopee/icon_bank/${item?.icon_bank}`}
                   borderRadius="xl"
                   h="14"
                   mx="15px"

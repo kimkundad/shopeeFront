@@ -52,7 +52,7 @@ export default function ModalLogin(props) {
         const formdata = new FormData();
         formdata.append("user_id", user_id);
         const user = await axios.post(
-          `https://shopee-api.deksilp.com/api/getUser`,
+          `https://api.sellpang.com/api/getUser`,
           formdata
         );
         setName(user.data.user.name);
@@ -113,7 +113,7 @@ export default function ModalLogin(props) {
                 ids={props.type}
               >
                 <Image
-                  src={`https://shopee-api.deksilp.com/images/shopee/avatar/${avatar}`}
+                  src={`https://api.sellpang.com/images/shopee/avatar/${avatar}`}
                   alt=""
                   h="7"
                 />

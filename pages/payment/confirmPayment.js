@@ -83,7 +83,7 @@ function ConfirmPayment() {
       formdataDate.append("endDate", endDateTimestamp);
 
       const count = await axios.post(
-        `https://shopee-api.deksilp.com/api/countOrder`,
+        `https://api.sellpang.com/api/countOrder`,
         formdataDate
       );
       const invoiceNumber = `${year}${month}${day}${(
@@ -106,7 +106,7 @@ function ConfirmPayment() {
         formData.append("invoice_id", invoiceNumber);
         formData.append("type_payment", "โอนเงิน");
         const response = await axios.post(
-          "https://shopee-api.deksilp.com/api/createdOrder",
+          "https://api.sellpang.com/api/createdOrder",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -116,7 +116,7 @@ function ConfirmPayment() {
         ]);
 
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/deleteCartItem`,
+          `https://api.sellpang.com/api/deleteCartItem`,
           formdelete
         );
         const formdataTran = new FormData();
@@ -128,7 +128,7 @@ function ConfirmPayment() {
           formdataTran.append(`file[${index}]`, file);
         });
         const resTran = await axios.post(
-          `https://shopee-api.deksilp.com/api/confirmPayment`,
+          `https://api.sellpang.com/api/confirmPayment`,
           formdataTran
         );
         localStorage.removeItem("order");
@@ -154,7 +154,7 @@ function ConfirmPayment() {
         formData.append("invoice_id", invoiceNumber);
         formData.append("type_payment", "โอนเงิน");
         const response = await axios.post(
-          "https://shopee-api.deksilp.com/api/createdOrder",
+          "https://api.sellpang.com/api/createdOrder",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -167,7 +167,7 @@ function ConfirmPayment() {
           formdataTran.append(`file[${index}]`, file);
         });
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/confirmPayment`,
+          `https://api.sellpang.com/api/confirmPayment`,
           formdataTran
         );
         localStorage.removeItem("order");

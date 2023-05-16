@@ -3,7 +3,7 @@ import { fetcher } from "@/services/test";
 
 export function getAllProduct(shopId) {
   const { data, error } = useSWR(
-    `https://shopee-api.deksilp.com/api/allProduct/${shopId}`,
+    `https://api.sellpang.com/api/allProduct/${shopId}`,
     fetcher
   );
   return {
@@ -15,7 +15,7 @@ export function getAllProduct(shopId) {
 
 export function getShop(shop_url) {
   const { data, error } = useSWR(
-    `https://shopee-api.deksilp.com/api/shop/${shop_url}`,
+    `https://api.sellpang.com/api/shop/${shop_url}`,
     fetcher
   );
 
@@ -28,7 +28,7 @@ export function getShop(shop_url) {
 
 export function getCategory(shopId) {
   const { data, error } = useSWR(
-    `https://shopee-api.deksilp.com/api/getCategory/${shopId}`,
+    `https://api.sellpang.com/api/getCategory/${shopId}`,
     fetcher
   );
 

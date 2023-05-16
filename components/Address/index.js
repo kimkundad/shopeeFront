@@ -14,7 +14,7 @@ export default function useAddress(props) {
     formdata.append("id",id);
     formdata.append("user_id",user_id);
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/setDefaultAddress`,formdata
+      `https://api.sellpang.com/api/setDefaultAddress`,formdata
     )
     const newAddress = res.data.address
     setAddress(newAddress);
@@ -26,7 +26,7 @@ export default function useAddress(props) {
     formdata.append("user_id",user_id)
     formdata.append("address_id",id);
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/deleteAddress`,formdata
+      `https://api.sellpang.com/api/deleteAddress`,formdata
     )
     const newAddress = res.data.address
     setAddress(newAddress);

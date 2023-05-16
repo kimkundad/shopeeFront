@@ -50,7 +50,7 @@ export default function Layout({ children }) {
         formdata.append("shop_id", shop_id);
         formdata.append("type",'customer');
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getMessage`,
+          `https://api.sellpang.com/api/getMessage`,
           formdata
         );
         setMessages(res.data.message);
@@ -86,7 +86,7 @@ export default function Layout({ children }) {
         formdata.append("shop_id", shop_id);
         formdata.append("message", text);
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/sendMessage`,
+          `https://api.sellpang.com/api/sendMessage`,
           formdata
         );
         const newMess = { ...res.data.message[0], type: "message", room };
@@ -167,7 +167,7 @@ export default function Layout({ children }) {
                       >
                         <Image
                           borderRadius="50%"
-                          src={`https://shopee-api.deksilp.com/images/shopee/shop/${item.img_shop}`}
+                          src={`https://api.sellpang.com/images/shopee/shop/${item.img_shop}`}
                           alt=""
                           h="35px !important"
                           w="35px !important"
@@ -253,7 +253,7 @@ export default function Layout({ children }) {
                     >
                       <Image
                         borderRadius="50%"
-                        src={`https://shopee-api.deksilp.com/images/shopee/shop/${item.img_shop}`}
+                        src={`https://api.sellpang.com/images/shopee/shop/${item.img_shop}`}
                         alt=""
                         h="35px !important"
                         w="35px !important"

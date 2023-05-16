@@ -49,7 +49,7 @@ function Order() {
         const formdataAddress = new FormData();
         formdataAddress.append("user_id", user_id);
         const dataAddress = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAddress`,
+          `https://api.sellpang.com/api/getAddress`,
           formdataAddress
         );
         setAddress(dataAddress.data.address);
@@ -65,7 +65,7 @@ function Order() {
         const formdataAddress = new FormData();
         formdataAddress.append("user_id", user_id);
         const dataAddress = await axios.post(
-          `https://shopee-api.deksilp.com/api/getAddress`,
+          `https://api.sellpang.com/api/getAddress`,
           formdataAddress
         );
         setAddress(dataAddress.data.address);
@@ -83,7 +83,7 @@ function Order() {
         }
 
         const res = await axios.post(
-          `https://shopee-api.deksilp.com/api/getProduct/`,
+          `https://api.sellpang.com/api/getProduct/`,
           formData
         );
         setProducts(res.data.product);
@@ -172,7 +172,7 @@ function Order() {
       formdataDate.append('endDate',endDateTimestamp)
 
       const count = await axios.post(
-        `https://shopee-api.deksilp.com/api/countOrder`,
+        `https://api.sellpang.com/api/countOrder`,
         formdataDate
       );
       const invoiceNumber = `${year}${month}${day}${(
@@ -226,7 +226,7 @@ function Order() {
       formData.append("invoice_id", invoiceId);
       formData.append("type_payment", buttonId);
       const response = await axios.post(
-        "https://shopee-api.deksilp.com/api/createdOrder",
+        "https://api.sellpang.com/api/createdOrder",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -248,7 +248,7 @@ function Order() {
       formData.append("invoice_id", invoiceId);
       formData.append("type_payment", buttonId);
       const response = await axios.post(
-        "https://shopee-api.deksilp.com/api/createdOrder",
+        "https://api.sellpang.com/api/createdOrder",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -258,7 +258,7 @@ function Order() {
       ]);
 
       const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/deleteCartItem`,
+        `https://api.sellpang.com/api/deleteCartItem`,
         formdelete
       );
     }
@@ -342,7 +342,7 @@ function Order() {
                 <Flex px="15px">
                   <Box pt="10px">
                     <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem.img_product}`}
+                      src={`https://api.sellpang.com/images/shopee/products/${subItem.img_product}`}
                       alt=""
                       w="100%"
                       maxHeight="130px"
@@ -413,7 +413,7 @@ function Order() {
             <Flex px="15px">
               <Box pt="10px">
                 <Image
-                  src={`https://shopee-api.deksilp.com/images/shopee/products/${order.img_product}`}
+                  src={`https://api.sellpang.com/images/shopee/products/${order.img_product}`}
                   alt=""
                   w="100%"
                   maxHeight="130px"

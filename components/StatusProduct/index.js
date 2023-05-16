@@ -120,7 +120,7 @@ export default function useStatusProduct(props) {
                     <Flex alignItems="center">
                       <Box>
                         <Image
-                          src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                          src={`https://api.sellpang.com/images/shopee/products/${subItem?.img_product}`}
                           alt=""
                           className={style.wh}
                         />
@@ -238,7 +238,7 @@ export default function useStatusProduct(props) {
                               <Flex alignItems="center">
                                 <Box>
                                   <Image
-                                    src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                                    src={`https://api.sellpang.com/images/shopee/products/${subItem?.img_product}`}
                                     alt=""
                                     className={style.wh}
                                   />
@@ -332,7 +332,7 @@ export default function useStatusProduct(props) {
                             <Flex alignItems="center">
                               <Box>
                                 <Image
-                                  src={`https://shopee-api.deksilp.com/images/shopee/products/${subItem?.img_product}`}
+                                  src={`https://api.sellpang.com/images/shopee/products/${subItem?.img_product}`}
                                   alt=""
                                   className={style.wh}
                                 />

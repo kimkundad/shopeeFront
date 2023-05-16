@@ -112,7 +112,7 @@ export default function useHome(props) {
   const search = (event) => {
     async function fetchData() {
       const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/searchProduct/${nameShop.shop[0].id}?search=${event.target.value}`
+        `https://api.sellpang.com/api/searchProduct/${nameShop.shop[0].id}?search=${event.target.value}`
       );
       setProductAll(res.data);
     }
@@ -192,7 +192,7 @@ export default function useHome(props) {
               px="2"
               pt="16"
               pb="28px"
-              backgroundImage={`url(https://shopee-api.deksilp.com/images/shopee/cover_img_shop/${item.cover_img_shop})`}
+              backgroundImage={`url(https://api.sellpang.com/images/shopee/cover_img_shop/${item.cover_img_shop})`}
               h="100%"
             >
               <Box
@@ -206,7 +206,7 @@ export default function useHome(props) {
               >
                 <Image
                   borderRadius="50%"
-                  src={`https://shopee-api.deksilp.com/images/shopee/shop/${item.img_shop}`}
+                  src={`https://api.sellpang.com/images/shopee/shop/${item.img_shop}`}
                   alt=""
                   className="wh"
                 />
@@ -332,7 +332,7 @@ export default function useHome(props) {
                       display={loadingImg ? "block" : "none"}
                     />
                     <Image
-                      src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                      src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
                       alt={item?.product_name}
                       height="100%"
                       width="100%"
@@ -457,7 +457,7 @@ export default function useHome(props) {
                       <Skeleton height="170px" width="170px" />
                     ) : (
                       <Image
-                        src={`https://shopee-api.deksilp.com/images/shopee/products/${item?.img_product}`}
+                        src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
                         alt={item?.product_name}
                         height="100%"
                         width="100%"

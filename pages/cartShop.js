@@ -27,7 +27,7 @@ function useChartShop() {
       const formdata = new FormData();
       formdata.append("user_id",userInfo.data[0].id)
       const carts = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllCartItem/`,formdata
+        `https://api.sellpang.com/api/getAllCartItem/`,formdata
       );
       setCartsItem(carts.data);
     }

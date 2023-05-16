@@ -48,7 +48,7 @@ function useNewaddress() {
       const formdataAddress = new FormData();
       formdataAddress.append("user_id", user_id);
       const dataAddress = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAddress`,
+        `https://api.sellpang.com/api/getAddress`,
         formdataAddress
       );
       setCheckDefault(dataAddress.data.address);
@@ -121,7 +121,7 @@ function useNewaddress() {
     formdata.append("default", setdefault);
 
     const res = await axios.post(
-      `https://shopee-api.deksilp.com/api/newAddress`,
+      `https://api.sellpang.com/api/newAddress`,
       formdata
     );
     if (res.data.status == "success") {

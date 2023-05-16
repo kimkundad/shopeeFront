@@ -28,7 +28,7 @@ function useAddress() {
       const formdata = new FormData();
       formdata.append("user_id",user_id);
       const res = await axios.post(
-        `https://shopee-api.deksilp.com/api/getAllAddress`,formdata
+        `https://api.sellpang.com/api/getAllAddress`,formdata
       )
       setAddress(res.data.address);
     }
