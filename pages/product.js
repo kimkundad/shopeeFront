@@ -40,6 +40,7 @@ function useProduct() {
   const [price, setPrice] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    localStorage.removeItem("order");
     if (data?.product_id !== undefined) {
       async function fetchData() {
         const formData = new FormData();
