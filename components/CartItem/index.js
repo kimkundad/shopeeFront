@@ -92,21 +92,37 @@ export default function CartItem(props) {
     setProductId(pro_id);
     setSum(newSum);
   };
-  const plusnum = (index, subIndex) => {
+  const plusnum = async (index, subIndex, cart_id) => {
     const newNum = [...num];
     let number = 0;
     number = newNum[index][subIndex] + 1;
     newNum[index][subIndex] = number;
     setNum(newNum);
     sumPrice();
+    const data = {
+      cart_id,
+      number,
+    };
+    const response = await axios.post(
+      "https://api.sellpang.com/api/addProductToCart",
+      data
+    );
   };
 
-  const minusnum = (index, subIndex) => {
+  const minusnum = async (index, subIndex, cart_id) => {
     const newNum = [...num];
     let number = 1;
     number = newNum[index][subIndex] - 1;
     if (number >= 1) {
       newNum[index][subIndex] = number;
+      const data = {
+        cart_id,
+        number,
+      };
+      const response = await axios.post(
+        "https://api.sellpang.com/api/addProductToCart",
+        data
+      );
     }
     setNum(newNum);
     sumPrice();
@@ -269,7 +285,9 @@ export default function CartItem(props) {
                             <Button
                               h="15px"
                               w="15px"
-                              onClick={() => minusnum(index, subIndex)}
+                              onClick={() =>
+                                minusnum(index, subIndex, subItem.id)
+                              }
                               px="0px"
                             >
                               <Image
@@ -286,7 +304,9 @@ export default function CartItem(props) {
                             <Button
                               h="15px"
                               w="15px"
-                              onClick={() => plusnum(index, subIndex)}
+                              onClick={() =>
+                                plusnum(index, subIndex, subItem.id)
+                              }
                               px="0px"
                             >
                               <Image
