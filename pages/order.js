@@ -233,7 +233,12 @@ function Order() {
       formData.append("price_sales", order?.price_sales);
       formData.append("num", order?.num);
       formData.append("price", order?.price);
-      formData.append("total", order?.price * order?.num);
+      if(order?.price_sales == 0){
+        formData.append("total", order?.price * order?.num);
+      }else{
+        formData.append("total", ((order?.price*order?.price_sales)/100) * order?.num);
+      }
+      
       formData.append("status", status);
       formData.append("product_id", order?.product_id);
       formData.append("option1", order?.option1Id);
