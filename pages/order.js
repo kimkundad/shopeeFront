@@ -59,7 +59,7 @@ function Order() {
     }
   }, [data.product]);
   useEffect(() => {
-    if (data?.type == 'cart') {
+    if (data?.type == "cart") {
       async function fetchData() {
         let user_id = userInfo.data[0].id;
         const formdataAddress = new FormData();
@@ -87,7 +87,6 @@ function Order() {
           formData
         );
         setProducts(res.data.product);
-
       }
       fetchData();
     }
@@ -105,7 +104,8 @@ function Order() {
         );
         setSales(order.price - (order.price_sales * order.price) / 100);
         setTotal(
-          (order.price - (order.price_sales * order.price) / 100) * order.num + 40
+          (order.price - (order.price_sales * order.price) / 100) * order.num +
+            40
         );
       } else {
         setSales(order.price);
@@ -119,26 +119,33 @@ function Order() {
         e.product.forEach((Element) => {
           if (Element.price_sales == 0) {
             if (Element.type_product == 1) {
-              price = price + Element.price_type_1;
+              price = price + (Element.price_type_1 * Element.num);
             } else if (Element.type_product == 2) {
-              price = price + Element.price_type_2;
+              price = price + (Element.price_type_2 * Element.num);;
             } else {
-              price = price + Element.price_type_3;
+              price = price + (Element.price_type_3 * Element.num);;
             }
             num = num + Element.num;
           } else {
             if (Element.type_product == 1) {
               price =
-                price + (Element.price_type_1 * Element.price_sales) / 100;
+                price +
+                ((Element.price_type_1 * Element.price_sales) / 100) *
+                  Element.num;
             } else if (Element.type_product == 2) {
               price =
-                price + (Element.price_type_2 * Element.price_sales) / 100;
+                price +
+                ((Element.price_type_2 * Element.price_sales) / 100) *
+                  Element.num;
             } else {
               price =
-                price + (Element.price_type_3 * Element.price_sales) / 100;
+                price +
+                ((Element.price_type_3 * Element.price_sales) / 100) *
+                  Element.num;
             }
             num = num + Element.num;
           }
+          console.log(price);
         });
       });
       setNumPrice(price);
@@ -161,15 +168,15 @@ function Order() {
       const startDate = new Date();
       const endDate = new Date();
       startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(23,59,59,999);
+      endDate.setHours(23, 59, 59, 999);
       const startDateTimestamp = startDate.getTime();
       const endDateTimestamp = endDate.getTime();
       const year = startDate.getFullYear();
       const month = ("0" + (startDate.getMonth() + 1)).slice(-2);
       const day = ("0" + startDate.getDate()).slice(-2);
       const formdataDate = new FormData();
-      formdataDate.append('startDate',startDateTimestamp)
-      formdataDate.append('endDate',endDateTimestamp)
+      formdataDate.append("startDate", startDateTimestamp);
+      formdataDate.append("endDate", endDateTimestamp);
 
       const count = await axios.post(
         `https://api.sellpang.com/api/countOrder`,
@@ -179,7 +186,7 @@ function Order() {
         "0000" +
         (count.data.count + 1)
       ).slice(-4)}`;
-      invoiceId = invoiceNumber
+      invoiceId = invoiceNumber;
     }
     await fetchData();
     if (address == null) {
@@ -190,15 +197,23 @@ function Order() {
     let pro_id = data?.product;
     if (buttonId == "โอนเงิน" && data?.type !== "cart") {
       let address_id = address.id;
-      const newArr = { ...order, numPrice, address_id ,buttonId};
+      const newArr = { ...order, numPrice, address_id, buttonId };
       localStorage.setItem("order", JSON.stringify(newArr));
       router.push({
         pathname: "/payment",
       });
       return;
-    }else if(buttonId == "โอนเงิน" && data?.type == "cart"){
+    } else if (buttonId == "โอนเงิน" && data?.type == "cart") {
       let address_id = address.id;
-      const newArr = { products, numPrice, address_id,type,buttonId,num,pro_id};
+      const newArr = {
+        products,
+        numPrice,
+        address_id,
+        type,
+        buttonId,
+        num,
+        pro_id,
+      };
       localStorage.setItem("order", JSON.stringify(newArr));
       router.push({
         pathname: "/payment",
@@ -211,7 +226,7 @@ function Order() {
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", order?.shop_id);
-      formData.append("owner_shop_id", OwnerShopId.owner_shop_id)
+      formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
       formData.append("address_id", address?.id);
       formData.append("user_id", user_id);
       formData.append("discount", discount);
@@ -230,7 +245,7 @@ function Order() {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      localStorage.removeItem('order');
+      localStorage.removeItem("order");
     } else {
       let discount = 0.0;
       let status = "ตรวจสอบคำสั่งซื้อ";
@@ -238,7 +253,7 @@ function Order() {
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);
-      formData.append("owner_shop_id", OwnerShopId.owner_shop_id)
+      formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
       formData.append("address_id", address?.id);
       formData.append("shop_id", products[0].id);
       formData.append("discount", discount);
@@ -375,10 +390,13 @@ function Order() {
                             ? subItem.price_type_2
                             : subItem.price_type_3
                           : subItem.type_product == 1
-                          ? subItem.price_type_1-(subItem.price_type_1 * subItem.price_sales) / 100
+                          ? subItem.price_type_1 -
+                            (subItem.price_type_1 * subItem.price_sales) / 100
                           : subItem.type_product == 2
-                          ? subItem.price_type_2-(subItem.price_type_2 * subItem.price_sales) / 100
-                          : subItem.price_type_3-(subItem.price_type_3 * subItem.price_sales) / 100}
+                          ? subItem.price_type_2 -
+                            (subItem.price_type_2 * subItem.price_sales) / 100
+                          : subItem.price_type_3 -
+                            (subItem.price_type_3 * subItem.price_sales) / 100}
                         .-
                       </Text>
                       <Spacer />

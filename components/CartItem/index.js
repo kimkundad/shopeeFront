@@ -71,22 +71,19 @@ export default function CartItem(props) {
                 ? cartItem[i].product[k].price_type_2 * num[i][k]
                 : cartItem[i].product[k].price_type_3 * num[i][k]
               : cartItem[i].product[k].type_product === 1
-              ? cartItem[i].product[k].price_type_1 -
-                ((cartItem[i].product[k].price_type_1 *
+              ? ((cartItem[i].product[k].price_type_1 *
                   cartItem[i].product[k].price_sales) /
                   100) *
-                  num[i][k]
+                num[i][k]
               : cartItem[i].product[k].type_product === 2
-              ? cartItem[i].product[k].price_type_2 -
-                ((cartItem[i].product[k].price_type_2 *
+              ? ((cartItem[i].product[k].price_type_2 *
                   cartItem[i].product[k].price_sales) /
                   100) *
-                  num[i][k]
-              : cartItem[i].product[k].price_type_3 -
-                ((cartItem[i].product[k].price_type_3 *
+                num[i][k]
+              : ((cartItem[i].product[k].price_type_3 *
                   cartItem[i].product[k].price_sales) /
                   100) *
-                  num[i][k]);
+                num[i][k]);
         } else {
           false;
         }
@@ -159,28 +156,24 @@ export default function CartItem(props) {
               },
             }}
           >
-            <Text className={style.textHead} pl="15px" fontWeight="bold">{item.name_shop}</Text>
+            <Text className={style.textHead} pl="15px" fontWeight="bold">
+              {item.name_shop}
+            </Text>
           </Checkbox>
           <p>{item.product.name}</p>
           {item.product.map((subItem, subIndex) => {
             let price =
               subItem.price_sales == 0
                 ? subItem.type_product == 1
-                  ? subItem.price_type_1 * subItem.num
+                  ? subItem.price_type_1
                   : subItem.type_product == 2
-                  ? subItem.price_type_2 * subItem.num
-                  : subItem.price_type_3 * subItem.num
+                  ? subItem.price_type_2
+                  : subItem.price_type_3
                 : subItem.type_product == 1
-                ? subItem.price_type_1 -
-                  ((subItem.price_type_1 * subItem.price_sales) / 100) *
-                    subItem.num
+                ? (subItem.price_type_1 * subItem.price_sales) / 100
                 : subItem.type_product == 2
-                ? subItem.price_type_2 -
-                  ((subItem.price_type_2 * subItem.price_sales) / 100) *
-                    subItem.num
-                : subItem.price_type_3 -
-                  ((subItem.price_type_3 * subItem.price_sales) / 100) *
-                    subItem.num;
+                ? (subItem.price_type_2 * subItem.price_sales) / 100
+                : (subItem.price_type_3 * subItem.price_sales) / 100;
             return (
               <div key={subIndex}>
                 <Checkbox
@@ -228,10 +221,14 @@ export default function CartItem(props) {
                       wordBreak="break-all"
                       width="-webkit-fill-available"
                     >
-                      <Text className={style.textHead,style.oneLines} pt="7px" fontWeight="bold">
+                      <Text
+                        className={(style.textHead, style.oneLines)}
+                        pt="7px"
+                        fontWeight="bold"
+                      >
                         {subItem.name_product}
                       </Text>
-                      <Text className={style.textBody,style.twoLines}>
+                      <Text className={(style.textBody, style.twoLines)}>
                         {subItem.detail_product}
                       </Text>
                       {subItem.option1 !== null && subItem.option2 !== null ? (
@@ -258,7 +255,11 @@ export default function CartItem(props) {
                       ) : null}
 
                       <Flex pt="5px">
-                        <Text className={style.textHead} fontWeight="bold" color="red">
+                        <Text
+                          className={style.textHead}
+                          fontWeight="bold"
+                          color="red"
+                        >
                           {price.toFixed(2)}.-
                         </Text>
 
