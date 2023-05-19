@@ -236,7 +236,7 @@ function Order() {
       if(order?.price_sales == 0){
         formData.append("total", order?.price * order?.num);
       }else{
-        formData.append("total", ((order?.price*order?.price_sales)/100) * order?.num);
+        formData.append("total", (order?.price-((order?.price*order?.price_sales)/100)) * order?.num);
       }
       
       formData.append("status", status);
@@ -552,7 +552,7 @@ function Order() {
         <Flex pl="60px" pr="15px">
           <Text>ยอดชำระเงินทั้งหมด</Text>
           <Spacer />
-          <Text>{parseInt(numPrice) + parseInt(40)}.-</Text>
+          <Text>{(parseFloat(numPrice) + parseFloat(40)).toFixed(2)}.-</Text>
         </Flex>
       </Box>
       <Box className="test" bottom={0}>

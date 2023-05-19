@@ -64,7 +64,7 @@ function useProfile() {
       async function fetchdata() {
         const formData = new FormData();
         formData.append("name", name);
-        formData.append("user_id", 1);
+        formData.append("user_id", userInfo.data[0].id);
         const newName = await axios.post(
           `https://api.sellpang.com/api/editUser/`,
           formData

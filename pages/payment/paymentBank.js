@@ -110,7 +110,7 @@ function usePaymentBank() {
               <Text>ยอดชำระเงินทั้งหมด</Text>
               <Spacer />
               <Text>
-                {parseInt(order?.numPrice) + parseInt(40)}.-
+                {(parseFloat(order?.numPrice) + parseFloat(40)).toFixed(2)}.-
               </Text>
             </Flex>
           </Box>

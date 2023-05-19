@@ -192,7 +192,7 @@ function ConfirmPayment() {
             <Flex px="25px">
               <Text>ยอดชำระเงินทั้งหมด</Text>
               <Spacer />
-              <Text>{parseInt(order?.numPrice) + parseInt(40)}.-</Text>
+              <Text>{(parseFloat(order?.numPrice) + parseFloat(40)).toFixed(2)}.-</Text>
             </Flex>
           </Box>
           <Box px="25px">
