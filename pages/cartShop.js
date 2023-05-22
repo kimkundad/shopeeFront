@@ -22,10 +22,13 @@ import { useSelector } from "react-redux";
 function useChartShop() {
   const [cartsItem, setCartsItem] = useState([]);
   const userInfo = useSelector((App) => App.userInfo);
+  const storedOwner = localStorage.getItem("owner_shop_id");
+  const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   useEffect(() => {
     async function fetchData() {
       const formdata = new FormData();
       formdata.append("user_id",userInfo.data[0].id)
+      formdata.append("user_code",OwnerShopId.owner_shop_id)
       const carts = await axios.post(
         `https://api.sellpang.com/api/getAllCartItem/`,formdata
       );

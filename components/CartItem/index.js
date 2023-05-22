@@ -186,10 +186,10 @@ export default function CartItem(props) {
                   ? subItem.price_type_2
                   : subItem.price_type_3
                 : subItem.type_product == 1
-                ? (subItem.price_type_1 * subItem.price_sales) / 100
+                ? subItem.price_type_1-((subItem.price_type_1 * subItem.price_sales) / 100)
                 : subItem.type_product == 2
-                ? (subItem.price_type_2 * subItem.price_sales) / 100
-                : (subItem.price_type_3 * subItem.price_sales) / 100;
+                ? subItem.price_type_2-((subItem.price_type_2 * subItem.price_sales) / 100)
+                : subItem.price_type_3-((subItem.price_type_3 * subItem.price_sales) / 100);
             return (
               <div key={subIndex}>
                 <Checkbox

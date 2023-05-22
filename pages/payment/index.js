@@ -20,7 +20,7 @@ function useIndex() {
     if (banks == null) {
       async function fetchData() {
         const formdataBank = new FormData();
-        formdataBank.append("user_id", 3);
+        formdataBank.append("user_id", 37);
         const bank = await axios.post(
           `https://api.sellpang.com/api/getBank`,
           formdataBank
