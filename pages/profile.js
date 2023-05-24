@@ -44,6 +44,7 @@ function useProfile() {
         );
         const formdataCart = new FormData();
         formdataCart.append("user_id", userInfo.data[0].id);
+        formdataCart.append("user_code",OwnerShopId.owner_shop_id)
         const carts = await axios.post(
           `https://api.sellpang.com/api/getAllCartItem/`,
           formdataCart
