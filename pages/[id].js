@@ -39,6 +39,9 @@ export default function useHome(props) {
   const { data: product } = getAllProduct(shop?.shop[0]?.id);
   const { data: category } = getCategory(shop?.shop[0]?.id);
   const [scrollTop, setScrollTop] = useState(0);
+  const [isBorderActive, setIsBorderActive] = useState([true]);
+
+  const [catName, setCatName] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -121,9 +124,6 @@ export default function useHome(props) {
     fetchData();
   };
 
-  const [isBorderActive, setIsBorderActive] = useState([true]);
-
-  const [catName, setCatName] = useState("");
   const handleElementClick = (index, catName) => {
     const newArray = [...isBorderActive];
     for (let i = 0; i < newArray.length; i++) {
@@ -133,6 +133,10 @@ export default function useHome(props) {
         newArray[i] = false;
       }
     }
+    if (catName == "สินค้าทั้งหมด") {
+      setLoadingImg(true);
+    }
+
     setIsBorderActive(newArray);
     setCatName(catName);
   };
@@ -240,9 +244,10 @@ export default function useHome(props) {
         })}
       </Box>
       <Flex
+        pb="2px"
         flexWrap="nowrap"
         overflowX="auto"
-        overflowY="hidden"
+        overflowY="auto" // Update overflowY to "auto"
         h="12"
         pos="sticky"
         top="53px"
@@ -250,8 +255,17 @@ export default function useHome(props) {
         zIndex={1000}
         sx={{
           "::-webkit-scrollbar": {
-            width: "0",
-            height: "0",
+            width: "8px", // Customize the width of the scrollbar
+            height: "8px", // Customize the height of the scrollbar
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: "#888", // Customize the color of the scrollbar thumb
+          },
+          "@media (max-width: 768px)": {
+            "::-webkit-scrollbar": {
+              width: "0",
+              height: "0",
+            },
           },
         }}
       >
@@ -454,18 +468,21 @@ export default function useHome(props) {
                     alignSelf="center"
                     w="100%"
                   >
-                    {loadingImg ? (
-                      <Skeleton height="170px" width="170px" />
-                    ) : (
-                      <Image
-                        src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
-                        alt={item?.product_name}
-                        height="100%"
-                        width="100%"
-                        borderRadius="xl"
-                        onLoad={() => setLoadingImg(false)}
-                      />
-                    )}
+                    <Skeleton
+                      height="140px"
+                      width="140px"
+                      borderRadius="xl"
+                      display={loadingImg ? "block" : "none"}
+                    />
+                    <Image
+                      src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
+                      alt={item?.product_name}
+                      height="100%"
+                      width="100%"
+                      borderRadius="xl"
+                      display={!loadingImg ? "block" : "none"}
+                      onLoad={() => setLoadingImg(false)}
+                    />
                   </CardHeader>
                   <CardBody className="setPadding">
                     <Text textAlign="center" className="textHead">

@@ -19,6 +19,7 @@ export default function Layout({ children }) {
         maxWidth="65ch"
         marginRight="auto"
         marginLeft="auto"
+        height="100vh"
         onScroll={(e) => setScrollPosition(parseInt(e.target.scrollTop))}
       >
         <Header data={scrollPosition}/>

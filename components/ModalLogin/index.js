@@ -58,8 +58,9 @@ export default function ModalLogin(props) {
         setName(user.data.user.name);
         setAvatar(user.data.user.avatar);
       }
-      fetchdata();
+      
     }
+    fetchdata();
   }, []);
   const router = useRouter();
   const dispatch = useDispatch();
