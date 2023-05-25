@@ -117,6 +117,7 @@ export default function ModalLogin(props) {
                   src={`https://api.sellpang.com/images/shopee/avatar/${avatar}`}
                   alt=""
                   h="7"
+                  borderRadius="50%"
                 />
               </Box>
             </Link>

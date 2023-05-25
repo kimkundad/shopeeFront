@@ -61,8 +61,8 @@ export default function useHome(props) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     localStorage.removeItem("order");
-    const newArr = { owner_shop_id: shop?.shop[0]?.user_code };
-    localStorage.setItem("owner_shop_id", JSON.stringify(newArr));
+    const newArr = { user_code: shop?.shop[0]?.user_code };
+    localStorage.setItem("user_code", JSON.stringify(newArr));
     setNameShop(shop);
     setProductAll(product);
     setCount(count + 1);

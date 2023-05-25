@@ -28,7 +28,7 @@ function ConfirmPayment() {
   const userInfo = useSelector((App) => App.userInfo);
   const storedOrder = localStorage.getItem("order");
   const order = storedOrder ? JSON.parse(storedOrder) : [];
-  const storedOwner = localStorage.getItem("owner_shop_id");
+  const storedOwner = localStorage.getItem("user_code");
   const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -97,7 +97,7 @@ function ConfirmPayment() {
         const formData = new FormData();
         formData.append("products", JSON.stringify(order?.products));
         formData.append("user_id", user_id);
-        formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
+        formData.append("user_code", OwnerShopId.user_code);
         formData.append("address_id", order?.address_id);
         formData.append("discount", discount);
         formData.append("num", order?.num);
@@ -140,7 +140,7 @@ function ConfirmPayment() {
         const formData = new FormData();
         formData.append("shop_id", order?.shop_id);
         formData.append("address_id", order?.address_id);
-        formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
+        formData.append("user_code", OwnerShopId.user_code);
         formData.append("user_id", user_id);
         formData.append("discount", discount);
         formData.append("price_sales", order?.price_sales);

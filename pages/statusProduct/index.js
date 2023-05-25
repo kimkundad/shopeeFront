@@ -17,7 +17,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 function useStatusProduct() {
   const [orders, setOrders] = useState([]);
   const userInfo = useSelector((App) => App.userInfo);
-  const storedOwner = localStorage.getItem("owner_shop_id");
+  const storedOwner = localStorage.getItem("user_code");
   const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   const [cartsItem, setCartsItem] = useState([]);
   useEffect(() => {
@@ -25,7 +25,7 @@ function useStatusProduct() {
       let user_id = userInfo.data[0].id;
       const formdataOrder = new FormData();
       formdataOrder.append("user_id", user_id);
-      formdataOrder.append("owner_shop_id", OwnerShopId.owner_shop_id);
+      formdataOrder.append("user_code", OwnerShopId.user_code);
       const order = await axios.post(
         `https://api.sellpang.com/api/getAllOrder`,
         formdataOrder
@@ -33,6 +33,7 @@ function useStatusProduct() {
       setOrders(order.data.orders);
       const formdataCart = new FormData();
       formdataCart.append("user_id", userInfo.data[0].id);
+      formdataCart.append("user_code", OwnerShopId.user_code);
       const carts = await axios.post(
         `https://api.sellpang.com/api/getAllCartItem/`,
         formdataCart

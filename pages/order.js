@@ -28,7 +28,7 @@ function Order() {
   const userInfo = useSelector((App) => App.userInfo);
   const storedOrder = localStorage.getItem("order");
   const order = storedOrder ? JSON.parse(storedOrder) : [];
-  const storedOwner = localStorage.getItem("owner_shop_id");
+  const storedOwner = localStorage.getItem("user_code");
   const OwnerShopId = storedOwner ? JSON.parse(storedOwner) : [];
   const {
     isOpen: isOpenSuccess,
@@ -226,7 +226,7 @@ function Order() {
       let user_id = userInfo.data[0].id;
       const formData = new FormData();
       formData.append("shop_id", order?.shop_id);
-      formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
+      formData.append("user_code", OwnerShopId.user_code);
       formData.append("address_id", address?.id);
       formData.append("user_id", user_id);
       formData.append("discount", discount);
@@ -258,7 +258,7 @@ function Order() {
       const formData = new FormData();
       formData.append("products", JSON.stringify(products));
       formData.append("user_id", user_id);
-      formData.append("owner_shop_id", OwnerShopId.owner_shop_id);
+      formData.append("user_code", OwnerShopId.user_code);
       formData.append("address_id", address?.id);
       formData.append("shop_id", products[0].id);
       formData.append("discount", discount);
