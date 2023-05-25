@@ -96,12 +96,35 @@ function useProduct() {
   const [option1, setOption1] = useState(null);
   const [option1Id, setOption1Id] = useState(0);
   function selectOption1(event, id) {
-    setOption1(event.target.id);
-    setOption1Id(id);
-    const slideIndex = product[0]?.allOption1.findIndex(
-      (item) => item.op_name == event.target.id
-    );
-    swiperRef.current.swiper.slideTo(slideIndex);
+    if (event.target.id == option1) {
+      setOption1(null);
+      setOption1Id(0);
+      swiperRef.current.swiper.slideTo(0);
+      setPrice(product[0].price);
+    } else {
+      if (option2 !== null) {
+        let a = price;
+        product[0]?.allOption1?.forEach((element) => {
+          if (element.op_name == event.target.id) {
+            element?.allOption2?.forEach((e) => {
+              if (e.sub_op_name == option2) {
+                a = e.price;
+                return;
+              }
+            });
+            return;
+          }
+        });
+        setPrice(a);
+      }
+      
+      setOption1(event.target.id);
+      setOption1Id(id);
+      const slideIndex = product[0]?.allOption1.findIndex(
+        (item) => item.op_name == event.target.id
+      );
+      swiperRef.current.swiper.slideTo(slideIndex);
+    }
   }
 
   const [num, setNum] = useState(1);
@@ -117,20 +140,25 @@ function useProduct() {
   }
 
   function selectOption2(event) {
-    setOption2(event.target.id);
-    let a = price;
-    product[0]?.allOption1?.forEach((element) => {
-      if (element.op_name == option1) {
-        element?.allOption2?.forEach((e) => {
-          if (e.sub_op_name == event.target.id) {
-            a = e.price;
-            return;
-          }
-        });
-        return;
-      }
-    });
-    setPrice(a);
+    if (event.target.id == option2) {
+      setOption2(null);
+      setPrice(product[0].price);
+    } else {
+      setOption2(event.target.id);
+      let a = price;
+      product[0]?.allOption1?.forEach((element) => {
+        if (element.op_name == option1) {
+          element?.allOption2?.forEach((e) => {
+            if (e.sub_op_name == event.target.id) {
+              a = e.price;
+              return;
+            }
+          });
+          return;
+        }
+      });
+      setPrice(a);
+    }
   }
 
   const [option2Id, setOption2Id] = useState(null);
@@ -205,26 +233,28 @@ function useProduct() {
       name_option2: product[0]?.option2,
       type: product[0]?.type,
       num: num,
-      option1Id: option1Id !== null ? option1Id: 0,
+      option1Id: option1Id !== null ? option1Id : 0,
       option2Id: setSubOptionId(),
     };
-    if(product[0]?.type == 1 && num > 0){
+    if (product[0]?.type == 1 && num > 0) {
       localStorage.setItem("order", JSON.stringify(newArr));
-    }else if(product[0]?.type == 2 && option1 !== null && num > 0){
+    } else if (product[0]?.type == 2 && option1 !== null && num > 0) {
       localStorage.setItem("order", JSON.stringify(newArr));
-    }else if(product[0]?.type == 3 &&
+    } else if (
+      product[0]?.type == 3 &&
       option1 !== null &&
       option2 !== null &&
-      num > 0){
+      num > 0
+    ) {
       localStorage.setItem("order", JSON.stringify(newArr));
-    }else{
+    } else {
       return;
     }
-    
+
     router.push({
       pathname: "/order",
     });
-  };
+  }
   ///////////////////
   const [showLogin, setShowLogin] = useState(false);
 
@@ -398,7 +428,7 @@ function useProduct() {
                         borderRadius="md"
                         onClick={(e) => {
                           selectOption1(e, item.id);
-                          setPrice(product[0].type == 2 ? item.price : price);
+                          /* setPrice(product[0].type == 2 ? item.price : price); */
                         }}
                         border={`2px solid red`}
                         bg="gray.300"
@@ -429,7 +459,7 @@ function useProduct() {
                           mr={1}
                           onClick={(e) => {
                             selectOption1(e, item.id);
-                            setPrice(product[0].type == 2 ? item.price : price);
+                            /* setPrice(product[0].type == 2 ? item.price : price); */
                           }}
                         />
                         {item?.op_name}
@@ -443,7 +473,7 @@ function useProduct() {
                         border={`1px solid gray`}
                         onClick={(e) => {
                           selectOption1(e, item.id);
-                          setPrice(product[0].type == 2 ? item.price : price);
+                          /* setPrice(product[0].type == 2 ? item.price : price); */
                         }}
                         id={item?.op_name}
                         fontWeight="0px"
@@ -626,16 +656,9 @@ function useProduct() {
                 <Button w="100%" borderRadius="xl" onClick={addToCart}>
                   <Text>เพิ่มไปยังรถเข็น</Text>
                 </Button>
-                  <Button
-                    w="100%"
-                    bg="red"
-                    borderRadius="xl"
-                    onClick={
-                     setLocal
-                    }
-                  >
-                    <Text>ซื้อสินค้า</Text>
-                  </Button>
+                <Button w="100%" bg="red" borderRadius="xl" onClick={setLocal}>
+                  <Text>ซื้อสินค้า</Text>
+                </Button>
               </SimpleGrid>
             </Box>
           ) : (
