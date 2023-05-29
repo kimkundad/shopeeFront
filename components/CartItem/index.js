@@ -71,16 +71,16 @@ export default function CartItem(props) {
                 ? cartItem[i].product[k].price_type_2 * num[i][k]
                 : cartItem[i].product[k].price_type_3 * num[i][k]
               : cartItem[i].product[k].type_product === 1
-              ? ((cartItem[i].product[k].price_type_1 *
+              ? cartItem[i].product[k].price_type_1-((cartItem[i].product[k].price_type_1 *
                   cartItem[i].product[k].price_sales) /
                   100) *
                 num[i][k]
               : cartItem[i].product[k].type_product === 2
-              ? ((cartItem[i].product[k].price_type_2 *
+              ? cartItem[i].product[k].price_type_2-((cartItem[i].product[k].price_type_2 *
                   cartItem[i].product[k].price_sales) /
                   100) *
                 num[i][k]
-              : ((cartItem[i].product[k].price_type_3 *
+              : cartItem[i].product[k].price_type_3-((cartItem[i].product[k].price_type_3 *
                   cartItem[i].product[k].price_sales) /
                   100) *
                 num[i][k]);

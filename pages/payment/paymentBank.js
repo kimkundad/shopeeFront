@@ -115,7 +115,7 @@ function usePaymentBank() {
             </Flex>
           </Box>
         </Box>
-        <Box m="30px" mb="0px" bg="white" borderRadius="2xl">
+        <Box m="30px" mb="0px" bg="white" borderRadius="2xl" textAlign="-webkit-center">
           <Image
             src={`https://api.sellpang.com/images/shopee/QR_code/${bank?.QR_code}`}
           />

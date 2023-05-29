@@ -53,6 +53,14 @@ function Order() {
           formdataAddress
         );
         setAddress(dataAddress.data.address);
+
+        /* const formData = new FormData();
+        formData.append("product_id", e);
+        formData.append("shop_id", data?.shop_id);
+        const res = await axios.post(
+          `https://api.sellpang.com/api/getProduct`,
+          formData
+        ); */
       }
 
       fetchData();
@@ -119,28 +127,28 @@ function Order() {
         e.product.forEach((Element) => {
           if (Element.price_sales == 0) {
             if (Element.type_product == 1) {
-              price = price + (Element.price_type_1 * Element.num);
+              price = price + Element.price_type_1 * Element.num;
             } else if (Element.type_product == 2) {
-              price = price + (Element.price_type_2 * Element.num);;
+              price = price + Element.price_type_2 * Element.num;
             } else {
-              price = price + (Element.price_type_3 * Element.num);;
+              price = price + Element.price_type_3 * Element.num;
             }
             num = num + Element.num;
           } else {
             if (Element.type_product == 1) {
               price =
                 price +
-                ((Element.price_type_1 * Element.price_sales) / 100) *
+                (Element.price_type_1-(Element.price_type_1 * Element.price_sales) / 100) *
                   Element.num;
             } else if (Element.type_product == 2) {
               price =
                 price +
-                ((Element.price_type_2 * Element.price_sales) / 100) *
+                (Element.price_type_2-(Element.price_type_2 * Element.price_sales) / 100) *
                   Element.num;
             } else {
               price =
                 price +
-                ((Element.price_type_3 * Element.price_sales) / 100) *
+                (Element.price_type_3-(Element.price_type_3 * Element.price_sales) / 100) *
                   Element.num;
             }
             num = num + Element.num;
@@ -233,12 +241,16 @@ function Order() {
       formData.append("price_sales", order?.price_sales);
       formData.append("num", order?.num);
       formData.append("price", order?.price);
-      if(order?.price_sales == 0){
+      if (order?.price_sales == 0) {
         formData.append("total", order?.price * order?.num);
-      }else{
-        formData.append("total", (order?.price-((order?.price*order?.price_sales)/100)) * order?.num);
+      } else {
+        formData.append(
+          "total",
+          (order?.price - (order?.price * order?.price_sales) / 100) *
+            order?.num
+        );
       }
-      
+
       formData.append("status", status);
       formData.append("product_id", order?.product_id);
       formData.append("option1", order?.option1Id);

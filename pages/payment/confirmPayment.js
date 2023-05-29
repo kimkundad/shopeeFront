@@ -105,6 +105,7 @@ function ConfirmPayment() {
         formData.append("status", status);
         formData.append("invoice_id", invoiceNumber);
         formData.append("type_payment", "โอนเงิน");
+        formData.append("type_noti","new_order");
         const response = await axios.post(
           "https://api.sellpang.com/api/createdOrder",
           formData,
@@ -131,6 +132,7 @@ function ConfirmPayment() {
           `https://api.sellpang.com/api/confirmPayment`,
           formdataTran
         );
+        
         localStorage.removeItem("order");
         onOpen();
       } else {
@@ -153,6 +155,7 @@ function ConfirmPayment() {
         formData.append("option2", order?.option2Id);
         formData.append("invoice_id", invoiceNumber);
         formData.append("type_payment", "โอนเงิน");
+        formData.append("type_noti","new_order");
         const response = await axios.post(
           "https://api.sellpang.com/api/createdOrder",
           formData,
