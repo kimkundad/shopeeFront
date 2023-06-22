@@ -170,11 +170,10 @@ export default function useHome(props) {
               justifyContent="flex-start"
               alignItems="flex-start"
             >
-              <InputLeftElement
-                h="7"
-                pointerEvents="none"
-                /* children={<FaSearch color="gray.300" />} */
-              />
+              <InputLeftElement pointerEvents="none">
+                {/* <PhoneIcon color="gray.300" /> */}
+                <Image src={'/img/searching.png'} width={4} height={4} mb={3}/>
+              </InputLeftElement>
               <Input
                 h="7"
                 borderRadius="xl"
@@ -461,12 +460,12 @@ export default function useHome(props) {
                   ) : null}
 
                   <CardHeader
-                    h="100%"
+                    // h="100%"
                     className="setPadding"
-                    maxHeight="170px"
-                    maxWidth="170px"
+                    Height="170px"
+                    Width="170px"
                     alignSelf="center"
-                    w="100%"
+                    // w="100%"
                   >
                     <Skeleton
                       height="140px"
@@ -477,8 +476,8 @@ export default function useHome(props) {
                     <Image
                       src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
                       alt={item?.product_name}
-                      height="100%"
-                      width="100%"
+                      height="140px"
+                      width="140px"
                       borderRadius="xl"
                       display={!loadingImg ? "block" : "none"}
                       onLoad={() => setLoadingImg(false)}

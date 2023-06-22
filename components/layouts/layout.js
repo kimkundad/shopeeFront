@@ -8,8 +8,8 @@ export default function Layout({ children }) {
   const [scrollPosition, setScrollPosition] = useState(0);
   return (
       <Box
-        /* overflow={pathname == "/[id]"? "auto":"none"}
-        h={pathname == "/[id]"? "100vh":""} */
+        overflow={pathname == "/[id]" || pathname == "/profile" || pathname == "/cartShop" ? "auto":"none"}
+        h={pathname == "/[id]" || pathname == "/profile" || pathname == "/cartShop" ? "100vh":""} 
         bg={
           pathname == "/address/newaddress" ||
           pathname == "/chat"
@@ -19,7 +19,7 @@ export default function Layout({ children }) {
         maxWidth="65ch"
         marginRight="auto"
         marginLeft="auto"
-        height="100vh"
+        // height="100vh"
         onScroll={(e) => setScrollPosition(parseInt(e.target.scrollTop))}
       >
         <Header data={scrollPosition}/>
@@ -37,7 +37,6 @@ export default function Layout({ children }) {
               ? "white"
               : "gray.100"
           }
-          border="-1px"
         >
           {children && React.cloneElement(children, { data: scrollPosition })}
         </Box>

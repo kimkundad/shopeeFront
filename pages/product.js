@@ -312,8 +312,8 @@ function useProduct() {
                             <Image
                               src={`https://api.sellpang.com/images/shopee/products/${item?.image}`}
                               alt=""
-                              h="100%"
-                              w="100%"
+                              h="500px"
+                              w="500px"
                               maxHeight="500px"
                             />
                           </SwiperSlide>
@@ -327,8 +327,8 @@ function useProduct() {
                           <Image
                             src={`https://api.sellpang.com/images/shopee/products/${item?.img_name}`}
                             alt=""
-                            h="100%"
-                            w="100%"
+                            h="500px"
+                            w="500px"
                             maxHeight="500px"
                           />
                         </SwiperSlide>
@@ -339,8 +339,8 @@ function useProduct() {
                       <Image
                         src={`https://api.sellpang.com/images/shopee/products/${item?.img_product}`}
                         alt=""
-                        h="100%"
-                        w="100%"
+                        h="500px"
+                        w="500px"
                         maxHeight="500px"
                       />
                     </SwiperSlide>

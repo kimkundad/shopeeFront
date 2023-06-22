@@ -42,7 +42,7 @@ function useIndex() {
     const newArr = { ...order, select };
     localStorage.setItem("order", JSON.stringify(newArr));
 
-    router.push({ pathname: "/payment/paymentbank" });
+    router.push({ pathname: "/payment/paymentBank" });
   };
 
   if (banks != null || order != null) {
