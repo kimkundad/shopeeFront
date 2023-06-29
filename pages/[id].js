@@ -140,7 +140,6 @@ export default function useHome(props) {
     setIsBorderActive(newArray);
     setCatName(catName);
   };
-
   return (
     <>
       <Head>
@@ -237,7 +236,7 @@ export default function useHome(props) {
                 </Flex>
               </Box>
               <Spacer />
-              <ModalLogin type="chat" />
+              <ModalLogin type="chat" shopId={item.id} />
             </Flex>
           );
         })}

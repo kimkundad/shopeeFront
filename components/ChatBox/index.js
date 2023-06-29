@@ -9,63 +9,64 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import moment from "moment";
+import Pusher from "pusher-js";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-export default function Layout({ children }) {
+export default function Layout(props) {
   let date = "";
-
+  // console.log('props', props?.shopId);
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const authen = useSelector((App) => App.authen);
+  const userInfo = useSelector((App) => App.userInfo);
+  const [hasFetchedMessages, setHasFetchedMessages] = useState(false);
 
-  const [socket, setSocket] = useState(null);
-  useEffect(() => {
-    const newSocket = new WebSocket("ws://192.168.0.86:3004/");
-    setSocket(newSocket);
-    newSocket.addEventListener("open", () => {
-      console.log("WebSocket connection established");
-    });
-    newSocket.addEventListener("message", (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((messages) => {
-        const messageIds = messages.map((m) => m.id);
-        if (!messageIds.includes(message.id)) {
-          return [...messages, message];
-        }
-        return messages;
-      });
-    });
-    return () => {
-      newSocket.close();
-    };
-  }, []);
+  // const [socket, setSocket] = useState(null);
+  // useEffect(() => {
+  //   const newSocket = new WebSocket("ws://192.168.0.86:3004/");
+  //   setSocket(newSocket);
+  //   newSocket.addEventListener("open", () => {
+  //     console.log("WebSocket connection established");
+  //   });
+  //   newSocket.addEventListener("message", (event) => {
+  //     const message = JSON.parse(event.data);
+  //     setMessages((messages) => {
+  //       const messageIds = messages.map((m) => m.id);
+  //       if (!messageIds.includes(message.id)) {
+  //         return [...messages, message];
+  //       }
+  //       return messages;
+  //     });
+  //   });
+  //   return () => {
+  //     newSocket.close();
+  //   };
+  // }, []);
 
   useEffect(() => {
-    if (messages == null) {
+    if (!hasFetchedMessages) {
       async function fetchData() {
         const formdata = new FormData();
-        let user_id = 1;
-        let shop_id = 2;
-        formdata.append("user_id", user_id);
-        formdata.append("shop_id", shop_id);
-        formdata.append("type",'customer');
+        formdata.append("user_id", userInfo?.data[0]?.id);
+        formdata.append("shop_id", props?.shopId);
+        formdata.append("type", "customer");
         const res = await axios.post(
           `https://api.sellpang.com/api/getMessage`,
           formdata
         );
         setMessages(res.data.message);
+        setHasFetchedMessages(true);
       }
       fetchData();
-      
     }
-    let room = "1"+"2";
-    const data = { type: "joinRoom", room };
-    socket?.send(JSON.stringify(data));
+
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages]);
+  }, [hasFetchedMessages]);
 
   const handleTouch = () => {
     window.scrollTo({
@@ -75,30 +76,86 @@ export default function Layout({ children }) {
 
   const sendMessage = () => {
     event.preventDefault();
-    let room = "1"+"2";
+    let room = "1" + "2";
     if (text !== "") {
       async function newMessage() {
         const formdata = new FormData();
-        let user_id = 1;
-        let shop_id = 2;
-        formdata.append("sender_id", user_id);
-        formdata.append("user_id", user_id);
-        formdata.append("shop_id", shop_id);
+        formdata.append("sender_id", userInfo?.data[0]?.id);
+        formdata.append("user_id", userInfo?.data[0]?.id);
+        formdata.append("shop_id", props?.shopId);
         formdata.append("message", text);
         const res = await axios.post(
-          `https://api.sellpang.com/api/sendMessage`,
+          `http://127.0.0.1:8000/api/sendMessage`,
           formdata
         );
-        const newMess = { ...res.data.message[0], type: "message", room };
-        socket.send(JSON.stringify(newMess));
+        if (res.data.message) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+        // const newMess = { ...res.data.message[0], type: "message", room };
+        // socket.send(JSON.stringify(newMess));
         setText("");
       }
       newMessage();
     }
   };
+
+  // useEffect(() => {
+  //   let user_id = 1;
+  //   let shop_id = 1;
+  //   Pusher.logToConsole = true;
+
+  //   const pusher = new Pusher("bf877b740f5cd647307e", {
+  //     cluster: "ap1",
+  //   });
+
+  //   const channel = pusher.subscribe("chat");
+  //   channel.bind("message", function (data) {
+  //     setMessages((prevMessages) => {
+  //       const newArray = [...prevMessages, data];
+  //       return newArray;
+  //     });
+  //   });
+  // }, []);
+  const renderAfterCalled = useRef(false);
+
+  useEffect(() => {
+    const scrollToBottom = () => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    };
+    
+    if (!renderAfterCalled.current) {
+      Pusher.logToConsole = false;
+
+      const pusher = new Pusher("bf877b740f5cd647307e", {
+        cluster: "ap1",
+      });
+
+      const channel = pusher.subscribe(
+        "chat." + userInfo?.data[0]?.id + "." + props?.shopId
+      );
+      channel.bind("message", function (data) {
+        setMessages((prevMessages) => {
+          const newArray = [...prevMessages, data];
+          return newArray;
+        });
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+    }
+    renderAfterCalled.current = true;
+    scrollToBottom();
+  }, [messages]);
   return (
     <>
-      <Box px="5px" bg="white" pt="10px" pb="60px">
+      <Box px="5px" bg="white" pt="10px" pb="65px">
         {messages !== null ? (
           messages.map((item, index) => {
             const datatime = moment(item.created_at);
@@ -106,7 +163,7 @@ export default function Layout({ children }) {
             const timeString = datatime.format("HH:mm");
             if (dateString != date) {
               date = dateString;
-              if (item.sender_id == 1) {
+              if (item.sender_id == userInfo?.data[0]?.id) {
                 return (
                   <Box key={index}>
                     <Flex pt="15px" justifyContent="center">
@@ -205,7 +262,7 @@ export default function Layout({ children }) {
                 );
               }
             } else {
-              if (item.sender_id == 1) {
+              if (item.sender_id == userInfo?.data[0]?.id) {
                 return (
                   <Flex direction="row-reverse" pt="10px" key={index}>
                     <Box
@@ -330,7 +387,7 @@ export default function Layout({ children }) {
                 padding="0px"
                 w="35px"
                 h="35px"
-              ></Button>
+              >ส่ง</Button>
             </Flex>
           </Box>
         </Box>

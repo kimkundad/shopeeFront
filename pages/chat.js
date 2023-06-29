@@ -3,7 +3,11 @@ import Link from "next/link";
 import Head from "next/head";
 import { Box, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import ChatBox from "@/components/ChatBox";
+import { useRouter } from "next/router";
+
 function chat() {
+  const router = useRouter();
+  const shopId = router.query.shopId;
   return (
     <Box height={`calc(100vh - 90px)`} bg="white">
       <Head>
@@ -13,7 +17,7 @@ function chat() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box pt="15px" bg="white">
-        <ChatBox />
+        <ChatBox shopId={shopId}/>
       </Box>
     </Box>
   );

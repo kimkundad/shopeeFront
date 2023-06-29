@@ -48,15 +48,15 @@ export default function ModalLogin(props) {
   useEffect(() => {
     async function fetchdata() {
       if (userInfo) {
-        let user_id = userInfo?.data[0]?.id;
+        let user_id = userInfo?.data?.[0]?.id;
         const formdata = new FormData();
         formdata.append("user_id", user_id);
         const user = await axios.post(
           `https://api.sellpang.com/api/getUser`,
           formdata
         );
-        setName(user.data.user.name);
-        setAvatar(user.data.user.avatar);
+        setName(user.data?.user?.name);
+        setAvatar(user.data?.user?.avatar);
       }
       
     }
@@ -141,7 +141,7 @@ export default function ModalLogin(props) {
             </Link>
           )}
           {props?.type === "chat" && (
-            <Link as={NextLink} href="/chat">
+            <Link as={NextLink} href={"/chats/"+props?.shopId}>
               <Flex
                 textColor="black"
                 h="20px !important"
