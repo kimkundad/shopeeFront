@@ -127,6 +127,20 @@ function chats() {
     }
   }, [messages, shopId]);
 
+  const formatDateThai = (dateString, timeString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    const formattedDate = date.toLocaleDateString("th-TH", options);
+    const formattedYear = date.toLocaleDateString("th-TH", { year: "numeric" });
+    // const yearThai = Number(formattedYear) + 543;
+
+    return `${formattedDate} ${timeString}`;
+  };
+
   return (
     <Box height={`calc(100vh - 90px)`} bg="white">
       <Head>
@@ -148,8 +162,10 @@ function chats() {
                   return (
                     <Box key={index}>
                       <Flex pt="15px" justifyContent="center">
-                        <Box bg="gray.200" borderRadius="xl">
-                          <Text px="10px">{dateString}</Text>
+                        <Box borderRadius="xl">
+                          <Text px="10px">
+                            {formatDateThai(dateString, timeString)}
+                          </Text>
                         </Box>
                       </Flex>
                       <Flex direction="row-reverse" pt="10px">
@@ -158,11 +174,12 @@ function chats() {
                           px="10px"
                           py="5px"
                           borderRadius="xl"
-                          bg="gray.200"
+                          bg="#fbfbfb"
+                          boxShadow="lg"
                           alignSelf="center"
                         >
                           {item.message !== null ? (
-                            <Text maxWidth="100px">{item.message}</Text>
+                            <Text maxWidth="100px" fontSize={'20px'}>{item.message}</Text>
                           ) : (
                             false
                           )}
@@ -188,8 +205,10 @@ function chats() {
                   return (
                     <Box key={index}>
                       <Flex pt="10px" justifyContent="center">
-                        <Box bg="gray.200" borderRadius="xl">
-                          <Text px="10px">{dateString}</Text>
+                        <Box borderRadius="xl">
+                          <Text px="10px">
+                            {formatDateThai(dateString, timeString)}
+                          </Text>
                         </Box>
                       </Flex>
                       <Flex pt="10px">
@@ -216,11 +235,17 @@ function chats() {
                           px="10px"
                           py="5px"
                           borderRadius="xl"
-                          bg="gray.200"
+                          bg="#cd2626"
                           alignSelf="center"
                         >
                           {item.message !== null ? (
-                            <Text maxWidth="100px">{item.message}</Text>
+                            <Text
+                              maxWidth="100px"
+                              color={"white"}
+                              fontSize={"20px"}
+                            >
+                              {item.message}
+                            </Text>
                           ) : (
                             false
                           )}
@@ -251,11 +276,12 @@ function chats() {
                         px="10px"
                         py="5px"
                         borderRadius="xl"
-                        bg="gray.200"
+                        bg="#fbfbfb"
+                        boxShadow="lg"
                         alignSelf="center"
                       >
                         {item.message !== null ? (
-                          <Text maxWidth="100px">{item.message}</Text>
+                          <Text maxWidth="100px" fontSize={'20px'}>{item.message}</Text>
                         ) : (
                           false
                         )}
@@ -302,11 +328,17 @@ function chats() {
                         px="10px"
                         py="5px"
                         borderRadius="xl"
-                        bg="gray.200"
+                        bg="#cd2626"
                         alignSelf="center"
                       >
                         {item.message !== null ? (
-                          <Text maxWidth="100px">{item.message}</Text>
+                          <Text
+                            maxWidth="100px"
+                            color={"white"}
+                            fontSize={"20px"}
+                          >
+                            {item.message}
+                          </Text>
                         ) : (
                           false
                         )}
