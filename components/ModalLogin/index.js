@@ -31,12 +31,21 @@ import {
   useColorModeValue,
   Link,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import user from "@/public/img/icon/user copy.png";
 import cart from "@/public/img/icon/cart.png";
 import axios from "axios";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { getUserLogout } from "@/store/slices/authen";
 
 import Login from "@/components/ModalLogin/login";
 
@@ -58,7 +67,6 @@ export default function ModalLogin(props) {
         setName(user.data?.user?.name);
         setAvatar(user.data?.user?.avatar);
       }
-      
     }
     fetchdata();
   }, []);
@@ -94,33 +102,47 @@ export default function ModalLogin(props) {
     onCloseForm1();
   };
 
+  const logout = () => {
+    window.location.reload();
+    dispatch(getUserLogout());
+  };
+
   return (
     <>
       {authen?.isAuthenticate === true ? (
         <>
           {props?.type === "avatar" && (
-            <Link as={NextLink} href="/profile">
-              <Box
-                bg="white"
-                borderRadius="50%"
-                w="7"
-                h="7"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                mr="2"
-                order="1px"
-                borderColor="gray.300"
-                ids={props.type}
-              >
-                <Image
-                  src={`https://api.sellpang.com/images/shopee/avatar/${avatar}`}
-                  alt=""
-                  h="7"
+            <Menu>
+              <MenuButton>
+                <Box
+                  bg="white"
                   borderRadius="50%"
-                />
-              </Box>
-            </Link>
+                  w="7"
+                  h="7"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  mr="2"
+                  order="1px"
+                  borderColor="gray.300"
+                  ids={props.type}
+                >
+                  <Image
+                    src={`https://api.sellpang.com/images/shopee/avatar/${avatar}`}
+                    alt=""
+                    h="7"
+                    borderRadius="50%"
+                  />
+                </Box>
+              </MenuButton>
+              <MenuList>
+                <Link as={NextLink} href="/profile">
+                  <MenuItem>โปรไฟล์</MenuItem>
+                </Link>
+                <MenuDivider />
+                <MenuItem onClick={logout}>ออกจากระบบ</MenuItem>
+              </MenuList>
+            </Menu>
           )}
           {props?.type === "card" && (
             <Link as={NextLink} href="/cartShop">
@@ -141,7 +163,7 @@ export default function ModalLogin(props) {
             </Link>
           )}
           {props?.type === "chat" && (
-            <Link as={NextLink} href={"/chats/"+props?.shopId}>
+            <Link as={NextLink} href={"/chats/" + props?.shopId}>
               <Flex
                 textColor="black"
                 h="20px !important"
