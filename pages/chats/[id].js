@@ -70,7 +70,7 @@ function chats() {
         formdata.append("shop_id", shopId);
         formdata.append("message", text);
         const res = await axios.post(
-          `http://127.0.0.1:8000/api/sendMessage`,
+          `https://api.sellpang.com/api/sendMessage`,
           formdata
         );
         if (res.data.message) {
