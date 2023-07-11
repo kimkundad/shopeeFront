@@ -1,5 +1,5 @@
-import React from "react";
-import Link from "next/link";
+import React, { useEffect, useState, useRef } from "react";
+import { useSelector } from 'react-redux';
 import Head from "next/head";
 import {
   Box,
@@ -11,16 +11,13 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import ChatBox from "@/components/ChatBox";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import Pusher from "pusher-js";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { TiLocationArrow } from "react-icons/Ti";
+import { TiLocationArrow } from "react-icons/ti";
 
-function chats() {
+const Chats = () => {
   const router = useRouter();
   const { id: shopId } = router.query;
   let date = "";
@@ -414,4 +411,4 @@ function chats() {
   );
 }
 
-export default chats;
+export default Chats;

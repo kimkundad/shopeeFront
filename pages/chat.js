@@ -5,7 +5,7 @@ import { Box, Flex, Text, Image, Button, Spacer } from "@chakra-ui/react";
 import ChatBox from "@/components/ChatBox";
 import { useRouter } from "next/router";
 
-function chat() {
+const Chat = () => {
   const router = useRouter();
   const shopId = router.query.shopId;
   return (
@@ -23,4 +23,4 @@ function chat() {
   );
 }
 
-export default chat;
+export default Chat;
