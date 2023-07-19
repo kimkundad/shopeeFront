@@ -20,7 +20,6 @@ export default function useAddress(props) {
       `https://api.sellpang.com/api/setDefaultAddress`,formdata
     )
     const newAddress = res.data.address
-    console.log('newAddress', newAddress);
     setAddress(newAddress);
   }
 

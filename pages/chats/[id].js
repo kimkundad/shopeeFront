@@ -20,6 +20,7 @@ import moment from "moment";
 import Pusher from "pusher-js";
 import { TiLocationArrow, TiTimes } from "react-icons/ti";
 import { FiImage } from "react-icons/fi";
+import { FaSmile } from "react-icons/fa";
 import { createObjectURL, revokeObjectURL } from "blob-util";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -308,12 +309,16 @@ const Chats = () => {
                           px="10px"
                           py="5px"
                           borderRadius="xl"
-                          bg="#fbfbfb"
-                          boxShadow="lg"
+                          bg={
+                            item.img_message !== null ? "" : "#cd2626"
+                          }
+                          boxShadow={
+                            item.img_message !== null ? "" : "lg"
+                          }
                           alignSelf="center"
                         >
                           {item.message !== null ? (
-                            <Text maxWidth="100px" fontSize={"20px"}>
+                            <Text maxWidth="100px" fontSize={"20px"} color={'white'}>
                               {item.message}
                             </Text>
                           ) : (
@@ -323,6 +328,7 @@ const Chats = () => {
                             <Image
                               src={`https://api.sellpang.com/images/shopee/img_message/${item.img_message}`}
                               alt=""
+                              borderRadius={"15px"}
                               maxWidth="100px"
                               py="5px"
                               _hover={{
@@ -383,13 +389,15 @@ const Chats = () => {
                           px="10px"
                           py="5px"
                           borderRadius="xl"
-                          bg="#cd2626"
+                          bg={
+                            item.img_message !== null ? "" : "#e4e6eb"
+                          }
                           alignSelf="center"
                         >
                           {item.message !== null ? (
                             <Text
                               maxWidth="100px"
-                              color={"white"}
+                              color={"#050505"}
                               fontSize={"20px"}
                             >
                               {item.message}
@@ -401,6 +409,7 @@ const Chats = () => {
                             <Image
                               src={`https://api.sellpang.com/images/shopee/img_message/${item.img_message}`}
                               alt=""
+                              borderRadius={"15px"}
                               maxWidth="100px"
                               py="5px"
                               _hover={{
@@ -436,12 +445,16 @@ const Chats = () => {
                         px="10px"
                         py="5px"
                         borderRadius="xl"
-                        bg="#fbfbfb"
-                        boxShadow="lg"
+                        bg={
+                          item.img_message !== null ? "" : "#cd2626"
+                        }
+                        boxShadow={
+                          item.img_message !== null ? "" : "lg"
+                        }
                         alignSelf="center"
                       >
                         {item.message !== null ? (
-                          <Text maxWidth="100px" fontSize={"20px"}>
+                          <Text maxWidth="100px" fontSize={"20px"} color={'white'}>
                             {item.message}
                           </Text>
                         ) : (
@@ -451,6 +464,7 @@ const Chats = () => {
                           <Image
                             src={`https://api.sellpang.com/images/shopee/img_message/${item.img_message}`}
                             alt=""
+                            borderRadius={"15px"}
                             maxWidth="100px"
                             py="5px"
                             _hover={{
@@ -502,13 +516,15 @@ const Chats = () => {
                         px="10px"
                         py="5px"
                         borderRadius="xl"
-                        bg="#cd2626"
+                        bg={
+                          item.img_message !== null ? "" : "#e4e6eb"
+                        }
                         alignSelf="center"
                       >
                         {item.message !== null ? (
                           <Text
                             maxWidth="100px"
-                            color={"white"}
+                            color={"#050505"}
                             fontSize={"20px"}
                           >
                             {item.message}
@@ -520,6 +536,7 @@ const Chats = () => {
                           <Image
                             src={`https://api.sellpang.com/images/shopee/img_message/${item.img_message}`}
                             alt=""
+                            borderRadius={"15px"}
                             maxWidth="100px"
                             py="5px"
                             _hover={{
@@ -714,7 +731,7 @@ const Chats = () => {
                       setShowEmojiPicker((prevState) => !prevState)
                     }
                   >
-                    <Image src="/img/emoji.png" alt="" h="25px" />
+                    <FaSmile size={23} color="red"/>
                   </InputRightElement>
                 </InputGroup>
                 <Button
