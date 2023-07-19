@@ -16,8 +16,9 @@ export default function useStatusProductProfile(props) {
   const [isBorderActive, setIsBorderActive] = useState("ที่ต้องชำระ");
   const status = [
     { label: "ที่ต้องชำระ" },
-    { label: "กำลังจัดส่ง" },
+    { label: "ตรวจสอบคำสั่งซื้อ" },
     { label: "จัดส่งสำเร็จ" },
+    { label: "ส่งสำเร็จ" },
   ];
   const [orders, setOrders] = useState([]);
   const [count, setCount] = useState(0);
@@ -63,8 +64,14 @@ export default function useStatusProductProfile(props) {
   return (
     <div>
       <Box bg="white" pt="10px">
-        {pathname === "/profile" ? <Text className={style.textHead} px="25px" fontWeight="bold">สถานะสินค้า</Text> : false}
-        <Grid templateColumns="repeat(3, 1fr)" fontSize="xs" width="100%">
+        {pathname === "/profile" ? (
+          <Text className={style.textHead} px="25px" fontWeight="bold">
+            สถานะสินค้า
+          </Text>
+        ) : (
+          false
+        )}
+        <Grid templateColumns="repeat(4, 1fr)" fontSize="xs" width="100%">
           {status.map((item, index) => {
             return (
               <GridItem
@@ -74,6 +81,15 @@ export default function useStatusProductProfile(props) {
                 borderBottom={isBorderActive == item.label ? "2px" : "1px"}
                 borderColor={isBorderActive == item.label ? "red" : "gray.300"}
                 onClick={() => setIsBorderActive(item.label)}
+                // px="10px"
+                // // py="10px"
+                // flex="1"
+                // textAlign="center"
+                // className="set--font"
+                // minWidth="0"
+                // overflowX="hidden"
+                // textOverflow="ellipsis"
+                whiteSpace="nowrap"
               >
                 <Text textAlign="center" className="set--font">
                   {item.label}
@@ -85,7 +101,12 @@ export default function useStatusProductProfile(props) {
       </Box>
       {carts?.map((item, index) => {
         return isBorderActive == "ที่ต้องชำระ" ? (
-          <Box bg="white" key={index} py="10px" mt={index == 0? "0px":"10px"}>
+          <Box
+            bg="white"
+            key={index}
+            py="10px"
+            mt={index == 0 ? "0px" : "10px"}
+          >
             <Box>
               <Box bg="white">
                 <Box>
@@ -122,10 +143,13 @@ export default function useStatusProductProfile(props) {
                         width="-webkit-fill-available"
                         wordBreak="break-all"
                       >
-                        <Text className={style.textHead,style.oneLines} fontWeight="bold">
+                        <Text
+                          className={(style.textHead, style.oneLines)}
+                          fontWeight="bold"
+                        >
                           {subItem.name_product}
                         </Text>
-                        <Text className={style.textBody,style.twoLines}>
+                        <Text className={(style.textBody, style.twoLines)}>
                           {subItem.detail_product}
                         </Text>
                         <Flex alignItems="center">
@@ -193,7 +217,9 @@ export default function useStatusProductProfile(props) {
         pb="10px"
         bg="white"
         pt="10px"
-        display={count == 3 && isBorderActive == "ที่ต้องชำระ" ? "block" : "none"}
+        display={
+          count == 3 && isBorderActive == "ที่ต้องชำระ" ? "block" : "none"
+        }
       >
         <Link href="/statusProduct">
           <Button bg="red" borderRadius="xl" size="md" height="30px">
@@ -211,14 +237,18 @@ export default function useStatusProductProfile(props) {
                 <Box
                   bg="white"
                   key={subIndex}
-                  mt={index == 0? "0px":"10px"}
+                  mt={index == 0 ? "0px" : "10px"}
                   py="10px"
                   display={isBorderActive == "ที่ต้องชำระ" ? "none" : "block"}
                 >
                   <Box>
                     <Box bg="white">
                       <Box>
-                        <Text px="15px" className={style.textHead} fontWeight="bold">
+                        <Text
+                          px="15px"
+                          className={style.textHead}
+                          fontWeight="bold"
+                        >
                           {subItem.name_shop}
                         </Text>
                       </Box>
@@ -348,10 +378,15 @@ export default function useStatusProductProfile(props) {
                                 width="-webkit-fill-available"
                                 wordBreak="break-all"
                               >
-                                <Text className={style.textHead,style.oneLines} fontWeight="bold">
+                                <Text
+                                  className={(style.textHead, style.oneLines)}
+                                  fontWeight="bold"
+                                >
                                   {subItem.name_product}
                                 </Text>
-                                <Text className={style.textBody,style.twoLines}>
+                                <Text
+                                  className={(style.textBody, style.twoLines)}
+                                >
                                   {subItem.detail_product}
                                 </Text>
                                 <Flex alignItems="center">
@@ -410,15 +445,15 @@ export default function useStatusProductProfile(props) {
                                     color={
                                       isBorderActive == "ที่ต้องชำระ"
                                         ? "white"
-                                        : isBorderActive == "กำลังจัดส่ง"
-                                        ? "orange"
+                                        : isBorderActive == "ส่งสำเร็จ"
+                                        ? "green"
                                         : "blue"
                                     }
                                   >
-                                    {isBorderActive == "กำลังจัดส่ง"
-                                      ? "จะได้รับสินค้าภายใน date"
+                                    {isBorderActive == "ส่งสำเร็จ"
+                                      ? "ผู้รับได้รับสิ่งของเรียบร้อยแล้ว"
                                       : isBorderActive == "จัดส่งสำเร็จ"
-                                      ? "พัสดุจัดส่งเรียบร้อย: address"
+                                      ? "พัสดุจัดส่งเรียบร้อย: จะถึงภายใน 2-3 วัน"
                                       : isBorderActive}
                                   </Text>
                                 </Flex>

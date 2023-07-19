@@ -2,14 +2,17 @@ import { Box, Checkbox, Text, Flex, Spacer, Link,Button } from "@chakra-ui/react
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { connect, useDispatch, useSelector } from "react-redux";
+
 export default function useAddress(props) {
+  const userInfo = useSelector((App) => App.userInfo);
   const router = useRouter();
   const [address,setAddress] = useState([]);
   useEffect(() => {
     setAddress(props.data)
   },[props])
   async function updateDefaultAddress (id) {
-    let user_id = 1
+    let user_id = userInfo.data[0].id
     const formdata = new FormData()
     formdata.append("id",id);
     formdata.append("user_id",user_id);
@@ -17,11 +20,12 @@ export default function useAddress(props) {
       `https://api.sellpang.com/api/setDefaultAddress`,formdata
     )
     const newAddress = res.data.address
+    console.log('newAddress', newAddress);
     setAddress(newAddress);
   }
 
   async function deleteAddress(id){
-    let user_id = 1
+    let user_id = userInfo.data[0].id
     const formdata = new FormData();
     formdata.append("user_id",user_id)
     formdata.append("address_id",id);

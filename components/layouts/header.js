@@ -13,10 +13,13 @@ import cart from "@/public/img/icon/cart.png";
 import user from "@/public/img/icon/user copy.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 export default function Header() {
+  const userInfo = useSelector((App) => App.userInfo);
   const router = useRouter();
   const { pathname } = router;
+
   const handleBack = () => {
     const backUrl = {
       pathname: router.pathname,
@@ -116,7 +119,7 @@ export default function Header() {
                     order="1px"
                     borderColor="gray.300"
                   >
-                    <Image src={user.src} alt="" h="7" />
+                    <Image borderRadius={'25px'} src={`https://api.sellpang.com/images/shopee/avatar/${userInfo.data[0].avatar}`} alt="" h="7" />
                   </Box>
                 </Link>
               </Flex>
